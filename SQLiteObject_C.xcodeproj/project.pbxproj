@@ -31,6 +31,7 @@
 		5CB4FEF020E0E4910000D441 /* SQLiteLanguage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQLiteLanguage.m; sourceTree = "<group>"; };
 		5CB4FEF120E0E4910000D441 /* SQLITEObjectC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQLITEObjectC.h; sourceTree = "<group>"; };
 		5CB4FEF220E0E4910000D441 /* SQLiteLanguage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQLiteLanguage.h; sourceTree = "<group>"; };
+		5CB4FEF620E0F4D70000D441 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +48,7 @@
 		5CB4FED420E0E41B0000D441 = {
 			isa = PBXGroup;
 			children = (
+				5CB4FEF620E0F4D70000D441 /* README.md */,
 				5CB4FEEE20E0E4910000D441 /* SQLite */,
 				5CB4FEDF20E0E41B0000D441 /* SQLiteObject_C */,
 				5CB4FEDE20E0E41B0000D441 /* Products */,
