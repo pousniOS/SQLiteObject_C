@@ -68,7 +68,7 @@ static NSString *const SQL_SELECT_DISTINCT=@"SELECT_DISTINCT";
 
 static NSString *const SQL_ALTER=@"ALTER";
 static NSString *const SQL_ADD=@"ADD";
-static NSString *const SQL_ALTER_COLUMN=@"ALTER_COLUMN";
+static NSString *const SQL_COLUMN=@"COLUMN";
 
 #pragma make - ============ 宏定义 ============
 #define SQLlStrAppendString(lang) if(lang){[self.sqllStr appendString:lang];}
@@ -177,7 +177,7 @@ static NSString *const SQL_ALTER_COLUMN=@"ALTER_COLUMN";
         return self;
     };
 }
-- (SQLiteLanguage * (^)(id fristColumn,...))COLUMN{
+- (SQLiteLanguage * (^)(id fristColumn,...))COLUMNS{
     return ^SQLiteLanguage*(id fristColumn,...){
         NSMutableArray *array = [NSMutableArray array];
         if (fristColumn){
@@ -460,10 +460,10 @@ static NSString *const SQL_ALTER_COLUMN=@"ALTER_COLUMN";
     };
 }
 #pragma mark ============ ALTER修改表 ============
-- (SQLiteLanguage * (^)(SQLiteLanguage *value))ALTER_COLUMN{
-    return ^SQLiteLanguage*(SQLiteLanguage *value){
-        SQLlStrAppendAndSPACE(SQL_ALTER_COLUMN);
-        SQLlStrAppendAndSPACE(value.sql);
+-(SQLiteLanguage * (^)(NSString *name))COLUMN;{
+    return ^SQLiteLanguage*(NSString *name){
+        SQLlStrAppendAndSPACE(SQL_COLUMN);
+        SQLlStrAppendAndSPACE(name);
         return self;
     };
 }

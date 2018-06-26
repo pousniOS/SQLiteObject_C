@@ -32,7 +32,7 @@
 -(SQLiteLanguage * (^)(NSString *fristName,...))KEY;//结束记得加nil。
 - (SQLiteLanguage * (^)(NSString *value))NOT;
 -(SQLiteLanguage * (^)(NSString *name))TABEL;
-- (SQLiteLanguage * (^)(id fristColumn,...))COLUMN;//结束记得加nil。
+- (SQLiteLanguage * (^)(id fristColumn,...))COLUMNS;//结束记得加nil。
 -(SQLiteLanguage * (^)(NSString *name))columnName;
 -(SQLiteLanguage * (^)(NSString *name))CONSTRAINT;
 
@@ -95,5 +95,5 @@
 #pragma mark ============ ALTER修改表 ============
 -(SQLiteLanguage * (^)(NSString *value))ADD;
 -(SQLiteLanguage *)ALTER;
--(SQLiteLanguage * (^)(SQLiteLanguage *value))ALTER_COLUMN;
+-(SQLiteLanguage * (^)(NSString *name))COLUMN;
 @end
