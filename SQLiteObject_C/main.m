@@ -20,6 +20,12 @@ void createTable(){
     if (![[SQLITEObjectC share] execSQL:sqll]) {
         NSLog(@"创建表失败");
     }
+    
+   sqll=[[SQLiteLanguage alloc] init];
+    
+    
+    
+    
 }
 void dropTable(){
     SQLiteLanguage *sqll=[[SQLiteLanguage alloc] init];
@@ -44,8 +50,6 @@ void SELECT(){
         NSLog(@"%@",[SQLITEObjectC share].execSQLResultArray);
     }
 }
-
-
 #pragma mark - ====== main函数 ======
 
 int main(int argc, const char * argv[]) {
@@ -57,11 +61,29 @@ int main(int argc, const char * argv[]) {
 //        createTable();//创建表
 //        dropTable();//删除表
 //        insert();//插入数据
-        SELECT();//数据查询
+//        SELECT();//数据查询
+        SQLiteLanguage *sqll=[[SQLiteLanguage alloc] init];
+        sqll.UPDATE(@"Sutdent").SET(@"name='小明'",@"age=90",nil).WHERE(@"ID='120702010019'");
+        
+//        sqll.INSERT.INTO(@"Sutdent").COLUMN(@"ID",@"age",@"name",@"sex").VALUES(@"'120702010019'",@"26",@"'朱小明'",@"'男'");
+        [[SQLITEObjectC share] execSQL:sqll];
+        [sqll clear];
+        
+        sqll.SELECT(@"*",nil).FROM(@"Sutdent");
+        [[SQLITEObjectC share] execSQL:sqll];
+        NSLog(@"%@",[SQLITEObjectC share].execSQLResultArray);
+        
+
+        
+        
         
         if (![[SQLITEObjectC share] close]) {
             NSLog(@"数据库关闭失败");
         }
+        
+        
+        
+        
     }
     return 0;
 }

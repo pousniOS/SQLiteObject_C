@@ -17,6 +17,9 @@
 /**SQL语句**/
 @property(nonatomic,copy,readonly)NSString *sql;
 
+/**清楚构造的sql语句**/
+-(void)clear;
+
 #pragma mark ============ 创建表 ============
 -(SQLiteLanguage *)CREATE;
 -(SQLiteLanguage *)FOREIGN;
@@ -70,7 +73,6 @@
 
 #pragma mark ============ DELETE删除表数据 ============
 -(SQLiteLanguage *)DELETE;
-
 #pragma mark ============ ORDER BY排序 ============
 -(SQLiteLanguage * (^)(NSString *name))BY;
 -(SQLiteLanguage *)ORDER;

@@ -39,6 +39,9 @@ int callback(void *para,int ncolumn,char ** columnvalue,char *columnname[]);
         return NO;
     }
 }
+-(void)clear{
+    ExecSQLResultArray=nil;
+}
 -(BOOL)execSQL:(SQLiteLanguage *)sqll{
     char *errmsg=NULL;
     ExecSQLResultArray=[[NSMutableArray alloc] init];
@@ -51,9 +54,6 @@ int callback(void *para,int ncolumn,char ** columnvalue,char *columnname[]);
 }
 -(NSMutableArray<NSDictionary *> *)execSQLResultArray{
     return ExecSQLResultArray;
-}
--(sqlite3 *)DB{
-    return _db;
 }
 @end
 /**SQL执行结果回调**/

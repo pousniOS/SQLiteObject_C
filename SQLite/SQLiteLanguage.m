@@ -391,7 +391,7 @@ static NSString *const SQL_ALTER_COLUMN=@"ALTER_COLUMN";
             va_end(argsList);
         }
         if (array.count) {
-            SQLlStrAppendAndSPACE(([NSString stringWithFormat:@"%@(%@) ",SQL_SET,[array componentsJoinedByString:@","]]));
+            SQLlStrAppendAndSPACE(([NSString stringWithFormat:@"%@ %@",SQL_SET,[array componentsJoinedByString:@","]]));
         }else{
             SQLlStrAppendAndSPACE(SQL_IN);
         }
@@ -473,10 +473,14 @@ static NSString *const SQL_ALTER_COLUMN=@"ALTER_COLUMN";
 }
 -(SQLiteLanguage * (^)(NSString *value))ADD{
     return ^SQLiteLanguage *(NSString *value){
-        SQLlStrAppendAndSPACE(SQL_ALTER);
+        SQLlStrAppendAndSPACE(SQL_ADD);
         SQLlStrAppendAndSPACE(value);
         return self;
     };
+}
+#pragma mark ============ 其他 ============
+-(void)clear{
+    _sqllStr=[[NSMutableString alloc] init];
 }
 #pragma mark ============ GET方法 ============
 -(NSString *)sql{
