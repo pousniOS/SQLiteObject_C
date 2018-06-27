@@ -20,7 +20,6 @@ void createTable(){
     if (![[SQLITEObjectC share] execSQL:sqll]) {
         NSLog(@"创建表失败");
     }
-   sqll=[[SQLiteLanguage alloc] init];
 }
 void dropTable(){
     SQLiteLanguage *sqll=[[SQLiteLanguage alloc] init];
