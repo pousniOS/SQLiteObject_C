@@ -5,21 +5,22 @@
 //  Created by POSUN-MAC on 2018/6/23.
 //  Copyright © 2018年 POSUN-MAC. All rights reserved.
 //
-
 /**
  该类的目的是快速准确的书写要执行的SQL语句，包含了SQL常用的关键字,
  通过提供的关键字来书写你要执行的SQL语句。后续将不断完善。
  **/
 #import <Foundation/Foundation.h>
+/**排重关键字**/
+static NSString *const SQL_DISTINCT=@"DISTINCT";
 /**快速创建SQLiteLanguage对象**/
 #define SQLlang [[SQLiteLanguage alloc] init]
+#define SHARESQLLANG [SQLiteLanguage share]
 @interface SQLiteLanguage : NSObject
 /**SQL语句**/
 @property(nonatomic,copy,readonly)NSString *sql;
 
-/**清楚构造的sql语句**/
+/**清除构造的sql语句**/
 -(void)clear;
-
 #pragma mark ============ 创建表 ============
 -(SQLiteLanguage *)CREATE;
 -(SQLiteLanguage *)FOREIGN;
@@ -30,9 +31,9 @@
  1.可以用来表示设置主键外键时的key。
  **/
 -(SQLiteLanguage * (^)(NSString *fristName,...))KEY;//结束记得加nil。
-- (SQLiteLanguage * (^)(NSString *value))NOT;
+-(SQLiteLanguage * (^)(NSString *value))NOT;
 -(SQLiteLanguage * (^)(NSString *name))TABEL;
-- (SQLiteLanguage * (^)(id fristColumn,...))COLUMNS;//结束记得加nil。
+-(SQLiteLanguage * (^)(id fristColumn,...))COLUMNS;//结束记得加nil。
 -(SQLiteLanguage * (^)(NSString *name))columnName;
 -(SQLiteLanguage * (^)(NSString *name))CONSTRAINT;
 
@@ -51,7 +52,7 @@
 
 #pragma mark ============ SELECT查询 ============
 - (SQLiteLanguage * (^)(NSString *tableName))FROM;
-- (SQLiteLanguage * (^)(NSString *fristName,...))SELECT;//结束记得加nil。
+- (SQLiteLanguage * (^)(NSString *condition,NSString *fristName,...))SELECT;//结束记得加nil。
 - (SQLiteLanguage * (^)(NSString *name))WHERE;
 - (SQLiteLanguage * (^)(NSString *rowNumber))OFFSET;
 - (SQLiteLanguage * (^)(NSString *rows))LIMIT;
@@ -78,20 +79,14 @@
 -(SQLiteLanguage *)ORDER;
 -(SQLiteLanguage *)DESC;
 -(SQLiteLanguage *)ASC;
-
 #pragma mark ============ GROUP BY分组 ============
 -(SQLiteLanguage *)GROUP;
-
 #pragma mark ============ HAVING ============
 /**
  HAVING 子句允许指定条件来过滤将出现在最终结果中的分组结果。
  WHERE 子句在所选列上设置条件，而 HAVING 子句则在由 GROUP BY 子句创建的分组上设置条件。
  **/
 - (SQLiteLanguage * (^)(NSString *value))HAVING;
-
-#pragma mark ============ DISTINCT排除重复 ============
-- (SQLiteLanguage * (^)(NSString *fristName,...))SELECT_DISTINCT;
-
 #pragma mark ============ ALTER修改表 ============
 -(SQLiteLanguage * (^)(NSString *value))ADD;
 -(SQLiteLanguage *)ALTER;

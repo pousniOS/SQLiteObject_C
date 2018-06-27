@@ -64,8 +64,6 @@ static NSString *const SQL_GROUP=@"GROUP";
 
 static NSString *const SQL_HAVING=@"HAVING";
 
-static NSString *const SQL_SELECT_DISTINCT=@"SELECT_DISTINCT";
-
 static NSString *const SQL_ALTER=@"ALTER";
 static NSString *const SQL_ADD=@"ADD";
 static NSString *const SQL_COLUMN=@"COLUMN";
@@ -75,18 +73,25 @@ static NSString *const SQL_COLUMN=@"COLUMN";
 #define SQLlStrAppendSPACE SQLlStrAppendString(SQL_SPACE)
 #define SQLlStrAppendAndSPACE(lang) SQLlStrAppendString(lang); SQLlStrAppendString(SQL_SPACE)
 
-
 @interface SQLiteLanguage()
 @property(nonatomic,copy)NSMutableString *sqllStr;
 @end
 @implementation SQLiteLanguage
-
++(instancetype)share{
+    static SQLiteLanguage *sQLiteLanguage=nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sQLiteLanguage=[[SQLiteLanguage alloc] init];
+    });
+    return sQLiteLanguage;
+}
 -(instancetype)init{
     if (self=[super init]) {
         _sqllStr=[[NSMutableString alloc] init];
     }
     return self;
 }
+
 #pragma mark - ============ 数据类型 ============
 -(SQLiteLanguage *)INTEGER{
     SQLlStrAppendAndSPACE(SQL_INTEGER);
@@ -135,6 +140,10 @@ static NSString *const SQL_COLUMN=@"COLUMN";
         return self;
     };
 }
+
+
+
+
 - (SQLiteLanguage * (^)(NSString *name))TABEL{
     return ^SQLiteLanguage *(NSString *name){
         SQLlStrAppendAndSPACE(SQL_TABLE);
@@ -144,7 +153,6 @@ static NSString *const SQL_COLUMN=@"COLUMN";
 }
 - (SQLiteLanguage * (^)(NSString *fristName,...))KEY{
     return ^SQLiteLanguage *(NSString *fristName,...){
-        
         NSMutableArray *array = [NSMutableArray array];
         if (fristName){
             va_list argsList;
@@ -209,9 +217,8 @@ static NSString *const SQL_COLUMN=@"COLUMN";
     return self;
 }
 #pragma mark ============ SELECT查询 ============
-- (SQLiteLanguage * (^)(NSString *fristName,...))SELECT{
-    return ^SQLiteLanguage *(NSString *fristName,...){
-        
+- (SQLiteLanguage * (^)(NSString *condition,NSString *fristName,...))SELECT{
+    return ^SQLiteLanguage *(NSString *condition,NSString *fristName,...){
         NSMutableArray *array = [NSMutableArray array];
         if (fristName){
             va_list argsList;
@@ -223,11 +230,11 @@ static NSString *const SQL_COLUMN=@"COLUMN";
             }
             va_end(argsList);
         }
-        
         if (array.count) {
-            SQLlStrAppendAndSPACE(([NSString stringWithFormat:@"%@ %@ ",SQL_SELECT,[array componentsJoinedByString:@","]]));
+            SQLlStrAppendAndSPACE(([NSString stringWithFormat:@"%@ %@ %@ ",SQL_SELECT,condition,[array componentsJoinedByString:@","]]));
         }else{
             SQLlStrAppendAndSPACE(SQL_SELECT);
+            SQLlStrAppendAndSPACE(condition);
         }
         return self;
     };
@@ -261,7 +268,6 @@ static NSString *const SQL_COLUMN=@"COLUMN";
     };
 }
 #pragma mark ============ 表数据插入 ============
-
 - (SQLiteLanguage * (^)(NSString *tableName))INTO{
     return ^SQLiteLanguage *(NSString *tableName){
         SQLlStrAppendAndSPACE(SQL_INTO);
@@ -435,30 +441,6 @@ static NSString *const SQL_COLUMN=@"COLUMN";
         return self;
     };
 }
-#pragma mark ============ DISTINCT排除重复 ============
-- (SQLiteLanguage * (^)(NSString *fristName,...))SELECT_DISTINCT{
-    return ^SQLiteLanguage *(NSString *fristName,...){
-        
-        NSMutableArray *array = [NSMutableArray array];
-        if (fristName){
-            va_list argsList;
-            [array addObject:fristName];
-            va_start(argsList, fristName);
-            id arg;
-            while ((arg = va_arg(argsList, id))){
-                [array addObject:arg];
-            }
-            va_end(argsList);
-        }
-        
-        if (array.count) {
-            SQLlStrAppendAndSPACE(([NSString stringWithFormat:@"%@ %@ ",SQL_SELECT_DISTINCT,[array componentsJoinedByString:@","]]));
-        }else{
-            SQLlStrAppendAndSPACE(SQL_SELECT);
-        }
-        return self;
-    };
-}
 #pragma mark ============ ALTER修改表 ============
 -(SQLiteLanguage * (^)(NSString *name))COLUMN;{
     return ^SQLiteLanguage*(NSString *name){
@@ -477,6 +459,7 @@ static NSString *const SQL_COLUMN=@"COLUMN";
         SQLlStrAppendAndSPACE(value);
         return self;
     };
+    
 }
 #pragma mark ============ 其他 ============
 -(void)clear{

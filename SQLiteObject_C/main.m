@@ -38,7 +38,7 @@ void insert(){
 }
 void SELECT(){
     SQLiteLanguage *sqll=[[SQLiteLanguage alloc] init];
-    sqll.SELECT(@"*",nil).FROM(@"Sutdent").WHERE(@"name='马悦'");
+    sqll.SELECT(SQL_DISTINCT,@"*",nil).FROM(@"Sutdent").WHERE(@"name='马悦'");
     if (![[SQLITEObjectC share] execSQL:sqll]) {
         NSLog(@"数据查询失败");
     }else{
@@ -61,7 +61,7 @@ void DELETE(){
 }
 void ORDERBY(){
     SQLiteLanguage *sqll=[[SQLiteLanguage alloc] init];
-    sqll.SELECT(@"*",nil).FROM(@"Sutdent").ORDER.BY(@"ID").DESC;
+    sqll.SELECT(SQL_DISTINCT,@"*",nil).FROM(@"Sutdent").ORDER.BY(@"ID").DESC;
     if (![[SQLITEObjectC share] execSQL:sqll]) {
         NSLog(@"排序失败");
     }else{
@@ -69,15 +69,7 @@ void ORDERBY(){
     }
 }
 
-void xxx(){
-    SQLiteLanguage *sqll=[[SQLiteLanguage alloc] init];
-//    sqll.ALTER.TABEL(@"Sutdent").DROP.COLUMN
-    if (![[SQLITEObjectC share] execSQL:sqll]) {
-        NSLog(@"排序失败");
-    }else{
-        NSLog(@"%@",[SQLITEObjectC share].execSQLResultArray);
-    }
-}
+
 
 
 #pragma mark - ====== main函数 ======
@@ -92,16 +84,10 @@ int main(int argc, const char * argv[]) {
 //        dropTable();//删除表
 //        insert();//插入数据
 //        SELECT();//数据查询
-        
         ORDERBY();
-
-        
-        
-        
         if (![[SQLITEObjectC share] close]) {
             NSLog(@"数据库关闭失败");
         }
-        
         
         
         
