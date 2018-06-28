@@ -37,7 +37,10 @@ static NSString *const SQL_DISTINCT=@"DISTINCT";
 -(SQLiteLanguage * (^)(id fristColumn,...))COLUMNS;//结束记得加nil。
 -(SQLiteLanguage * (^)(NSString *name))columnName;
 -(SQLiteLanguage * (^)(NSString *name))CONSTRAINT;
-
+#pragma mark - ============ 约束 ============
+- (SQLiteLanguage * )UNIQUE;
+- (SQLiteLanguage * (^)(NSString *condition))CHECK;
+- (SQLiteLanguage * (^)(NSString *value))DEFAULT;
 #pragma mark - ============ 表字段数据类型 ============
 /**整型**/
 -(SQLiteLanguage *)INTEGER;//值是一个带符号的整数，根据值的大小存储在 1、2、3、4、6 或 8 字节中。
@@ -79,7 +82,6 @@ static NSString *const SQL_DISTINCT=@"DISTINCT";
 - (SQLiteLanguage * (^)(NSString *value))LIKE;
 /**是**/
 - (SQLiteLanguage * (^)(NSString *value))IS;
-- (SQLiteLanguage * (^)(NSString *value))UNIQUE;
 - (SQLiteLanguage * (^)(NSString *value))GLOB;
 /**在什么里**/
 - (SQLiteLanguage * (^)(NSString *value,...))IN;//结束记得加nil。
@@ -131,8 +133,8 @@ static NSString *const SQL_DISTINCT=@"DISTINCT";
 /**回滚**/
 -(SQLiteLanguage *)ROLLBACK;
 #pragma mark ============ VACUUM ============
+/**VACUUM 命令通过复制主数据库中的内容到一个临时数据库文件，然后清空主数据库，并从副本中重新载入原始的数据库文件。这消除了空闲页，把表中的数据排列为连续的，另外会清理数据库文件结构。**/
 - (SQLiteLanguage * (^)(NSString *value))VACUUM;
-
 #pragma mark ============ 其他 ============
 /**
  分号结束符,有时一条SQL结束需要加分号表示结尾因此你需要调用SEMICOLON。

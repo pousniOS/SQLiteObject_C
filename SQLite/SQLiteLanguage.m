@@ -78,7 +78,12 @@ static NSString *const SQL_SEMICOLON=@";";//分号;
 static NSString *const SQL_VACUUM=@"VACUUM";
 
 
+static NSString *const SQL_DEFAULT=@"DEFAULT";
+static NSString *const SQL_CHECK=@"CHECK";
 
+
+
+#pragma mark - ============ 约束 ============
 
 
 #pragma make - ============ 宏定义 ============
@@ -220,6 +225,28 @@ static NSString *const SQL_VACUUM=@"VACUUM";
         return self;
     };
 }
+
+
+#pragma mark - ============ 约束 ============
+- (SQLiteLanguage *)UNIQUE{
+    SQLlStrAppendAndSPACE(SQL_UNIQUE);
+    return self;
+}
+- (SQLiteLanguage * (^)(NSString *value))DEFAULT{
+    return ^SQLiteLanguage *(NSString *value){
+        SQLlStrAppendAndSPACE(SQL_DEFAULT);
+        SQLlStrAppendAndSPACE(value);
+        return self;
+    };
+}
+- (SQLiteLanguage * (^)(NSString *condition))CHECK{
+    return ^SQLiteLanguage *(NSString *condition){
+        SQLlStrAppendAndSPACE(SQL_CHECK);
+        SQLlStrAppendAndSPACE(([NSString stringWithFormat:@"(%@)",condition]));
+        return self;
+    };
+}
+
 #pragma mark ============ 删除表 ============
 -(SQLiteLanguage *)DROP{
     SQLlStrAppendAndSPACE(SQL_DROP);
@@ -348,13 +375,7 @@ static NSString *const SQL_VACUUM=@"VACUUM";
         return self;
     };
 }
-- (SQLiteLanguage * (^)(NSString *value))UNIQUE{
-    return ^SQLiteLanguage *(NSString *value){
-        SQLlStrAppendAndSPACE(SQL_UNIQUE);
-        SQLlStrAppendAndSPACE(value);
-        return self;
-    };
-}
+
 - (SQLiteLanguage * (^)(NSString *value))GLOB{
     return ^SQLiteLanguage *(NSString *value){
         SQLlStrAppendAndSPACE(SQL_GLOB);
@@ -490,7 +511,6 @@ static NSString *const SQL_VACUUM=@"VACUUM";
 }
 
 #pragma mark ============ VACUUM ============
-/**VACUUM 命令通过复制主数据库中的内容到一个临时数据库文件，然后清空主数据库，并从副本中重新载入原始的数据库文件。这消除了空闲页，把表中的数据排列为连续的，另外会清理数据库文件结构。**/
 - (SQLiteLanguage * (^)(NSString *name))VACUUM{
     return ^SQLiteLanguage *(NSString *name){
         SQLlStrAppendAndSPACE(SQL_VACUUM);
