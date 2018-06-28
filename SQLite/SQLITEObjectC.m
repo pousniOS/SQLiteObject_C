@@ -21,6 +21,7 @@ int callback(void *para,int ncolumn,char ** columnvalue,char *columnname[]);
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sQLITEObjectC=[[SQLITEObjectC alloc] init];
+        sQLITEObjectC.SQLL=[[SQLiteLanguage alloc] init];
     });
     return sQLITEObjectC;
 }
@@ -42,10 +43,10 @@ int callback(void *para,int ncolumn,char ** columnvalue,char *columnname[]);
 -(void)clear{
     ExecSQLResultArray=nil;
 }
--(BOOL)execSQL:(SQLiteLanguage *)sqll{
+-(BOOL)execSQLL{
     char *errmsg=NULL;
     ExecSQLResultArray=[[NSMutableArray alloc] init];
-    if (sqlite3_exec(_db, [sqll.sql UTF8String], &callback, NULL, &errmsg)==SQLITE_OK) {
+    if (sqlite3_exec(_db, [_SQLL.sql UTF8String], &callback, NULL, &errmsg)==SQLITE_OK) {
         return YES;
     }else{
         NSLog(@"SQLITEObjectC_Error:[-(BOOL)execSQL:(NSString *)sql]%@",[NSString stringWithUTF8String:errmsg]);

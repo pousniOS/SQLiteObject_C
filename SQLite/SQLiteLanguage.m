@@ -68,6 +68,19 @@ static NSString *const SQL_ALTER=@"ALTER";
 static NSString *const SQL_ADD=@"ADD";
 static NSString *const SQL_COLUMN=@"COLUMN";
 
+
+static NSString *const SQL_BEGIN=@"BEGIN";
+static NSString *const SQL_TRANSACTION=@"TRANSACTION";
+static NSString *const SQL_COMMIT=@"COMMIT";
+static NSString *const SQL_ROLLBACK=@"ROLLBACK";
+
+static NSString *const SQL_SEMICOLON=@";";//分号;
+static NSString *const SQL_VACUUM=@"VACUUM";
+
+
+
+
+
 #pragma make - ============ 宏定义 ============
 #define SQLlStrAppendString(lang) if(lang){[self.sqllStr appendString:lang];}
 #define SQLlStrAppendSPACE SQLlStrAppendString(SQL_SPACE)
@@ -140,10 +153,6 @@ static NSString *const SQL_COLUMN=@"COLUMN";
         return self;
     };
 }
-
-
-
-
 - (SQLiteLanguage * (^)(NSString *name))TABEL{
     return ^SQLiteLanguage *(NSString *name){
         SQLlStrAppendAndSPACE(SQL_TABLE);
@@ -461,9 +470,42 @@ static NSString *const SQL_COLUMN=@"COLUMN";
     };
     
 }
+
+#pragma mark ============ 事务 ============
+-(SQLiteLanguage *)BEGIN{
+    SQLlStrAppendAndSPACE(SQL_BEGIN);
+    return self;
+}
+-(SQLiteLanguage *)TRANSACTION{
+    SQLlStrAppendAndSPACE(SQL_TRANSACTION);
+    return self;
+}
+-(SQLiteLanguage *)COMMIT{
+    SQLlStrAppendAndSPACE(SQL_COMMIT);
+    return self;
+}
+-(SQLiteLanguage *)ROLLBACK{
+    SQLlStrAppendAndSPACE(SQL_ROLLBACK);
+    return self;
+}
+
+#pragma mark ============ VACUUM ============
+/**VACUUM 命令通过复制主数据库中的内容到一个临时数据库文件，然后清空主数据库，并从副本中重新载入原始的数据库文件。这消除了空闲页，把表中的数据排列为连续的，另外会清理数据库文件结构。**/
+- (SQLiteLanguage * (^)(NSString *name))VACUUM{
+    return ^SQLiteLanguage *(NSString *name){
+        SQLlStrAppendAndSPACE(SQL_VACUUM);
+        SQLlStrAppendAndSPACE(name);
+        return self;
+    };
+}
 #pragma mark ============ 其他 ============
--(void)clear{
+-(SQLiteLanguage *)SEMICOLON{
+    SQLlStrAppendAndSPACE(SQL_SEMICOLON);
+    return self;
+}
+-(SQLiteLanguage*)RESET{
     _sqllStr=[[NSMutableString alloc] init];
+    return self;
 }
 #pragma mark ============ GET方法 ============
 -(NSString *)sql{
