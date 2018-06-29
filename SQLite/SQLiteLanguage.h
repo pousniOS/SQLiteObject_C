@@ -41,6 +41,7 @@ static NSString *const SQL_DISTINCT=@"DISTINCT";
 - (SQLiteLanguage * )UNIQUE;
 - (SQLiteLanguage * (^)(NSString *condition))CHECK;
 - (SQLiteLanguage * (^)(NSString *value))DEFAULT;
+- (SQLiteLanguage *)AUTOINCREMENT;
 #pragma mark - ============ 表字段数据类型 ============
 /**整型**/
 -(SQLiteLanguage *)INTEGER;//值是一个带符号的整数，根据值的大小存储在 1、2、3、4、6 或 8 字节中。

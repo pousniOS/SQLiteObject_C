@@ -14,29 +14,22 @@ static NSString *const SQL_CREATE=@"CREATE";
 static NSString *const SQL_PRIMARY=@"PRIMARY";
 static NSString *const SQL_TABLE=@"TABLE";
 static NSString *const SQL_KEY=@"KEY";
-
 static NSString *const SQL_NOT=@"NOT";
-
 static NSString *const SQL_SPACE=@" ";
-
 static NSString *const SQL_INTEGER=@"INTEGER";
 static NSString *const SQL_REAL=@"REAL";
 static NSString *const SQL_TEXT=@"TEXT";
 static NSString *const SQL_BLOB=@"BLOB";
 static NSString *const SQL_CONSTRAINT=@"CONSTRAINT";
-
 static NSString *const SQL_FOREIGN=@"FOREIGN";
 static NSString *const SQL_REFERENCES=@"REFERENCES";
 static NSString *const SQL_DROP=@"DROP";
-
 static NSString *const SQL_INSERT=@"INSERT";
 static NSString *const SQL_INTO=@"INTO";
 static NSString *const SQL_VALUES=@"VALUES";
-
 static NSString *const SQL_SELECT=@"SELECT";
 static NSString *const SQL_FROM=@"FROM";
 static NSString *const SQL_WHERE=@"WHERE";
-
 static NSString *const SQL_ORDER=@"ORDER";
 static NSString *const SQL_BY=@"BY";
 /**运算符**/
@@ -49,42 +42,27 @@ static NSString *const SQL_GLOB=@"GLOB";// GLOB 运算符用于把某个值与�
 static NSString *const SQL_OR=@"OR";//OR 运算符用于结合一个 SQL 语句的 WHERE 子句中的多个条件。
 static NSString *const SQL_IS=@"IS";//IS 运算符与 = 相似。
 static NSString *const SQL_UNIQUE=@"UNIQUE";//UNIQUE 运算符搜索指定表中的每一行，确保唯一性（无重复）。
-
 static NSString *const SQL_UPDATE=@"UPDATE";
 static NSString *const SQL_SET=@"SET";
 static NSString *const SQL_DELETE=@"DELETE";
-
 static NSString *const SQL_OFFSET=@"OFFSET";
 static NSString *const SQL_LIMIT=@"LIMIT";
-
 static NSString *const SQL_DESC=@"DESC";
 static NSString *const SQL_ASC=@"ASC";
-
 static NSString *const SQL_GROUP=@"GROUP";
-
 static NSString *const SQL_HAVING=@"HAVING";
-
 static NSString *const SQL_ALTER=@"ALTER";
 static NSString *const SQL_ADD=@"ADD";
 static NSString *const SQL_COLUMN=@"COLUMN";
-
-
 static NSString *const SQL_BEGIN=@"BEGIN";
 static NSString *const SQL_TRANSACTION=@"TRANSACTION";
 static NSString *const SQL_COMMIT=@"COMMIT";
 static NSString *const SQL_ROLLBACK=@"ROLLBACK";
-
 static NSString *const SQL_SEMICOLON=@";";//分号;
 static NSString *const SQL_VACUUM=@"VACUUM";
-
-
 static NSString *const SQL_DEFAULT=@"DEFAULT";
 static NSString *const SQL_CHECK=@"CHECK";
-
-
-
-#pragma mark - ============ 约束 ============
-
+static NSString *const SQL_AUTOINCREMENT=@"AUTOINCREMENT";
 
 #pragma make - ============ 宏定义 ============
 #define SQLlStrAppendString(lang) if(lang){[self.sqllStr appendString:lang];}
@@ -109,7 +87,6 @@ static NSString *const SQL_CHECK=@"CHECK";
     }
     return self;
 }
-
 #pragma mark - ============ 数据类型 ============
 -(SQLiteLanguage *)INTEGER{
     SQLlStrAppendAndSPACE(SQL_INTEGER);
@@ -225,8 +202,6 @@ static NSString *const SQL_CHECK=@"CHECK";
         return self;
     };
 }
-
-
 #pragma mark - ============ 约束 ============
 - (SQLiteLanguage *)UNIQUE{
     SQLlStrAppendAndSPACE(SQL_UNIQUE);
@@ -246,7 +221,10 @@ static NSString *const SQL_CHECK=@"CHECK";
         return self;
     };
 }
-
+- (SQLiteLanguage *)AUTOINCREMENT{
+    SQLlStrAppendAndSPACE(SQL_AUTOINCREMENT);
+    return self;
+}
 #pragma mark ============ 删除表 ============
 -(SQLiteLanguage *)DROP{
     SQLlStrAppendAndSPACE(SQL_DROP);
@@ -491,7 +469,6 @@ static NSString *const SQL_CHECK=@"CHECK";
     };
     
 }
-
 #pragma mark ============ 事务 ============
 -(SQLiteLanguage *)BEGIN{
     SQLlStrAppendAndSPACE(SQL_BEGIN);
@@ -509,7 +486,6 @@ static NSString *const SQL_CHECK=@"CHECK";
     SQLlStrAppendAndSPACE(SQL_ROLLBACK);
     return self;
 }
-
 #pragma mark ============ VACUUM ============
 - (SQLiteLanguage * (^)(NSString *name))VACUUM{
     return ^SQLiteLanguage *(NSString *name){
