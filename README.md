@@ -14,7 +14,7 @@ QL字符串倒地错哪了,费时又费脑，然后我就在思考我可不可�
 >**使用实例： 测试函数**
 
 >>1.打开数据库，通过SQLITEObjectC类的单例来创建数据库连接：
-
+```
 void openDB(){
 NSString *pathStr =[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingString:@"/School.db"];
 if (![[SQLITEObjectC share] openWithFilePath:pathStr]) {
