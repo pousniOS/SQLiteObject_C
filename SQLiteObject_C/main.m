@@ -5,7 +5,6 @@
 //  Created by POSUN-MAC on 2018/6/25.
 //  Copyright © 2018年 POSUN-MAC. All rights reserved.
 //
-
 #import <Foundation/Foundation.h>
 #import "SQLITEObjectC.h"
 #pragma mark - ====== 测试函数 ======
@@ -147,9 +146,6 @@ int main(int argc, const char * argv[]) {
 //        NSDate *endDate=[NSDate date];
 //        NSInteger end=endDate.timeIntervalSince1970;;
 //        NSLog(@"用时:%ld",end-start);
-        
-
-        
         closeDB();
     }
     return 0;

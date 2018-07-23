@@ -5,9 +5,6 @@
 //  Created by POSUN-MAC on 2018/6/23.
 //  Copyright © 2018年 POSUN-MAC. All rights reserved.
 //
-
-
-
 #import "SQLiteLanguage.h"
 #pragma make - ============ SQL关键字 ============
 static NSString *const SQL_CREATE=@"CREATE";
