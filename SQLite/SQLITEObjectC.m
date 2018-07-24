@@ -27,6 +27,8 @@ int callback(void *para,int ncolumn,char ** columnvalue,char *columnname[]);
 }
 -(BOOL)openWithFilePath:(NSString *)filePath{
     if (sqlite3_open([filePath UTF8String], &_db)==SQLITE_OK) {
+        _isOpen=YES;
+        _dbPath=filePath;
         return YES;
     }else{
         [self close];

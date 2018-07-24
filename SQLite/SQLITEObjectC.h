@@ -14,8 +14,16 @@
 
 @interface SQLITEObjectC : NSObject
 @property(nonatomic,retain)SQLiteLanguage *SQLL;
+@property(nonatomic,copy,readonly)NSString *dbPath;
+
+@property(nonatomic,assign,readonly)BOOL isOpen;
+
 /**执行SQL后返回的结果**/
 @property(nonatomic,retain,readonly)NSMutableArray<NSDictionary*> *execSQLResultArray;
+
+
+
+
 /**关闭数据库,数据库使用完记得调用该方法断开数据库连接**/
 -(BOOL)close;
 /**清除缓存数据**/
