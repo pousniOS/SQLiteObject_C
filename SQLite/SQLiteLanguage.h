@@ -141,4 +141,6 @@ static NSString *const SQL_DISTINCT=@"DISTINCT";
  分号结束符,有时一条SQL结束需要加分号表示结尾因此你需要调用SEMICOLON。
  **/
 -(SQLiteLanguage *)SEMICOLON;
+-(SQLiteLanguage *)COMMA;
+
 @end

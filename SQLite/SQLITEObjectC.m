@@ -48,12 +48,14 @@ int callback(void *para,int ncolumn,char ** columnvalue,char *columnname[]);
 -(BOOL)execSQLL{
     char *errmsg=NULL;
     ExecSQLResultArray=[[NSMutableArray alloc] init];
+    BOOL result=NO;
     if (sqlite3_exec(_db, [_SQLL.sql UTF8String], &callback, NULL, &errmsg)==SQLITE_OK) {
-        return YES;
+        result=YES;
     }else{
         NSLog(@"SQLITEObjectC_Error:[-(BOOL)execSQL:(NSString *)sql]%@",[NSString stringWithUTF8String:errmsg]);
-        return NO;
     }
+    [_SQLL RESET];
+    return result;
 }
 -(NSMutableArray<NSDictionary *> *)execSQLResultArray{
     return ExecSQLResultArray;

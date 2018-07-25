@@ -17,56 +17,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     openDB();
+    createTable();
     
-    //        SHARESQLITEObjectC.SQLL.CREATE.TABEL(@"Goods").COLUMNS(SQLlang.columnName(@"ID").TEXT.NOT(@"NULL"),
-    //                                                               SQLlang.columnName(@"name").TEXT.NOT(@"NULL"),
-    //                                                               SQLlang.columnName(@"price").REAL,
-    //                                                               SQLlang.columnName(@"imageUrl").TEXT,
-    //                                                               nil);
-    
-    //        createTable();//创建表
-    //        dropTable();//删除表
-    //        insert();//插入数据
-    //        SELECT();//数据查询
-    //        ORDERBY();
-    //        Transaction();
-    
-    
-    
-    NSDate *stareDate=[NSDate date];
-    NSInteger start=stareDate.timeIntervalSince1970;;
-    SHARESQLITEObjectC.SQLL.BEGIN.TRANSACTION.SEMICOLON;
     SHARESQLITEObjectC.execSQLL;
-    SHARESQLITEObjectC.SQLL.RESET.INSERT.INTO(@"Goods").COLUMNS(@"ID",@"name",@"price",@"imageUrl",nil).VALUES(@"'120702010011'",@"'这是啥东西'",@"9999999999999",@"'https://120702010011/yangyue.com'",nil).SEMICOLON;
-    for (NSInteger i=0; i<1000000; i++) {
-        SHARESQLITEObjectC.execSQLL;
-    }
-    SHARESQLITEObjectC.SQLL.RESET.COMMIT.SEMICOLON;
-    SHARESQLITEObjectC.execSQLL;
-    NSDate *endDate=[NSDate date];
-    NSInteger end=endDate.timeIntervalSince1970;;
-    NSLog(@"用时:%ld",end-start);
-    
-    
-    
-    //        NSDate *stareDate=[NSDate date];
-    //        NSInteger start=stareDate.timeIntervalSince1970;;
-    //        SHARESQLITEObjectC.SQLL.BEGIN.TRANSACTION.SEMICOLON;
-    //        for (NSInteger i=0; i<1000000; i++) {
-    //            SHARESQLITEObjectC.SQLL.INSERT.INTO(@"Goods").COLUMNS(@"ID",@"name",@"price",@"imageUrl",nil).VALUES(@"'120702010011'",@"'这是啥东西'",@"9999999999999",@"'https://120702010011/yangyue.com'",nil).SEMICOLON;
-    //
-    //        }
-    //        SHARESQLITEObjectC.SQLL.COMMIT.SEMICOLON;
-    //        SHARESQLITEObjectC.execSQLL;
-    //        NSDate *endDate=[NSDate date];
-    //        NSInteger end=endDate.timeIntervalSince1970;;
-    //        NSLog(@"用时:%ld",end-start);
+    NSLog(@"%@",SHARESQLITEObjectC.execSQLResultArray);
+
     closeDB();
-    
-    
-    // Do any additional setup after loading the view, typically from a nib.
+
 }
 
 
@@ -81,7 +39,7 @@
 #pragma mark - ====== 测试函数 ======
 #pragma mark - 1.打开数据库，通过SQLITEObjectC类的单例来创建数据库连接：
 void openDB(){
-    NSString *pathStr =[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingString:@"/School.db"];
+    NSString *pathStr =[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingString:@"/TEST.db"];
     if (![[SQLITEObjectC share] openWithFilePath:pathStr]) {
         NSLog(@"数据库打开失败");
     }
