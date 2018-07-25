@@ -1,4 +1,4 @@
 platform:ios,'9.0'
 target 'SQLiteObject_C' do
-pod 'ModelToDictionary', '~> 0.0.6'
+pod 'ModelToDictionary', '~> 0.0.8'
 end

@@ -48,19 +48,19 @@
         NSString *propertyType=obj[PropertyType];
         NSString *propertyName=obj[PropertyName];
         
-        if ([self isStringType:propertyType]) {
+        if ([NSObject isStringType:propertyType]) {
             sql.columnName(propertyName);
             [sql TEXT];
         }else if ([self isCNumberType:propertyType]){
             sql.columnName(propertyName);
             [sql INTEGER];
-        }else if ([self isCFNumberType:propertyType]){
+        }else if ([NSObject isCFNumberType:propertyType]){
             sql.columnName(propertyName);
             [sql REAL];
-        }else if ([self isValueType:propertyType]){
+        }else if ([NSObject isValueType:propertyType]){
             sql.columnName(propertyName);
             [sql REAL];
-        }else if ([self isArrayType:propertyType]){
+        }else if ([NSObject isArrayType:propertyType]){
             NSDictionary *dic=[self table_ArrayPropertyNameAndElementTypeDictionary];
             NSString *type =dic[propertyName];
             if (type) {
@@ -75,7 +75,7 @@
                 sql.columnName(propertyName);
                 [sql TEXT];
             }
-        }else if ([self isDictionaryType:propertyType]){
+        }else if ([NSObject isDictionaryType:propertyType]){
             sql.columnName(propertyName);
             [sql TEXT];
         }else{

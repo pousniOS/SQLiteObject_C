@@ -8,6 +8,9 @@
 
 #import "ViewController.h"
 #import "SQLITEObjectC.h"
+#import "TEST.h"
+#import "NSObject+SQLITE.h"
+#import "NSObject+Dictionary.h"
 
 @interface ViewController ()
 
@@ -17,13 +20,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    openDB();
-    createTable();
+    [TEST tableCreate];
     
-    SHARESQLITEObjectC.execSQLL;
-    NSLog(@"%@",SHARESQLITEObjectC.execSQLResultArray);
-
-    closeDB();
+//    openDB();
+//    createTable();
+//
+//    SHARESQLITEObjectC.execSQLL;
+//    NSLog(@"%@",SHARESQLITEObjectC.execSQLResultArray);
+//
+//    closeDB();
 
 }
 

@@ -69,9 +69,9 @@ static NSDictionary *typeDic=nil;
     if ([NSStringFromClass(self.class) isEqualToString:type_NSObject]) {
         return nil;
     }
-    else if([self isDictionaryType:NSStringFromClass(self.class)]){
+    else if([NSObject isDictionaryType:NSStringFromClass(self.class)]){
         return (NSDictionary*)self;
-    }else if ([self isArrayType:NSStringFromClass(self.class)]){
+    }else if ([NSObject isArrayType:NSStringFromClass(self.class)]){
         __block NSMutableArray *mutableArray=[[NSMutableArray alloc] init];
         [(NSArray *)self enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             id object=[obj toDictionary];
@@ -89,17 +89,17 @@ static NSDictionary *typeDic=nil;
             NSString *propertyName=obj[PropertyName];
             NSString *propertyType=obj[PropertyType];
             id value=[self valueForKey:propertyName];
-            if ([self  isCNumberType:propertyType]||
-                [self  isCFNumberType:propertyType]||
-                [self isStringType:propertyType]||
-                [self isValueType:propertyType]) {
+            if ([NSObject  isCNumberType:propertyType]||
+                [NSObject  isCFNumberType:propertyType]||
+                [NSObject isStringType:propertyType]||
+                [NSObject isValueType:propertyType]) {
                 [self setDic:mutableDictionary andValue:value andKey:propertyName];
             }
-            else if ([self isArrayType:propertyType]){
+            else if ([NSObject isArrayType:propertyType]){
                 [value enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                     [self setDic:mutableDictionary andValue:[obj toDictionary] andKey:propertyName];
                 }];
-            }else if ([self isDictionaryType:propertyType]){
+            }else if ([NSObject isDictionaryType:propertyType]){
                 [self setDic:mutableDictionary andValue:[value toDictionary] andKey:propertyName];
             }
             else{
@@ -133,7 +133,6 @@ static NSDictionary *typeDic=nil;
     }];
     return array;
 }
-
 #pragma mark - 获取成员变量名及类型
 -(NSArray *)propertyInforArray{
     NSMutableArray *propertyArray=[[NSMutableArray alloc] init];
@@ -178,7 +177,7 @@ static NSDictionary *typeDic=nil;
     }
     return property_data_type;
 }
--(BOOL)isCNumberType:(NSString *)type{
++(BOOL)isCNumberType:(NSString *)type{
     if ([type isEqualToString:type_int]||
         [type isEqualToString:type_short]||
         [type isEqualToString:type_long]||
@@ -194,7 +193,7 @@ static NSDictionary *typeDic=nil;
         return NO;
     }
 }
--(BOOL)isCFNumberType:(NSString *)type{
++(BOOL)isCFNumberType:(NSString *)type{
     if ([type isEqualToString:type_float]||
         [type isEqualToString:type_double]) {
         return YES;
@@ -203,7 +202,8 @@ static NSDictionary *typeDic=nil;
     }
 }
 
--(BOOL)isArrayType:(NSString *)type{
+
++(BOOL)isArrayType:(NSString *)type{
     if ([type isEqualToString:type_NSArray]||
         [type isEqualToString:type_NSMutableArray]){
         return YES;
@@ -212,7 +212,7 @@ static NSDictionary *typeDic=nil;
     }
 }
 
--(BOOL)isDictionaryType:(NSString *)type{
++(BOOL)isDictionaryType:(NSString *)type{
     if ([type isEqualToString:type_NSDictionary]||
         [type isEqualToString:type_NSMutalbleDictionary]){
         return YES;
@@ -221,7 +221,7 @@ static NSDictionary *typeDic=nil;
     }
 }
 
--(BOOL)isStringType:(NSString *)type{
++(BOOL)isStringType:(NSString *)type{
     if ([type isEqualToString:type_NSString]||
         [type isEqualToString:type_NSMutalbleString]){
         return YES;
@@ -229,7 +229,7 @@ static NSDictionary *typeDic=nil;
         return NO;
     }
 }
--(BOOL)isValueType:(NSString *)type{
++(BOOL)isValueType:(NSString *)type{
     if ([type isEqualToString:type_NSValue]||
         [type isEqualToString:type_NSNumber]){
         return YES;
