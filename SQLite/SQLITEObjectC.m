@@ -72,3 +72,4 @@ int callback(void *para,int ncolumn,char ** columnvalue,char *columnname[]){
     [ExecSQLResultArray addObject:dic];
     return 0;
 }
+

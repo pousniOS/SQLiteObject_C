@@ -32,7 +32,6 @@
 //    [SalesRefund tableDrop];
 //    [SalesOrderParts tableDrop];
 //    [Goods tableDrop];
-
     
     [SHARESQLITEObjectC close];
     
