@@ -1,0 +1,6 @@
+framework module Pods_SQLiteObject_C {
+  umbrella header "Pods-SQLiteObject_C-umbrella.h"
+
+  export *
+  module * { export * }
+}

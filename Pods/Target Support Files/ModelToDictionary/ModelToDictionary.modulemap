@@ -1,0 +1,6 @@
+framework module ModelToDictionary {
+  umbrella header "ModelToDictionary-umbrella.h"
+
+  export *
+  module * { export * }
+}

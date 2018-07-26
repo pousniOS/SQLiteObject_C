@@ -170,12 +170,4 @@
 +(NSString*)table_ForeignKeyFromTable{
     return nil;
 }
-+(BOOL)isCFNumberType:(NSString *)type{
-    if ([type isEqualToString:@"float"]||
-        [type isEqualToString:@"double"]) {
-        return YES;
-    }else{
-        return NO;
-    }
-}
 @end

@@ -1,5 +1,4 @@
 #import "TEST.h"
-#import "NSObject+SQLITE.h"
 @implementation TEST
 -(void)setValue:(id)value forUndefinedKey:(NSString *)key{
     NSLog(@"UndefinedKey:%@",key);
@@ -16,5 +15,3 @@
     }
 }
 @end
-
-
