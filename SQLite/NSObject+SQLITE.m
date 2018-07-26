@@ -19,8 +19,7 @@
 }
 +(BOOL)tableIsExist{
     [self dbOpen];
-    SHARESQLITEObjectC.SQLL.RESET.SELECT(@"count(*)",nil).FROM(@"sqlite_master").WHERE(@"type='table'").AND([NSString stringWithFormat:@"tbl_name='%@'",[self tableName]]);
-    if (SHARESQLITEObjectC.execSQLL) {
+    if ([SHARESQLITEObjectC execSQLL:SQLlang.SELECT(@"count(*)",nil).FROM(@"sqlite_master").WHERE(@"type='table'").AND([NSString stringWithFormat:@"tbl_name='%@'",[self tableName]])]){
         NSDictionary *countDic = [SHARESQLITEObjectC.execSQLResultArray firstObject];
         NSString *countStr=[countDic objectForKey:@"count(*)"];
         return [countStr integerValue];
@@ -35,19 +34,18 @@
     fieldArray=[self checkSetKEY:fieldArray andKey:[self table_ForeignKey]];
     return fieldArray;
 }
-+(BOOL)tableCreate{
-    return [self tableCreateWithFOREIGNKEYTable:nil];
++(void)tableCreate{
+    [self dbOpen];
+    [self tableCreateWithFOREIGNKEYTable:nil];
+    [self dbClose];
 }
-+(BOOL)tableCreateWithFOREIGNKEYTable:(NSString *)tableName{
-    if ([self tableIsExist]) {
-        return YES;
-    }
++(void)tableCreateWithFOREIGNKEYTable:(NSString *)tableName{
     NSArray *fieldArray =[self analyticalBuildTableField];
     SQLiteLanguage *sql =SQLlang;
-    [fieldArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        NSString *propertyType=obj[PropertyType];
-        NSString *propertyName=obj[PropertyName];
-        
+    NSMutableSet *mutableSet=[[NSMutableSet alloc] init];
+    for (NSInteger i=0; i<fieldArray.count; i++) {
+        NSString *propertyType=fieldArray[i][PropertyType];
+        NSString *propertyName=fieldArray[i][PropertyName];
         if ([NSObject isStringType:propertyType]) {
             sql.columnName(propertyName);
             [sql TEXT];
@@ -63,48 +61,47 @@
         }else if ([NSObject isArrayType:propertyType]){
             NSDictionary *dic=[self table_ArrayPropertyNameAndElementTypeDictionary];
             NSString *type =dic[propertyName];
-            if (type) {
-                Class class=NSClassFromString(type);
-                NSString *FOREIGNKEY_FROMTABLE=[class table_ForeignKeyFromTable];
-                if (!FOREIGNKEY_FROMTABLE) {
-                    FOREIGNKEY_FROMTABLE=[self tableName];
-                }
-                [class tableCreateWithFOREIGNKEYTable:FOREIGNKEY_FROMTABLE];
-                
-            }else{
-                sql.columnName(propertyName);
-                [sql TEXT];
-            }
+            [mutableSet addObject:type];
+            continue;
         }else if ([NSObject isDictionaryType:propertyType]){
-            sql.columnName(propertyName);
-            [sql TEXT];
+            continue;
         }else{
-            Class class=NSClassFromString(propertyType);
-            NSString *FOREIGNKEY_FROMTABLE=[class table_ForeignKeyFromTable];
-            if (!FOREIGNKEY_FROMTABLE) {
-                FOREIGNKEY_FROMTABLE=[self tableName];
-            }
-            [class tableCreateWithFOREIGNKEYTable:FOREIGNKEY_FROMTABLE];
+            [mutableSet addObject:propertyType];
+            continue;
         }
+        /**设置主键**/
         if ([propertyName isEqualToString:[self table_PrimaryKey]]) {
             sql.PRIMARY.KEY(nil);
             if ([propertyName isEqualToString:SQLITE_TABLE_PRIMARYKEY_ID]) {
                 [sql AUTOINCREMENT];
             }
         }
-        if ([propertyName isEqualToString:[self table_ForeignKey]]) {
-            sql.FOREIGN.KEY(propertyName,nil).REFERENCES([NSString stringWithFormat:@"%@(%@)",tableName,[self table_ForeignKeyFromTable]]);
+        /**设置设置外键**/
+        if ([propertyName isEqualToString:[self table_ForeignKey]]&&tableName) {
+            sql.COMMA.FOREIGN.KEY(propertyName,nil).REFERENCES([NSString stringWithFormat:@"%@(%@)",tableName,[self table_ForeignKeyFromKey]]);
         }
-        [sql COMMA];
+        if (fieldArray.count!=i+1) {
+            [sql COMMA];
+        }
+    }
+    if (![self tableIsExist]) {
+        [SHARESQLITEObjectC execSQLL:SQLlang.CREATE.TABEL(NSStringFromClass(self)).COLUMNS(sql,nil)];
+    }
+    [mutableSet enumerateObjectsUsingBlock:^(id  _Nonnull obj, BOOL * _Nonnull stop) {
+        Class class=NSClassFromString(obj);
+        NSString *FOREIGNKEY_FROMTABLE=[class table_ForeignKeyFromTable];
+        if (!FOREIGNKEY_FROMTABLE) {
+            FOREIGNKEY_FROMTABLE=[self tableName];
+        }
+        [class tableCreateWithFOREIGNKEYTable:FOREIGNKEY_FROMTABLE];
     }];
-    SHARESQLITEObjectC.SQLL.RESET.CREATE.TABEL(NSStringFromClass(self)).COLUMNS(sql,nil);
-
-    NSLog(@"%@",SHARESQLITEObjectC.SQLL.sql);
-    return NO;//SHARESQLITEObjectC.execSQLL;
 }
-
 +(BOOL)tableDrop{
-    return YES;
+    if ([self tableIsExist]) {
+        return [SHARESQLITEObjectC execSQLL:SQLlang.DROP.TABEL([self tableName])];
+    }else{
+        return YES;
+    }
 }
 +(BOOL)dbOpen{
     if (SHARESQLITEObjectC.isOpen) {
@@ -121,6 +118,19 @@
         return [SHARESQLITEObjectC openWithFilePath:self.dbPath];
     }
 }
+
++(BOOL)dbClose{
+    if ([SHARESQLITEObjectC.dbPath isEqualToString:self.dbPath]) {
+        if (SHARESQLITEObjectC.isOpen) {
+            return [SHARESQLITEObjectC close];
+        }else{
+            return YES;
+        }
+    }else{
+        return YES;
+    }
+}
+
 +(NSArray *)checkSetKEY:(NSArray *)propertys andKey:(NSString *)key{
     __block BOOL flag=NO;
     [propertys enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -159,5 +169,13 @@
 }
 +(NSString*)table_ForeignKeyFromTable{
     return nil;
+}
++(BOOL)isCFNumberType:(NSString *)type{
+    if ([type isEqualToString:@"float"]||
+        [type isEqualToString:@"double"]) {
+        return YES;
+    }else{
+        return NO;
+    }
 }
 @end

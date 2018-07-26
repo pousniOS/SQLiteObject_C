@@ -1,12 +1,12 @@
 PODS:
-  - ModelToDictionary (0.0.8)
+  - ModelToDictionary (0.1.2)
 
 DEPENDENCIES:
-  - ModelToDictionary (~> 0.0.8)
+  - ModelToDictionary (~> 0.1.2)
 
 SPEC CHECKSUMS:
-  ModelToDictionary: fc1ac315b43c9bbd2fb51800f8faa331ea67042e
+  ModelToDictionary: 89104e36bd6659129c2b4eaaf7491fd6a1cbb142
 
-PODFILE CHECKSUM: 8b4c4a3ac72ea42bc8104d9da257e77a36ee6610
+PODFILE CHECKSUM: 301ec1968dbcf18f3c04eb1df6b9b510344201a3
 
 COCOAPODS: 1.4.0

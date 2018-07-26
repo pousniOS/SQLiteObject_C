@@ -177,6 +177,15 @@ static NSDictionary *typeDic=nil;
     }
     return property_data_type;
 }
+
++(BOOL)isCFNumberType:(NSString *)type{
+    if ([type isEqualToString:type_float]||
+        [type isEqualToString:type_double]) {
+        return YES;
+    }else{
+        return NO;
+    }
+}
 +(BOOL)isCNumberType:(NSString *)type{
     if ([type isEqualToString:type_int]||
         [type isEqualToString:type_short]||
@@ -185,17 +194,7 @@ static NSDictionary *typeDic=nil;
         [type isEqualToString:type_unsigned_short]||
         [type isEqualToString:type_unsigned_long]||
         [type isEqualToString:type_unsigned_long_long]||
-        [type isEqualToString:type_float]||
-        [type isEqualToString:type_double]||
         [type isEqualToString:type_BOOL]) {
-        return YES;
-    }else{
-        return NO;
-    }
-}
-+(BOOL)isCFNumberType:(NSString *)type{
-    if ([type isEqualToString:type_float]||
-        [type isEqualToString:type_double]) {
         return YES;
     }else{
         return NO;

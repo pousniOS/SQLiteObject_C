@@ -16,9 +16,11 @@
         
     }
 }
-+(NSDictionary *)SQLITE_ArrayTypeAndElementTypeDictionary{
+
++(NSDictionary *)table_ArrayPropertyNameAndElementTypeDictionary{
     return @{
              @"salesOrderParts":@"SalesOrderParts",
              };
 }
+
 @end

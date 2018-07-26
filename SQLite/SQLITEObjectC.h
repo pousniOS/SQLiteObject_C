@@ -14,7 +14,6 @@
 #define SHARESQLITEObjectC [SQLITEObjectC share]
 
 @interface SQLITEObjectC : NSObject
-@property(nonatomic,retain)SQLiteLanguage *SQLL;
 @property(nonatomic,copy,readonly)NSString *dbPath;
 
 @property(nonatomic,assign,readonly)BOOL isOpen;
@@ -29,7 +28,7 @@
 /**打开或创建数据库**/
 -(BOOL)openWithFilePath:(NSString *)filePath;
 /**执行SQL语句**/
--(BOOL)execSQLL;
+-(BOOL)execSQLL:(SQLiteLanguage *)SQLL;
 
 +(instancetype)share;
 @end

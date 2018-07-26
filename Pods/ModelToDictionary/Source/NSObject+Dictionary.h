@@ -24,9 +24,10 @@ static NSString  *const PropertyType=@"PropertyType";
  通过在调用toDictionary方法对象的类里重写该方法，返回一个包含属性名称和重置成的Key的键值对的NSDictionary象，来重置生成NSDictionary对象的Key。
  **/
 -(NSDictionary*)YYMTD_ResetKeyDictionary;
+
 -(NSArray *)filterProperty:(NSSet *)set;
-+(BOOL)isCNumberType:(NSString *)type;
 +(BOOL)isCFNumberType:(NSString *)type;
++(BOOL)isCNumberType:(NSString *)type;
 +(BOOL)isArrayType:(NSString *)type;
 +(BOOL)isDictionaryType:(NSString *)type;
 +(BOOL)isStringType:(NSString *)type;

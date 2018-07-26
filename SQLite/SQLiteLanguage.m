@@ -61,7 +61,6 @@ static NSString *const SQL_VACUUM=@"VACUUM";
 static NSString *const SQL_DEFAULT=@"DEFAULT";
 static NSString *const SQL_CHECK=@"CHECK";
 static NSString *const SQL_AUTOINCREMENT=@"AUTOINCREMENT";
-
 #pragma make - ============ 宏定义 ============
 #define SQLlStrAppendString(lang) if(lang){[self.sqllStr appendString:lang];}
 #define SQLlStrAppendSPACE SQLlStrAppendString(SQL_SPACE)

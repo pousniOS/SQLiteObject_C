@@ -15,4 +15,10 @@ SalesOrderParts *obj=[[SalesOrderParts alloc] init];
 [super setValue:value forKey:key];
 
 }
-}@end
+}
++(NSDictionary *)table_ArrayPropertyNameAndElementTypeDictionary{
+    return @{
+             @"salesOrderParts":@"SalesOrderParts",
+             };
+}
+@end
