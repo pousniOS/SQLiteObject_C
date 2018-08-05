@@ -94,7 +94,6 @@ static NSString *const SQL_DISTINCT=@"DISTINCT";
  设置
  **/
 -(SQLiteLanguage * (^)(NSString *keyAndValue,...))SET;//结束记得加nil。
-
 #pragma mark ============ DELETE删除表数据 ============
 /**
  删除

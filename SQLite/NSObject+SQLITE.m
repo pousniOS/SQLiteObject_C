@@ -19,13 +19,17 @@
 }
 +(BOOL)tableIsExist{
     [self dbOpen];
-    if ([SHARESQLITEObjectC execSQLL:SQLlang.SELECT(@"count(*)",nil).FROM(@"sqlite_master").WHERE(@"type='table'").AND([NSString stringWithFormat:@"tbl_name='%@'",[self tableName]])]){
-        NSDictionary *countDic = [SHARESQLITEObjectC.execSQLResultArray firstObject];
-        NSString *countStr=[countDic objectForKey:@"count(*)"];
-        return [countStr integerValue];
-    }else{
-        return NO;
-    }
+    SQLiteLanguage *sql=SQLlang.SELECT(@"count(*)",nil).FROM(@"sqlite_master").WHERE(@"type='table'").AND([NSString stringWithFormat:@"tbl_name='%@'",[self tableName]]);
+    __block BOOL result=NO;
+    [SHARESQLITEObjectC execSQLL:sql result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
+        if (errorInfor) {
+            result=NO;
+        }else{
+            NSDictionary *dic =[resultArray firstObject];
+            result=[dic[@"count(*)"] integerValue];
+        }
+    }];
+    return YES;
 }
 +(NSArray *)analyticalBuildTableField{
     NSArray *fieldArray =[self propertyInforArray];
@@ -85,7 +89,9 @@
         }
     }
     if (![self tableIsExist]) {
-        [SHARESQLITEObjectC execSQLL:SQLlang.CREATE.TABEL(NSStringFromClass(self)).COLUMNS(sql,nil)];
+        SQLiteLanguage *SQLL=SQLlang.CREATE.TABEL(NSStringFromClass(self)).COLUMNS(sql,nil);
+        [SHARESQLITEObjectC execSQLL:SQLL result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
+        }];
     }
     [mutableSet enumerateObjectsUsingBlock:^(id  _Nonnull obj, BOOL * _Nonnull stop) {
         Class class=NSClassFromString(obj);
@@ -98,7 +104,16 @@
 }
 +(BOOL)tableDrop{
     if ([self tableIsExist]) {
-        return [SHARESQLITEObjectC execSQLL:SQLlang.DROP.TABEL([self tableName])];
+        __block BOOL result=NO;
+        SQLiteLanguage *SQLL=SQLlang.DROP.TABEL([self tableName]);
+        [SHARESQLITEObjectC execSQLL:SQLL result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
+            if (errorInfor) {
+                result=NO;
+            }else{
+                result=YES;
+            }
+        }];
+        return result;
     }else{
         return YES;
     }

@@ -8,7 +8,6 @@
 
 #import "SQLITEObjectC.h"
 /**SQL执行结果回调**/
-static NSMutableArray *ExecSQLResultArray;
 int callback(void *para,int ncolumn,char ** columnvalue,char *columnname[]);
 @interface SQLITEObjectC()
 {
@@ -41,27 +40,22 @@ int callback(void *para,int ncolumn,char ** columnvalue,char *columnname[]);
         return NO;
     }
 }
--(void)clear{
-    ExecSQLResultArray=nil;
-}
--(BOOL)execSQLL:(SQLiteLanguage *)SQLL{
+
+-(void)execSQLL:(SQLiteLanguage *)SQLL result:(void(^)(NSString *errorInfor,NSArray<NSDictionary *> *resultArray))result{
     char *errmsg=NULL;
-    ExecSQLResultArray=[[NSMutableArray alloc] init];
-    BOOL result=NO;
-    if (sqlite3_exec(_db, [SQLL.sql UTF8String], &callback, NULL, &errmsg)==SQLITE_OK) {
-        result=YES;
+    NSArray *execSQLResultArray=[[NSMutableArray alloc] init];
+    if (sqlite3_exec(_db, [SQLL.sql UTF8String], &callback, (__bridge void *)execSQLResultArray, &errmsg)==SQLITE_OK) {
+        result(nil,execSQLResultArray);
+        
     }else{
-//        NSLog(@"SQLITEObjectC_Error:[-(BOOL)execSQL:(NSString *)sql]%@",[NSString stringWithUTF8String:errmsg]);
+        result([NSString stringWithUTF8String:errmsg],execSQLResultArray);
     }
-    return result;
-}
--(NSMutableArray<NSDictionary *> *)execSQLResultArray{
-    return ExecSQLResultArray;
 }
 @end
 /**SQL执行结果回调**/
 int callback(void *para,int ncolumn,char ** columnvalue,char *columnname[]){
     int i;
+    NSMutableArray *execSQLResultArray=(__bridge NSMutableArray *)para;
     NSMutableDictionary *dic=[[NSMutableDictionary alloc] init];
     for(i = 0;i < ncolumn; i++)
     {
@@ -69,7 +63,7 @@ int callback(void *para,int ncolumn,char ** columnvalue,char *columnname[]){
             [dic setObject:[NSString stringWithUTF8String:columnvalue[i]] forKey:[NSString stringWithUTF8String:columnname[i]]];
         }
     }
-    [ExecSQLResultArray addObject:dic];
+    [execSQLResultArray addObject:dic];
     return 0;
 }
 

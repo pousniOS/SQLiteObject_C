@@ -21,31 +21,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [TEST tableCreate];
-
-    
-    [SHARESQLITEObjectC openWithFilePath:[NSObject dbPath]];
-    [SHARESQLITEObjectC execSQLL:SQLlang.RESET.SELECT(@"*",nil).FROM(@"sqlite_master")];
-    NSLog(@"%@",SHARESQLITEObjectC.execSQLResultArray);
-//
-//    [TEST tableDrop];
-//    [SalesOrder tableDrop];
-//    [SalesRefund tableDrop];
-//    [SalesOrderParts tableDrop];
-//    [Goods tableDrop];
-    
-    [SHARESQLITEObjectC close];
     
 
     
 
-//    openDB();
+    openDB();
 //    createTable();
-//    SHARESQLITEObjectC.execSQLL;
-//    NSLog(@"%@",SHARESQLITEObjectC.execSQLResultArray);
-//
-//
-//
-//    closeDB();
+    Transaction();
+    closeDB();
 
 }
 
@@ -80,55 +63,51 @@ void createTable(){
                                              SQLlang.columnName(@"ID").TEXT.NOT(@"NULL").PRIMARY.KEY(nil),//列名叫ID,TEXT类型的数据同时设置为主键,不许为空
                                              nil
                                              );
-    if (![[SQLITEObjectC share] execSQLL:sql]) {
-        NSLog(@"创建表失败");
-    }
+    [SHARESQLITEObjectC execSQLL:sql result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
+        
+    }];
 }
 #pragma mark - 4.删除表：
 void dropTable(){
-    SQLlang.DROP.TABEL(@"Sutdent");
-    if (![[SQLITEObjectC share] execSQLL:SQLlang]) {
-        NSLog(@"删除表失败");
-    }
+    SQLiteLanguage *sql= SQLlang.DROP.TABEL(@"Sutdent");
+    [SHARESQLITEObjectC execSQLL:sql result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
+        
+    }];
 }
 #pragma mark - 5.向表插入数据：
 void insert(){
     SQLiteLanguage *sql =SQLlang.INSERT.INTO(@"Sutdent").COLUMNS(@"age",@"name",@"ID",nil).VALUES(@"24",@"'马悦'",@"120702010013",nil);
-    if (![[SQLITEObjectC share] execSQLL:sql]) {
-        NSLog(@"数据插入失败");
-    }
+    [SHARESQLITEObjectC execSQLL:sql result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
+        
+    }];
 }
 #pragma mark - 6.数据查询，查询到的结果通过SQLITEObjectC类的单例execSQLResultArray获取：
 void SELECT(){
     SQLiteLanguage *sql =SQLlang.SELECT(SQL_DISTINCT,@"*",nil).FROM(@"Sutdent").WHERE(@"name='马悦'");
-    if (![[SQLITEObjectC share] execSQLL:sql]) {
-        NSLog(@"数据查询失败");
-    }else{
-        NSLog(@"%@",[SQLITEObjectC share].execSQLResultArray);
-    }
+    [SHARESQLITEObjectC execSQLL:sql result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
+        
+    }];
 }
 #pragma mark - 7.修改表数据：
 void UPDATE(){
     SQLiteLanguage *sql =SQLlang.UPDATE(@"Sutdent").SET(@"name='小明'",@"age=90",nil).WHERE(@"ID='120702010019'");
-    if (![[SQLITEObjectC share] execSQLL:sql]) {
-        NSLog(@"数据更新失败");
-    }
+    [SHARESQLITEObjectC execSQLL:sql result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
+        
+    }];
 }
 #pragma mark - 8.删除表数据：
 void DELETE(){
     SQLiteLanguage *sql =SQLlang.DELETE.FROM(@"Sutdent").WHERE(@"ID='120702010019'");
-    if (![[SQLITEObjectC share] execSQLL:sql]) {
-        NSLog(@"数据删除失败");
-    }
+    [SHARESQLITEObjectC execSQLL:sql result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
+        
+    }];
 }
 #pragma mark - 9.排序：
 void ORDERBY(){
     SQLiteLanguage *sql =SQLlang.SELECT(SQL_DISTINCT,@"*",nil).FROM(@"Sutdent").ORDER.BY(@"ID").DESC;
-    if (![[SQLITEObjectC share] execSQLL:sql]) {
-        NSLog(@"排序失败");
-    }else{
-        NSLog(@"%@",[SQLITEObjectC share].execSQLResultArray);
-    }
+    [SHARESQLITEObjectC execSQLL:sql result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
+        
+    }];
 }
 
 #pragma mark - 10.事务：
@@ -137,14 +116,12 @@ void Transaction(){
     SQLiteLanguage *sql=SQLlang;
     [sql.BEGIN.TRANSACTION SEMICOLON];
     for (NSInteger i=0; i<100000; i++) {
-        [sql.INSERT.INTO(@"Goods").COLUMNS(@"ID",@"name",@"price",@"imageUrl",nil).VALUES(@"'120702010011'",@"'这是啥东西'",@"9999999999999",@"'https://120702010011/yangyue.com'",nil) SEMICOLON];
+        [sql.INSERT.INTO(@"Sutdent").COLUMNS(@"age",@"name",@"ID",nil).VALUES(@"24",@"'马悦'",@"120702010013",nil) SEMICOLON];
     }
-    [sql.COMMIT SEMICOLON];
-    
+    [sql.COMMIT.TRANSACTION SEMICOLON];
     NSLog(@"start:%@",[NSDate date]);
-    if (![SHARESQLITEObjectC execSQLL:sql]) {
-        NSLog(@"事物执行失败");
-    }
+    [SHARESQLITEObjectC execSQLL:sql result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
+    }];
     NSLog(@"end:%@",[NSDate date]);
 }
 

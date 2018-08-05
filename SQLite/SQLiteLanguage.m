@@ -56,7 +56,7 @@ static NSString *const SQL_TRANSACTION=@"TRANSACTION";
 static NSString *const SQL_COMMIT=@"COMMIT";
 static NSString *const SQL_ROLLBACK=@"ROLLBACK";
 static NSString *const SQL_SEMICOLON=@";";//分号;
-static NSString *const SQL_COMMA=@",";//分号;
+static NSString *const SQL_COMMA=@",";
 static NSString *const SQL_VACUUM=@"VACUUM";
 static NSString *const SQL_DEFAULT=@"DEFAULT";
 static NSString *const SQL_CHECK=@"CHECK";
@@ -496,7 +496,6 @@ static NSString *const SQL_AUTOINCREMENT=@"AUTOINCREMENT";
     SQLlStrAppendAndSPACE(SQL_SEMICOLON);
     return self;
 }
-
 -(SQLiteLanguage *)COMMA{
     SQLlStrAppendAndSPACE(SQL_COMMA);
     return self;

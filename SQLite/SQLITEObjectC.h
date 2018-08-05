@@ -11,24 +11,18 @@
 #import "SQLiteLanguage.h"
 
 
+
 #define SHARESQLITEObjectC [SQLITEObjectC share]
 
 @interface SQLITEObjectC : NSObject
 @property(nonatomic,copy,readonly)NSString *dbPath;
 
 @property(nonatomic,assign,readonly)BOOL isOpen;
-
-/**执行SQL后返回的结果**/
-@property(nonatomic,retain,readonly)NSMutableArray<NSDictionary*> *execSQLResultArray;
-
 /**关闭数据库,数据库使用完记得调用该方法断开数据库连接**/
 -(BOOL)close;
-/**清除缓存数据**/
--(void)clear;
 /**打开或创建数据库**/
 -(BOOL)openWithFilePath:(NSString *)filePath;
-/**执行SQL语句**/
--(BOOL)execSQLL:(SQLiteLanguage *)SQLL;
-
+/**执行SQL语句并返回结果**/
+-(void)execSQLL:(SQLiteLanguage *)SQLL result:(void(^)(NSString *errorInfor,NSArray<NSDictionary *> *resultArray))result;
 +(instancetype)share;
 @end
