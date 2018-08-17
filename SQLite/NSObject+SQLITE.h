@@ -51,7 +51,4 @@
  重写改方法设置表的外键来源的表
  **/
 +(NSString*)table_ForeignKeyFromTable;
-
-//-(void)insert;
-
 @end

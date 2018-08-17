@@ -46,7 +46,7 @@
 +(void)tableCreateWithFOREIGNKEYTable:(NSString *)tableName{
     NSArray *fieldArray =[self analyticalBuildTableField];
     SQLiteLanguage *sql =SQLlang;
-    NSMutableSet *mutableSet=[[NSMutableSet alloc] init];
+    NSMutableSet *subTableSet=[[NSMutableSet alloc] init];
     for (NSInteger i=0; i<fieldArray.count; i++) {
         NSString *propertyType=fieldArray[i][PropertyType];
         NSString *propertyName=fieldArray[i][PropertyName];
@@ -65,12 +65,12 @@
         }else if ([NSObject isArrayType:propertyType]){
             NSDictionary *dic=[self table_ArrayPropertyNameAndElementTypeDictionary];
             NSString *type =dic[propertyName];
-            [mutableSet addObject:type];
+            [subTableSet addObject:type];
             continue;
         }else if ([NSObject isDictionaryType:propertyType]){
             continue;
         }else{
-            [mutableSet addObject:propertyType];
+            [subTableSet addObject:propertyType];
             continue;
         }
         /**设置主键**/
@@ -91,9 +91,10 @@
     if (![self tableIsExist]) {
         SQLiteLanguage *SQLL=SQLlang.CREATE.TABEL(NSStringFromClass(self)).COLUMNS(sql,nil);
         [SHARESQLITEObjectC execSQLL:SQLL result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
+            
         }];
     }
-    [mutableSet enumerateObjectsUsingBlock:^(id  _Nonnull obj, BOOL * _Nonnull stop) {
+    [subTableSet enumerateObjectsUsingBlock:^(id  _Nonnull obj, BOOL * _Nonnull stop) {
         Class class=NSClassFromString(obj);
         NSString *FOREIGNKEY_FROMTABLE=[class table_ForeignKeyFromTable];
         if (!FOREIGNKEY_FROMTABLE) {
