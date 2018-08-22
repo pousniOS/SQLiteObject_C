@@ -29,7 +29,7 @@
             result=[dic[@"count(*)"] integerValue];
         }
     }];
-    return YES;
+    return result;
 }
 +(NSArray *)analyticalBuildTableField{
     NSArray *fieldArray =[self propertyInforArray];
@@ -91,7 +91,6 @@
     if (![self tableIsExist]) {
         SQLiteLanguage *SQLL=SQLlang.CREATE.TABEL(NSStringFromClass(self)).COLUMNS(sql,nil);
         [SHARESQLITEObjectC execSQLL:SQLL result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
-            
         }];
     }
     [subTableSet enumerateObjectsUsingBlock:^(id  _Nonnull obj, BOOL * _Nonnull stop) {
@@ -103,6 +102,48 @@
         [class tableCreateWithFOREIGNKEYTable:FOREIGNKEY_FROMTABLE];
     }];
 }
++(NSArray<NSString *>*)getTables{
+    NSMutableArray *tables=[[NSMutableArray alloc] init];
+    [tables addObject:[self tableName]];
+    NSArray *propertys =[self propertyInforArray];
+    [propertys enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSString *propertyType=propertys[idx][PropertyType];
+        NSString *propertyName=propertys[idx][PropertyName];
+        if ([NSObject isStringType:propertyType]) {
+        }else if ([self isCNumberType:propertyType]){
+        }else if ([NSObject isCFNumberType:propertyType]){
+        }else if ([NSObject isValueType:propertyType]){
+        }else if ([NSObject isArrayType:propertyType]){//table
+            NSDictionary *dic=[self table_ArrayPropertyNameAndElementTypeDictionary];
+            NSString *type =dic[propertyName];
+            Class class=NSClassFromString(type);
+            [self excludeRepeatAddObjects:@[[class tableName]] ToArray:tables];
+            [self excludeRepeatAddObjects:[class getTables] ToArray:tables];
+        }else if ([NSObject isDictionaryType:propertyType]){
+        }else{//table
+            Class class=NSClassFromString(propertyType);
+            [self excludeRepeatAddObjects:@[[class tableName]] ToArray:tables];
+            [self excludeRepeatAddObjects:[class getTables] ToArray:tables];
+        }
+    }];
+    return tables;
+}
+
+-(void)excludeRepeatAddObjects:(NSArray *)objects ToArray:(NSMutableArray *)array{
+    [objects enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([array containsObject:obj]) {
+            [array removeObject:obj];
+        }
+        [array addObject:obj];
+    }];
+}
++(void)tableDropAll{
+    [[self getTables] enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        Class class=NSClassFromString(obj);
+        [class tableDrop];
+    }];
+}
+
 +(BOOL)tableDrop{
     if ([self tableIsExist]) {
         __block BOOL result=NO;
@@ -185,5 +226,30 @@
 }
 +(NSString*)table_ForeignKeyFromTable{
     return nil;
+}
+-(BOOL)db_insert{
+    NSArray *propertys =[self propertyInforArray];
+    Class class=self.class;
+    SQLiteLanguage *sql= SQLlang;
+    [propertys enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSString *propertyType=propertys[idx][PropertyType];
+        NSString *propertyName=propertys[idx][PropertyName];
+        if ([NSObject isStringType:propertyType]) {
+            
+        }else if ([class isCNumberType:propertyType]){
+            
+        }else if ([NSObject isCFNumberType:propertyType]){
+            
+        }else if ([NSObject isValueType:propertyType]){
+            
+        }else if ([NSObject isArrayType:propertyType]){//table
+            
+        }else if ([NSObject isDictionaryType:propertyType]){
+            
+        }else{//table
+            
+        }
+    }];
+    return YES;
 }
 @end

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5C9328992126788B001145A7 /* SQLiteObject_C.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 5C9328982126788B001145A7 /* SQLiteObject_C.podspec */; };
 		5CC3BD442106F91300F5687E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC3BD432106F91300F5687E /* AppDelegate.m */; };
 		5CC3BD472106F91300F5687E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC3BD462106F91300F5687E /* ViewController.m */; };
 		5CC3BD4A2106F91300F5687E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5CC3BD482106F91300F5687E /* Main.storyboard */; };
@@ -45,6 +46,7 @@
 
 /* Begin PBXFileReference section */
 		0B2A3D3A3FD307E9C60240E5 /* Pods-SQLiteObject_C.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SQLiteObject_C.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SQLiteObject_C/Pods-SQLiteObject_C.debug.xcconfig"; sourceTree = "<group>"; };
+		5C9328982126788B001145A7 /* SQLiteObject_C.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SQLiteObject_C.podspec; sourceTree = "<group>"; };
 		5CC3BD3F2106F91300F5687E /* SQLiteObject_C.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SQLiteObject_C.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CC3BD422106F91300F5687E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		5CC3BD432106F91300F5687E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 		5CC3BD362106F91300F5687E = {
 			isa = PBXGroup;
 			children = (
+				5C9328982126788B001145A7 /* SQLiteObject_C.podspec */,
 				5CC3BD742106F9B000F5687E /* SQLite */,
 				5CC3BD412106F91300F5687E /* SQLiteObject_C */,
 				5CC3BD5A2106F91500F5687E /* SQLiteObject_CTests */,
@@ -319,6 +322,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5CC3BD4F2106F91500F5687E /* LaunchScreen.storyboard in Resources */,
+				5C9328992126788B001145A7 /* SQLiteObject_C.podspec in Resources */,
 				5CC3BD4C2106F91500F5687E /* Assets.xcassets in Resources */,
 				5CC3BD4A2106F91300F5687E /* Main.storyboard in Resources */,
 			);
@@ -582,7 +586,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9UWH8M5BW9;
 				INFOPLIST_FILE = SQLiteObject_C/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "yangYue.SQLiteObject-C";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -597,7 +604,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9UWH8M5BW9;
 				INFOPLIST_FILE = SQLiteObject_C/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "yangYue.SQLiteObject-C";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -610,7 +620,11 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = SQLiteObject_CTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "yangYue.SQLiteObject-CTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -624,7 +638,11 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = SQLiteObject_CTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "yangYue.SQLiteObject-CTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -637,7 +655,11 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = SQLiteObject_CUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "yangYue.SQLiteObject-CUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -650,7 +672,11 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = SQLiteObject_CUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "yangYue.SQLiteObject-CUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";

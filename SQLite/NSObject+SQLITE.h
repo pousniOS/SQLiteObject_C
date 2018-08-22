@@ -20,8 +20,15 @@
 +(BOOL)tableIsExist;
 /**创建表**/
 +(void)tableCreate;
+
+-(BOOL)db_insert;
+
++(NSArray<NSString *>*)getTables;
+
 /**删除表**/
 +(BOOL)tableDrop;
+/**删除所有的关联的表**/
++(void)tableDropAll;
 /**可以通过重新该方法为表重命名默认是model类的名称**/
 +(NSString *)tableName;
 /**

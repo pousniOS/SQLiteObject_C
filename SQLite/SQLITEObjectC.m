@@ -40,15 +40,17 @@ int callback(void *para,int ncolumn,char ** columnvalue,char *columnname[]);
         return NO;
     }
 }
-
 -(void)execSQLL:(SQLiteLanguage *)SQLL result:(void(^)(NSString *errorInfor,NSArray<NSDictionary *> *resultArray))result{
     char *errmsg=NULL;
     NSArray *execSQLResultArray=[[NSMutableArray alloc] init];
     if (sqlite3_exec(_db, [SQLL.sql UTF8String], &callback, (__bridge void *)execSQLResultArray, &errmsg)==SQLITE_OK) {
         result(nil,execSQLResultArray);
-        
     }else{
-        result([NSString stringWithUTF8String:errmsg],execSQLResultArray);
+        if (errmsg==NULL) {
+            result(nil,execSQLResultArray);
+        }else{
+            result([NSString stringWithUTF8String:errmsg],execSQLResultArray);
+        }
     }
 }
 @end
