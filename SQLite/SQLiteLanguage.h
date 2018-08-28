@@ -33,7 +33,7 @@ static NSString *const SQL_DISTINCT=@"DISTINCT";
  **/
 -(SQLiteLanguage * (^)(NSString *fristName,...))KEY;//结束记得加nil。
 -(SQLiteLanguage * (^)(NSString *value))NOT;
--(SQLiteLanguage * (^)(NSString *name))TABEL;
+-(SQLiteLanguage * (^)(NSString *name))TABLE;
 -(SQLiteLanguage * (^)(id fristColumn,...))COLUMNS;//结束记得加nil。
 -(SQLiteLanguage * (^)(NSString *name))columnName;
 -(SQLiteLanguage * (^)(NSString *name))CONSTRAINT;
@@ -77,6 +77,11 @@ static NSString *const SQL_DISTINCT=@"DISTINCT";
 - (SQLiteLanguage * (^)(NSString *value))OR;
 /**存在**/
 - (SQLiteLanguage * (^)(SQLiteLanguage *sqll))EXISTS;
+/**
+ 追加SQLiteLanguage对象
+ **/
+-(SQLiteLanguage *(^)(SQLiteLanguage *sqll))APPEND;
+
 /**什么和什么之间**/
 - (SQLiteLanguage * (^)(NSString *value))BETWEEN;
 /**像什么**/

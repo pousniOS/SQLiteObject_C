@@ -21,7 +21,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 //    [TEST tableCreate];
-//    [TEST tableDropAll];
+    [TEST tableDropAll];
     [SHARESQLITEObjectC openWithFilePath:[NSObject dbPath]];
     SQLiteLanguage *sql=SQLlang.SELECT(@"*",nil).FROM(@"sqlite_master");
 
@@ -64,7 +64,7 @@ void closeDB(){
 }
 #pragma mark - 3.创建表，通过SQLiteLanguage来构建SQL然后通过SQLITEObjectC类的单例的-(BOOL)execSQL:(SQLiteLanguage *)sqll方法执行SQL语句：
 void createTable(){
-    SQLiteLanguage *sql =SQLlang.CREATE.TABEL(@"Sutdent").COLUMNS(
+    SQLiteLanguage *sql =SQLlang.CREATE.TABLE(@"Sutdent").COLUMNS(
                                              SQLlang.columnName(@"age").INTEGER,//列名叫age,INTEGER类型的数据,不许为空
                                              SQLlang.columnName(@"name").TEXT,
                                              SQLlang.columnName(@"ID").TEXT.NOT(@"NULL").PRIMARY.KEY(nil),//列名叫ID,TEXT类型的数据同时设置为主键,不许为空
@@ -76,7 +76,7 @@ void createTable(){
 }
 #pragma mark - 4.删除表：
 void dropTable(){
-    SQLiteLanguage *sql= SQLlang.DROP.TABEL(@"Sutdent");
+    SQLiteLanguage *sql= SQLlang.DROP.TABLE(@"Sutdent");
     [SHARESQLITEObjectC execSQLL:sql result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
         
     }];

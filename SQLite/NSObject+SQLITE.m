@@ -13,6 +13,10 @@
 #define SQLITE_TABLE_FOREIGNKEY_ID @"SQLITE_TABLE_FOREIGNKEY_ID"
 #define SQLITE_TABLE_DEFULTKEY_TYPE @"unsigned long long"
 #define SQLITE_DATABASEE @"SQLIT_DATABASEE.db"
+
+#define SQLITE_TABLE_DICTIONARY_KEY @"SQLITE_TABLE_DICTIONARY_KEY"
+#define SQLITE_SQLL_DICTIONARY_KEY @"SQLITE_SQLL_DICTIONARY_KEY"
+
 @implementation NSObject (SQLITE)
 +(NSString *)dbPath{
     return [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingString:[NSString stringWithFormat:@"/%@",SQLITE_DATABASEE]];
@@ -38,12 +42,23 @@
     fieldArray=[self checkSetKEY:fieldArray andKey:[self table_ForeignKey]];
     return fieldArray;
 }
-+(void)tableCreate{
++(BOOL)tableCreate{
+    NSMutableArray<NSDictionary *> *tableSqlArray=[[NSMutableArray alloc] init];
+    [self tableBuildSqlWithTableName:nil andTableSqlArray:tableSqlArray];
     [self dbOpen];
-    [self tableCreateWithFOREIGNKEYTable:nil];
+    SQLiteLanguage *sqll=SQLlang;
+    [sqll.BEGIN.TRANSACTION SEMICOLON];
+    [tableSqlArray enumerateObjectsUsingBlock:^(NSDictionary * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        sqll.APPEND(obj[SQLITE_SQLL_DICTIONARY_KEY]);
+
+    }];
+    [sqll.COMMIT SEMICOLON];
+    BOOL result=[SHARESQLITEObjectC execSQLL:sqll result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
+    }];
     [self dbClose];
+    return result;
 }
-+(void)tableCreateWithFOREIGNKEYTable:(NSString *)tableName{
++(void)tableBuildSqlWithTableName:(NSString *)tableName andTableSqlArray:(NSMutableArray<NSDictionary*>*)tableSqlArray{
     NSArray *fieldArray =[self analyticalBuildTableField];
     SQLiteLanguage *sql =SQLlang;
     NSMutableSet *subTableSet=[[NSMutableSet alloc] init];
@@ -53,7 +68,7 @@
         if ([NSObject isStringType:propertyType]) {
             sql.columnName(propertyName);
             [sql TEXT];
-        }else if ([self isCNumberType:propertyType]){
+        }else if ([NSObject isCNumberType:propertyType]){
             sql.columnName(propertyName);
             [sql INTEGER];
         }else if ([NSObject isCFNumberType:propertyType]){
@@ -88,18 +103,29 @@
             [sql COMMA];
         }
     }
-    if (![self tableIsExist]) {
-        SQLiteLanguage *SQLL=SQLlang.CREATE.TABEL(NSStringFromClass(self)).COLUMNS(sql,nil);
-        [SHARESQLITEObjectC execSQLL:SQLL result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
-        }];
+    __block BOOL falg=NO;
+    [tableSqlArray enumerateObjectsUsingBlock:^(NSDictionary * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([obj[SQLITE_TABLE_DICTIONARY_KEY] isEqualToString:[self tableName]]) {
+            falg=YES;
+            *stop=YES;
+        }
+    }];
+    if (!falg) {
+        SQLiteLanguage *SQLL=[SQLlang.CREATE.TABLE([self tableName]).COLUMNS(sql,nil) SEMICOLON];
+        NSDictionary *tableSqlDic=@{
+                                    SQLITE_TABLE_DICTIONARY_KEY:[self tableName],
+                                    SQLITE_SQLL_DICTIONARY_KEY:SQLL
+                                    };
+        [tableSqlArray addObject:tableSqlDic];
     }
+    
     [subTableSet enumerateObjectsUsingBlock:^(id  _Nonnull obj, BOOL * _Nonnull stop) {
         Class class=NSClassFromString(obj);
         NSString *FOREIGNKEY_FROMTABLE=[class table_ForeignKeyFromTable];
         if (!FOREIGNKEY_FROMTABLE) {
             FOREIGNKEY_FROMTABLE=[self tableName];
         }
-        [class tableCreateWithFOREIGNKEYTable:FOREIGNKEY_FROMTABLE];
+        [class tableBuildSqlWithTableName:FOREIGNKEY_FROMTABLE andTableSqlArray:tableSqlArray];
     }];
 }
 +(NSArray<NSString *>*)getTables{
@@ -110,7 +136,7 @@
         NSString *propertyType=propertys[idx][PropertyType];
         NSString *propertyName=propertys[idx][PropertyName];
         if ([NSObject isStringType:propertyType]) {
-        }else if ([self isCNumberType:propertyType]){
+        }else if ([NSObject isCNumberType:propertyType]){
         }else if ([NSObject isCFNumberType:propertyType]){
         }else if ([NSObject isValueType:propertyType]){
         }else if ([NSObject isArrayType:propertyType]){//table
@@ -137,17 +163,25 @@
         [array addObject:obj];
     }];
 }
-+(void)tableDropAll{
++(BOOL)tableDropAll{
+    SQLiteLanguage *sqll=SQLlang;
+    [sqll.BEGIN.TRANSACTION SEMICOLON];
     [[self getTables] enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         Class class=NSClassFromString(obj);
-        [class tableDrop];
+        [sqll.DROP.TABLE([class tableName]) SEMICOLON];
     }];
+    [sqll.COMMIT SEMICOLON];
+    [self dbOpen];
+    BOOL result=[SHARESQLITEObjectC execSQLL:sqll result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
+    }];
+    [self dbClose];
+    return result;
 }
-
 +(BOOL)tableDrop{
     if ([self tableIsExist]) {
         __block BOOL result=NO;
-        SQLiteLanguage *SQLL=SQLlang.DROP.TABEL([self tableName]);
+        [self dbOpen];
+        SQLiteLanguage *SQLL=SQLlang.DROP.TABLE([self tableName]);
         [SHARESQLITEObjectC execSQLL:SQLL result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
             if (errorInfor) {
                 result=NO;
@@ -155,6 +189,7 @@
                 result=YES;
             }
         }];
+        [self dbClose];
         return result;
     }else{
         return YES;
@@ -227,29 +262,47 @@
 +(NSString*)table_ForeignKeyFromTable{
     return nil;
 }
--(BOOL)db_insert{
-    NSArray *propertys =[self propertyInforArray];
+-(void)table_Insert{
     Class class=self.class;
-    SQLiteLanguage *sql= SQLlang;
-    [propertys enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        NSString *propertyType=propertys[idx][PropertyType];
-        NSString *propertyName=propertys[idx][PropertyName];
+    NSArray *fieldArray =[class analyticalBuildTableField];
+    SQLiteLanguage *sql =SQLlang;
+    sql.INSERT.INTO([class tableName]);
+    NSMutableArray *columns=[[NSMutableArray  alloc] init];
+    NSMutableArray *values=[[NSMutableArray  alloc] init];
+    NSMutableSet *subTableSet=[[NSMutableSet alloc] init];
+    for (NSInteger i=0; i<fieldArray.count; i++) {
+        NSString *propertyType=fieldArray[i][PropertyType];
+        NSString *propertyName=fieldArray[i][PropertyName];
         if ([NSObject isStringType:propertyType]) {
-            
-        }else if ([class isCNumberType:propertyType]){
-            
+            [columns addObject:propertyName];
+            [values addObject:[NSString stringWithFormat:@"'%@'",[self valueForKey:propertyName]]];
+        }else if ([NSObject isCNumberType:propertyType]){
+            [columns addObject:propertyName];
+            [values addObject:[self valueForKey:propertyName]];
         }else if ([NSObject isCFNumberType:propertyType]){
-            
+            [columns addObject:propertyName];
+            [values addObject:[self valueForKey:propertyName]];
         }else if ([NSObject isValueType:propertyType]){
-            
-        }else if ([NSObject isArrayType:propertyType]){//table
-            
+            [columns addObject:propertyName];
+            [values addObject:[self valueForKey:propertyName]];
+        }else if ([NSObject isArrayType:propertyType]){
+            NSDictionary *dic=[class table_ArrayPropertyNameAndElementTypeDictionary];
+            NSString *type =dic[propertyName];
+            [subTableSet addObject:type];
+            continue;
         }else if ([NSObject isDictionaryType:propertyType]){
-            
-        }else{//table
-            
+            continue;
+        }else{
+            [subTableSet addObject:propertyType];
+            continue;
         }
+    }
+    sql.COLUMNS([columns componentsJoinedByString:@","],nil).VALUES([values componentsJoinedByString:@","],nil);
+    [SHARESQLITEObjectC execSQLL:sql result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
+        
     }];
-    return YES;
+//    [subTableSet enumerateObjectsUsingBlock:^(id  _Nonnull obj, BOOL * _Nonnull stop) {
+//        Class class=NSClassFromString(obj);
+//    }];
 }
 @end

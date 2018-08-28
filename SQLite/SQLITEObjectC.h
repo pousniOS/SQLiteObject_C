@@ -23,6 +23,6 @@
 /**打开或创建数据库**/
 -(BOOL)openWithFilePath:(NSString *)filePath;
 /**执行SQL语句并返回结果**/
--(void)execSQLL:(SQLiteLanguage *)SQLL result:(void(^)(NSString *errorInfor,NSArray<NSDictionary *> *resultArray))result;
+-(BOOL)execSQLL:(SQLiteLanguage *)SQLL result:(void(^)(NSString *errorInfor,NSArray<NSDictionary *> *resultArray))result;
 +(instancetype)share;
 @end

@@ -19,16 +19,17 @@
 /**判断表是否存在**/
 +(BOOL)tableIsExist;
 /**创建表**/
-+(void)tableCreate;
++(BOOL)tableCreate;
 
--(BOOL)db_insert;
+-(void)table_Insert;
 
+/**获取model类创建的表**/
 +(NSArray<NSString *>*)getTables;
 
 /**删除表**/
 +(BOOL)tableDrop;
 /**删除所有的关联的表**/
-+(void)tableDropAll;
++(BOOL)tableDropAll;
 /**可以通过重新该方法为表重命名默认是model类的名称**/
 +(NSString *)tableName;
 /**

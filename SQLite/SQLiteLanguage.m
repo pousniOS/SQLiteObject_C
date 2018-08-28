@@ -132,7 +132,7 @@ static NSString *const SQL_AUTOINCREMENT=@"AUTOINCREMENT";
         return self;
     };
 }
-- (SQLiteLanguage * (^)(NSString *name))TABEL{
+- (SQLiteLanguage * (^)(NSString *name))TABLE{
     return ^SQLiteLanguage *(NSString *name){
         SQLlStrAppendAndSPACE(SQL_TABLE);
         SQLlStrAppendAndSPACE(name);
@@ -492,6 +492,12 @@ static NSString *const SQL_AUTOINCREMENT=@"AUTOINCREMENT";
     };
 }
 #pragma mark ============ 其他 ============
+-(SQLiteLanguage *(^)(SQLiteLanguage *sqll))APPEND{
+    return ^SQLiteLanguage*(SQLiteLanguage *sqll){
+        SQLlStrAppendAndSPACE(sqll.sql);
+        return self;
+    };
+}
 -(SQLiteLanguage *)SEMICOLON{
     SQLlStrAppendAndSPACE(SQL_SEMICOLON);
     return self;
