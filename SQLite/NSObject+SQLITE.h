@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "SQLITEObjectC.h"
+#import "NSString+SQLITE.h"
 /**
  改类别的目的是实现一些可以通过Model文件快速创建数据库一系列相关的表的方法
  **/
@@ -20,12 +21,10 @@
 +(BOOL)tableIsExist;
 /**创建表**/
 +(BOOL)tableCreate;
-
--(void)table_Insert;
-
+/**将数据插入表中**/
+-(BOOL)table_Insert;
 /**获取model类创建的表**/
 +(NSArray<NSString *>*)getTables;
-
 /**删除表**/
 +(BOOL)tableDrop;
 /**删除所有的关联的表**/

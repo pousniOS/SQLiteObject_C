@@ -11,20 +11,23 @@
 
 #define SQLITE_TABLE_PRIMARYKEY_ID @"SQLITE_TABLE_PRIMARYKEY_ID"
 #define SQLITE_TABLE_FOREIGNKEY_ID @"SQLITE_TABLE_FOREIGNKEY_ID"
-#define SQLITE_TABLE_DEFULTKEY_TYPE @"unsigned long long"
+#define SQLITE_TABLE_DEFULTKEY_TYPE @"NSString"
 #define SQLITE_DATABASEE @"SQLIT_DATABASEE.db"
 
 #define SQLITE_TABLE_DICTIONARY_KEY @"SQLITE_TABLE_DICTIONARY_KEY"
 #define SQLITE_SQLL_DICTIONARY_KEY @"SQLITE_SQLL_DICTIONARY_KEY"
+#define SQLITE_VALUE_DICTIONARY_KEY @"SQLITE_VALUE_DICTIONARY_KEY"
+
+
 
 @implementation NSObject (SQLITE)
 +(NSString *)dbPath{
     return [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingString:[NSString stringWithFormat:@"/%@",SQLITE_DATABASEE]];
 }
 +(BOOL)tableIsExist{
-    [self dbOpen];
     SQLiteLanguage *sql=SQLlang.SELECT(@"count(*)",nil).FROM(@"sqlite_master").WHERE(@"type='table'").AND([NSString stringWithFormat:@"tbl_name='%@'",[self tableName]]);
     __block BOOL result=NO;
+    [self dbOpen];
     [SHARESQLITEObjectC execSQLL:sql result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
         if (errorInfor) {
             result=NO;
@@ -33,6 +36,7 @@
             result=[dic[@"count(*)"] integerValue];
         }
     }];
+    [self dbClose];
     return result;
 }
 +(NSArray *)analyticalBuildTableField{
@@ -45,14 +49,14 @@
 +(BOOL)tableCreate{
     NSMutableArray<NSDictionary *> *tableSqlArray=[[NSMutableArray alloc] init];
     [self tableBuildSqlWithTableName:nil andTableSqlArray:tableSqlArray];
-    [self dbOpen];
     SQLiteLanguage *sqll=SQLlang;
     [sqll.BEGIN.TRANSACTION SEMICOLON];
     [tableSqlArray enumerateObjectsUsingBlock:^(NSDictionary * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         sqll.APPEND(obj[SQLITE_SQLL_DICTIONARY_KEY]);
-
     }];
     [sqll.COMMIT SEMICOLON];
+    NSLog(@"%@",sqll.sql);
+    [self dbOpen];
     BOOL result=[SHARESQLITEObjectC execSQLL:sqll result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
     }];
     [self dbClose];
@@ -91,9 +95,9 @@
         /**设置主键**/
         if ([propertyName isEqualToString:[self table_PrimaryKey]]) {
             sql.PRIMARY.KEY(nil);
-            if ([propertyName isEqualToString:SQLITE_TABLE_PRIMARYKEY_ID]) {
-                [sql AUTOINCREMENT];
-            }
+//            if ([propertyName isEqualToString:SQLITE_TABLE_PRIMARYKEY_ID]) {
+//                [sql AUTOINCREMENT];
+//            }
         }
         /**设置设置外键**/
         if ([propertyName isEqualToString:[self table_ForeignKey]]&&tableName) {
@@ -171,6 +175,7 @@
         [sqll.DROP.TABLE([class tableName]) SEMICOLON];
     }];
     [sqll.COMMIT SEMICOLON];
+    NSLog(@"%@",sqll.sql);
     [self dbOpen];
     BOOL result=[SHARESQLITEObjectC execSQLL:sqll result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
     }];
@@ -262,47 +267,96 @@
 +(NSString*)table_ForeignKeyFromTable{
     return nil;
 }
--(void)table_Insert{
+-(BOOL)table_Insert{
+    NSMutableArray<SQLiteLanguage *> *sqlArray=[[NSMutableArray alloc] init];
+    [self tableBuildInsertSqlArray:sqlArray andForeignKeyValue:nil];
+    SQLiteLanguage *sql=SQLlang;
+    [sqlArray enumerateObjectsUsingBlock:^(SQLiteLanguage * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        sql.APPEND(obj);
+    }];
+    return [SHARESQLITEObjectC execSQLL:sql result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
+    }];
+}
+-(void)tableBuildInsertSqlArray:(NSMutableArray<SQLiteLanguage *> *)sqlArray andForeignKeyValue:(NSString *)foreignKeyValue{
     Class class=self.class;
-    NSArray *fieldArray =[class analyticalBuildTableField];
+    NSArray *fieldArray =[self propertyInforArray];
     SQLiteLanguage *sql =SQLlang;
     sql.INSERT.INTO([class tableName]);
     NSMutableArray *columns=[[NSMutableArray  alloc] init];
     NSMutableArray *values=[[NSMutableArray  alloc] init];
-    NSMutableSet *subTableSet=[[NSMutableSet alloc] init];
+    NSMutableArray<NSDictionary *> *subTableArray=[[NSMutableArray alloc] init];
+    
+    //主键值设置
+    NSString *primaryValue=[NSString sqlite_getUUIDString];
+    NSString *primaryKey=[self.class table_PrimaryKey];
+    if ([self table_PrimaryKeyIsDefault]) {
+        [columns addObject:primaryKey];
+        [values addObject:primaryValue];
+    }
+    //外键值设置
+    if (foreignKeyValue) {
+        NSString *foreignKey=[self.class table_ForeignKey];
+        [columns addObject:foreignKey];
+        [values addObject:foreignKeyValue];
+    }
+    
     for (NSInteger i=0; i<fieldArray.count; i++) {
         NSString *propertyType=fieldArray[i][PropertyType];
         NSString *propertyName=fieldArray[i][PropertyName];
+        
         if ([NSObject isStringType:propertyType]) {
-            [columns addObject:propertyName];
-            [values addObject:[NSString stringWithFormat:@"'%@'",[self valueForKey:propertyName]]];
+            id value=[NSString stringWithFormat:@"'%@'",[self valueForKey:propertyName]];
+            if (value) {
+                [columns addObject:propertyName];
+                [values addObject:value];
+            }
         }else if ([NSObject isCNumberType:propertyType]){
-            [columns addObject:propertyName];
-            [values addObject:[self valueForKey:propertyName]];
+            id value=[self valueForKey:propertyName];
+            if (value) {
+                [columns addObject:propertyName];
+                [values addObject:value];
+            }
         }else if ([NSObject isCFNumberType:propertyType]){
-            [columns addObject:propertyName];
-            [values addObject:[self valueForKey:propertyName]];
+            id value=[self valueForKey:propertyName];
+            if (value) {
+                [columns addObject:propertyName];
+                [values addObject:value];
+            }
         }else if ([NSObject isValueType:propertyType]){
-            [columns addObject:propertyName];
-            [values addObject:[self valueForKey:propertyName]];
+            id value=[self valueForKey:propertyName];
+            if (value) {
+                [columns addObject:propertyName];
+                [values addObject:[self valueForKey:propertyName]];
+            }
         }else if ([NSObject isArrayType:propertyType]){
-            NSDictionary *dic=[class table_ArrayPropertyNameAndElementTypeDictionary];
-            NSString *type =dic[propertyName];
-            [subTableSet addObject:type];
-            continue;
+            id value=[self valueForKey:propertyName];
+            if (value) {
+                NSDictionary *valueDic=@{
+                                         SQLITE_TABLE_FOREIGNKEY_ID:primaryValue,
+                                         SQLITE_VALUE_DICTIONARY_KEY:value
+                                         };
+                [subTableArray addObject:valueDic];
+            }
         }else if ([NSObject isDictionaryType:propertyType]){
-            continue;
         }else{
-            [subTableSet addObject:propertyType];
-            continue;
+            id value=[self valueForKey:propertyName];
+            if (value) {
+                NSDictionary *valueDic=@{
+                                         SQLITE_TABLE_FOREIGNKEY_ID:primaryValue,
+                                         SQLITE_VALUE_DICTIONARY_KEY:value
+                                         };
+                [subTableArray addObject:valueDic];
+            }
         }
     }
-    sql.COLUMNS([columns componentsJoinedByString:@","],nil).VALUES([values componentsJoinedByString:@","],nil);
-    [SHARESQLITEObjectC execSQLL:sql result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
-        
+    [sql.COLUMNS([columns componentsJoinedByString:@","],nil).VALUES([values componentsJoinedByString:@","],nil) SEMICOLON];
+    [sqlArray addObject:sql];
+    
+    [subTableArray enumerateObjectsUsingBlock:^(NSDictionary * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [obj[SQLITE_VALUE_DICTIONARY_KEY] tableBuildInsertSqlArray:sqlArray andForeignKeyValue:SQLITE_TABLE_FOREIGNKEY_ID];
     }];
-//    [subTableSet enumerateObjectsUsingBlock:^(id  _Nonnull obj, BOOL * _Nonnull stop) {
-//        Class class=NSClassFromString(obj);
-//    }];
+}
+-(BOOL)table_PrimaryKeyIsDefault{
+    return [[self.class table_PrimaryKey] isEqualToString:SQLITE_TABLE_PRIMARYKEY_ID];
 }
 @end

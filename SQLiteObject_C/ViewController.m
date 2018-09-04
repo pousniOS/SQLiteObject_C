@@ -20,8 +20,17 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    [TEST tableCreate];
-    [TEST tableDropAll];
+    [TEST tableCreate];
+    
+    TEST *test =[[TEST alloc] init];
+    [test table_Insert];
+    
+//    [TEST tableDropAll];
+
+
+
+    
+    
     [SHARESQLITEObjectC openWithFilePath:[NSObject dbPath]];
     SQLiteLanguage *sql=SQLlang.SELECT(@"*",nil).FROM(@"sqlite_master");
 

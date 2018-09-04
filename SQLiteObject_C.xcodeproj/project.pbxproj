@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5C38A066213ECFF8003186A3 /* NSString+SQLITE.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C38A065213ECFF8003186A3 /* NSString+SQLITE.m */; };
 		5C9328992126788B001145A7 /* SQLiteObject_C.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 5C9328982126788B001145A7 /* SQLiteObject_C.podspec */; };
 		5CC3BD442106F91300F5687E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC3BD432106F91300F5687E /* AppDelegate.m */; };
 		5CC3BD472106F91300F5687E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC3BD462106F91300F5687E /* ViewController.m */; };
@@ -46,6 +47,8 @@
 
 /* Begin PBXFileReference section */
 		0B2A3D3A3FD307E9C60240E5 /* Pods-SQLiteObject_C.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SQLiteObject_C.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SQLiteObject_C/Pods-SQLiteObject_C.debug.xcconfig"; sourceTree = "<group>"; };
+		5C38A064213ECFF8003186A3 /* NSString+SQLITE.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+SQLITE.h"; sourceTree = "<group>"; };
+		5C38A065213ECFF8003186A3 /* NSString+SQLITE.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+SQLITE.m"; sourceTree = "<group>"; };
 		5C9328982126788B001145A7 /* SQLiteObject_C.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SQLiteObject_C.podspec; sourceTree = "<group>"; };
 		5CC3BD3F2106F91300F5687E /* SQLiteObject_C.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SQLiteObject_C.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CC3BD422106F91300F5687E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -177,6 +180,8 @@
 				5CC3BD762106F9B000F5687E /* SQLITEObjectC.m */,
 				5CC3BD7A2106F9B000F5687E /* SQLiteLanguage.h */,
 				5CC3BD772106F9B000F5687E /* SQLiteLanguage.m */,
+				5C38A064213ECFF8003186A3 /* NSString+SQLITE.h */,
+				5C38A065213ECFF8003186A3 /* NSString+SQLITE.m */,
 			);
 			path = SQLite;
 			sourceTree = "<group>";
@@ -412,6 +417,7 @@
 				5CC3BDE5210722EC00F5687E /* TEST.m in Sources */,
 				5CC3BD522106F91500F5687E /* main.m in Sources */,
 				5CC3BD442106F91300F5687E /* AppDelegate.m in Sources */,
+				5C38A066213ECFF8003186A3 /* NSString+SQLITE.m in Sources */,
 				5CC3BD7C2106F9B100F5687E /* SQLITEObjectC.m in Sources */,
 				5CC3BDE2210722EC00F5687E /* Goods.m in Sources */,
 			);
