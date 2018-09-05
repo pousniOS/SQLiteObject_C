@@ -1,24 +1,25 @@
 #import "SalesOrder.h"
 @implementation SalesOrder
 -(void)setValue:(id)value forUndefinedKey:(NSString *)key{
-NSLog(@"UndefinedKey:%@",key);
+    NSLog(@"UndefinedKey:%@",key);
 };
 -(void)setValue:(id)value forKey:(NSString *)key{
-if([key isEqualToString:@"salesOrderParts"]){
-for(id object in value){
-self.salesOrderParts=[[NSMutableArray alloc] init];
-SalesOrderParts *obj=[[SalesOrderParts alloc] init];
-[obj setValuesForKeysWithDictionary:object];
-[self.salesOrderParts addObject:obj];
-}
-}else{
-[super setValue:value forKey:key];
-
-}
+    if([key isEqualToString:@"salesOrderParts"]){
+        self.salesOrderParts=[[NSMutableArray alloc] init];
+        for(id object in value){
+            SalesOrderParts *obj=[[SalesOrderParts alloc] init];
+            [obj setValuesForKeysWithDictionary:object];
+            [self.salesOrderParts addObject:obj];
+        }
+    }else{
+        [super setValue:value forKey:key];
+        
+    }
 }
 +(NSDictionary *)table_ArrayPropertyNameAndElementTypeDictionary{
-    return @{
-             @"salesOrderParts":@"SalesOrderParts",
-             };
+    return @{@"salesOrderParts":@"SalesOrderParts"};
 }
 @end
+
+
+

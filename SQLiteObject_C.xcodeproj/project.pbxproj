@@ -7,7 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5C125DAC21401FDA00BAA42D /* TEST.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C125DA321401FDA00BAA42D /* TEST.m */; };
+		5C125DAD21401FDA00BAA42D /* Goods.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C125DA521401FDA00BAA42D /* Goods.m */; };
+		5C125DAE21401FDA00BAA42D /* SalesOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C125DA821401FDA00BAA42D /* SalesOrder.m */; };
+		5C125DAF21401FDA00BAA42D /* SalesOrderParts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C125DA921401FDA00BAA42D /* SalesOrderParts.m */; };
+		5C125DB021401FDA00BAA42D /* SalesRefund.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C125DAB21401FDA00BAA42D /* SalesRefund.m */; };
 		5C38A066213ECFF8003186A3 /* NSString+SQLITE.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C38A065213ECFF8003186A3 /* NSString+SQLITE.m */; };
+		5C710BA0213F6F5300FD6981 /* TestJson.json in Resources */ = {isa = PBXBuildFile; fileRef = 5C710B9F213F6F5300FD6981 /* TestJson.json */; };
 		5C9328992126788B001145A7 /* SQLiteObject_C.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 5C9328982126788B001145A7 /* SQLiteObject_C.podspec */; };
 		5CC3BD442106F91300F5687E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC3BD432106F91300F5687E /* AppDelegate.m */; };
 		5CC3BD472106F91300F5687E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC3BD462106F91300F5687E /* ViewController.m */; };
@@ -20,11 +26,6 @@
 		5CC3BD7B2106F9B100F5687E /* NSObject+SQLITE.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC3BD752106F9B000F5687E /* NSObject+SQLITE.m */; };
 		5CC3BD7C2106F9B100F5687E /* SQLITEObjectC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC3BD762106F9B000F5687E /* SQLITEObjectC.m */; };
 		5CC3BD7D2106F9B100F5687E /* SQLiteLanguage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC3BD772106F9B000F5687E /* SQLiteLanguage.m */; };
-		5CC3BDE2210722EC00F5687E /* Goods.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC3BDDA210722EC00F5687E /* Goods.m */; };
-		5CC3BDE3210722EC00F5687E /* SalesOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC3BDDC210722EC00F5687E /* SalesOrder.m */; };
-		5CC3BDE4210722EC00F5687E /* SalesOrderParts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC3BDDD210722EC00F5687E /* SalesOrderParts.m */; };
-		5CC3BDE5210722EC00F5687E /* TEST.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC3BDDE210722EC00F5687E /* TEST.m */; };
-		5CC3BDE6210722EC00F5687E /* SalesRefund.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC3BDDF210722EC00F5687E /* SalesRefund.m */; };
 		970B794C2F2BFCB28A0FDC67 /* Pods_SQLiteObject_C.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F0717E040EF735C49CE271A /* Pods_SQLiteObject_C.framework */; };
 /* End PBXBuildFile section */
 
@@ -47,8 +48,19 @@
 
 /* Begin PBXFileReference section */
 		0B2A3D3A3FD307E9C60240E5 /* Pods-SQLiteObject_C.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SQLiteObject_C.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SQLiteObject_C/Pods-SQLiteObject_C.debug.xcconfig"; sourceTree = "<group>"; };
+		5C125DA221401FDA00BAA42D /* TEST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TEST.h; sourceTree = "<group>"; };
+		5C125DA321401FDA00BAA42D /* TEST.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TEST.m; sourceTree = "<group>"; };
+		5C125DA421401FDA00BAA42D /* Goods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Goods.h; sourceTree = "<group>"; };
+		5C125DA521401FDA00BAA42D /* Goods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Goods.m; sourceTree = "<group>"; };
+		5C125DA621401FDA00BAA42D /* SalesOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SalesOrder.h; sourceTree = "<group>"; };
+		5C125DA721401FDA00BAA42D /* SalesOrderParts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SalesOrderParts.h; sourceTree = "<group>"; };
+		5C125DA821401FDA00BAA42D /* SalesOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SalesOrder.m; sourceTree = "<group>"; };
+		5C125DA921401FDA00BAA42D /* SalesOrderParts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SalesOrderParts.m; sourceTree = "<group>"; };
+		5C125DAA21401FDA00BAA42D /* SalesRefund.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SalesRefund.h; sourceTree = "<group>"; };
+		5C125DAB21401FDA00BAA42D /* SalesRefund.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SalesRefund.m; sourceTree = "<group>"; };
 		5C38A064213ECFF8003186A3 /* NSString+SQLITE.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+SQLITE.h"; sourceTree = "<group>"; };
 		5C38A065213ECFF8003186A3 /* NSString+SQLITE.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+SQLITE.m"; sourceTree = "<group>"; };
+		5C710B9F213F6F5300FD6981 /* TestJson.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TestJson.json; sourceTree = "<group>"; };
 		5C9328982126788B001145A7 /* SQLiteObject_C.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SQLiteObject_C.podspec; sourceTree = "<group>"; };
 		5CC3BD3F2106F91300F5687E /* SQLiteObject_C.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SQLiteObject_C.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CC3BD422106F91300F5687E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -72,16 +84,6 @@
 		5CC3BD782106F9B000F5687E /* SQLITEObjectC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQLITEObjectC.h; sourceTree = "<group>"; };
 		5CC3BD792106F9B000F5687E /* NSObject+SQLITE.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SQLITE.h"; sourceTree = "<group>"; };
 		5CC3BD7A2106F9B000F5687E /* SQLiteLanguage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQLiteLanguage.h; sourceTree = "<group>"; };
-		5CC3BDD8210722EC00F5687E /* SalesOrderParts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SalesOrderParts.h; sourceTree = "<group>"; };
-		5CC3BDD9210722EC00F5687E /* TEST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TEST.h; sourceTree = "<group>"; };
-		5CC3BDDA210722EC00F5687E /* Goods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Goods.m; sourceTree = "<group>"; };
-		5CC3BDDB210722EC00F5687E /* SalesRefund.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SalesRefund.h; sourceTree = "<group>"; };
-		5CC3BDDC210722EC00F5687E /* SalesOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SalesOrder.m; sourceTree = "<group>"; };
-		5CC3BDDD210722EC00F5687E /* SalesOrderParts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SalesOrderParts.m; sourceTree = "<group>"; };
-		5CC3BDDE210722EC00F5687E /* TEST.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TEST.m; sourceTree = "<group>"; };
-		5CC3BDDF210722EC00F5687E /* SalesRefund.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SalesRefund.m; sourceTree = "<group>"; };
-		5CC3BDE0210722EC00F5687E /* SalesOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SalesOrder.h; sourceTree = "<group>"; };
-		5CC3BDE1210722EC00F5687E /* Goods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Goods.h; sourceTree = "<group>"; };
 		5F0717E040EF735C49CE271A /* Pods_SQLiteObject_C.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SQLiteObject_C.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABB9F5203B2398888691FF1E /* Pods-SQLiteObject_C.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SQLiteObject_C.release.xcconfig"; path = "Pods/Target Support Files/Pods-SQLiteObject_C/Pods-SQLiteObject_C.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -189,16 +191,17 @@
 		5CC3BDD7210722EC00F5687E /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				5CC3BDD8210722EC00F5687E /* SalesOrderParts.h */,
-				5CC3BDDD210722EC00F5687E /* SalesOrderParts.m */,
-				5CC3BDD9210722EC00F5687E /* TEST.h */,
-				5CC3BDDE210722EC00F5687E /* TEST.m */,
-				5CC3BDDB210722EC00F5687E /* SalesRefund.h */,
-				5CC3BDDF210722EC00F5687E /* SalesRefund.m */,
-				5CC3BDE0210722EC00F5687E /* SalesOrder.h */,
-				5CC3BDDC210722EC00F5687E /* SalesOrder.m */,
-				5CC3BDE1210722EC00F5687E /* Goods.h */,
-				5CC3BDDA210722EC00F5687E /* Goods.m */,
+				5C125DA421401FDA00BAA42D /* Goods.h */,
+				5C125DA521401FDA00BAA42D /* Goods.m */,
+				5C125DA621401FDA00BAA42D /* SalesOrder.h */,
+				5C125DA821401FDA00BAA42D /* SalesOrder.m */,
+				5C125DA721401FDA00BAA42D /* SalesOrderParts.h */,
+				5C125DA921401FDA00BAA42D /* SalesOrderParts.m */,
+				5C125DAA21401FDA00BAA42D /* SalesRefund.h */,
+				5C125DAB21401FDA00BAA42D /* SalesRefund.m */,
+				5C125DA221401FDA00BAA42D /* TEST.h */,
+				5C125DA321401FDA00BAA42D /* TEST.m */,
+				5C710B9F213F6F5300FD6981 /* TestJson.json */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -327,6 +330,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5CC3BD4F2106F91500F5687E /* LaunchScreen.storyboard in Resources */,
+				5C710BA0213F6F5300FD6981 /* TestJson.json in Resources */,
 				5C9328992126788B001145A7 /* SQLiteObject_C.podspec in Resources */,
 				5CC3BD4C2106F91500F5687E /* Assets.xcassets in Resources */,
 				5CC3BD4A2106F91300F5687E /* Main.storyboard in Resources */,
@@ -409,17 +413,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				5CC3BD472106F91300F5687E /* ViewController.m in Sources */,
+				5C125DAC21401FDA00BAA42D /* TEST.m in Sources */,
 				5CC3BD7D2106F9B100F5687E /* SQLiteLanguage.m in Sources */,
 				5CC3BD7B2106F9B100F5687E /* NSObject+SQLITE.m in Sources */,
-				5CC3BDE3210722EC00F5687E /* SalesOrder.m in Sources */,
-				5CC3BDE4210722EC00F5687E /* SalesOrderParts.m in Sources */,
-				5CC3BDE6210722EC00F5687E /* SalesRefund.m in Sources */,
-				5CC3BDE5210722EC00F5687E /* TEST.m in Sources */,
 				5CC3BD522106F91500F5687E /* main.m in Sources */,
+				5C125DAE21401FDA00BAA42D /* SalesOrder.m in Sources */,
 				5CC3BD442106F91300F5687E /* AppDelegate.m in Sources */,
+				5C125DAD21401FDA00BAA42D /* Goods.m in Sources */,
+				5C125DB021401FDA00BAA42D /* SalesRefund.m in Sources */,
 				5C38A066213ECFF8003186A3 /* NSString+SQLITE.m in Sources */,
+				5C125DAF21401FDA00BAA42D /* SalesOrderParts.m in Sources */,
 				5CC3BD7C2106F9B100F5687E /* SQLITEObjectC.m in Sources */,
-				5CC3BDE2210722EC00F5687E /* Goods.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

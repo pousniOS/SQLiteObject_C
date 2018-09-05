@@ -5,8 +5,8 @@
 };
 -(void)setValue:(id)value forKey:(NSString *)key{
     if([key isEqualToString:@"salesOrderParts"]){
+        self.salesOrderParts=[[NSMutableArray alloc] init];
         for(id object in value){
-            self.salesOrderParts=[[NSMutableArray alloc] init];
             SalesOrderParts *obj=[[SalesOrderParts alloc] init];
             [obj setValuesForKeysWithDictionary:object];
             [self.salesOrderParts addObject:obj];
@@ -16,11 +16,8 @@
         
     }
 }
-
 +(NSDictionary *)table_ArrayPropertyNameAndElementTypeDictionary{
-    return @{
-             @"salesOrderParts":@"SalesOrderParts",
-             };
+    return @{@"salesOrderParts":@"SalesOrderParts"};
 }
-
 @end
+

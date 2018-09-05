@@ -35,8 +35,10 @@ int callback(void *para,int ncolumn,char ** columnvalue,char *columnname[]);
 }
 -(BOOL)close{
     if (sqlite3_close(_db)==SQLITE_OK) {
+        _isOpen=NO;
         return YES;
     }else{
+        _isOpen=YES;
         return NO;
     }
 }

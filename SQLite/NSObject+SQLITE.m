@@ -13,7 +13,8 @@
 #define SQLITE_TABLE_FOREIGNKEY_ID @"SQLITE_TABLE_FOREIGNKEY_ID"
 #define SQLITE_TABLE_DEFULTKEY_TYPE @"NSString"
 #define SQLITE_DATABASEE @"SQLIT_DATABASEE.db"
-
+//用于指定数据库记录所属Model对象的属性的字段
+#define SQLITE_TABLE_RecordingOwn_KEY @"SQLITE_TABLE_RecordingOwn_KEY"
 #define SQLITE_TABLE_DICTIONARY_KEY @"SQLITE_TABLE_DICTIONARY_KEY"
 #define SQLITE_SQLL_DICTIONARY_KEY @"SQLITE_SQLL_DICTIONARY_KEY"
 #define SQLITE_VALUE_DICTIONARY_KEY @"SQLITE_VALUE_DICTIONARY_KEY"
@@ -48,7 +49,7 @@
 }
 +(BOOL)tableCreate{
     NSMutableArray<NSDictionary *> *tableSqlArray=[[NSMutableArray alloc] init];
-    [self tableBuildSqlWithTableName:nil andTableSqlArray:tableSqlArray];
+    [self tableBuildTableSqlWithTableName:nil andTableSqlArray:tableSqlArray];
     SQLiteLanguage *sqll=SQLlang;
     [sqll.BEGIN.TRANSACTION SEMICOLON];
     [tableSqlArray enumerateObjectsUsingBlock:^(NSDictionary * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -62,9 +63,11 @@
     [self dbClose];
     return result;
 }
-+(void)tableBuildSqlWithTableName:(NSString *)tableName andTableSqlArray:(NSMutableArray<NSDictionary*>*)tableSqlArray{
++(void)tableBuildTableSqlWithTableName:(NSString *)tableName andTableSqlArray:(NSMutableArray<NSDictionary*>*)tableSqlArray{
     NSArray *fieldArray =[self analyticalBuildTableField];
     SQLiteLanguage *sql =SQLlang;
+    sql.columnName(SQLITE_TABLE_RecordingOwn_KEY);
+    [sql.TEXT COMMA];
     NSMutableSet *subTableSet=[[NSMutableSet alloc] init];
     for (NSInteger i=0; i<fieldArray.count; i++) {
         NSString *propertyType=fieldArray[i][PropertyType];
@@ -129,7 +132,7 @@
         if (!FOREIGNKEY_FROMTABLE) {
             FOREIGNKEY_FROMTABLE=[self tableName];
         }
-        [class tableBuildSqlWithTableName:FOREIGNKEY_FROMTABLE andTableSqlArray:tableSqlArray];
+        [class tableBuildTableSqlWithTableName:FOREIGNKEY_FROMTABLE andTableSqlArray:tableSqlArray];
     }];
 }
 +(NSArray<NSString *>*)getTables{
@@ -269,15 +272,45 @@
 }
 -(BOOL)table_Insert{
     NSMutableArray<SQLiteLanguage *> *sqlArray=[[NSMutableArray alloc] init];
-    [self tableBuildInsertSqlArray:sqlArray andForeignKeyValue:nil];
+    [self tableBuildInsertSqlArray:sqlArray andForeignKeyValue:nil andRecordingOwnValue:nil];
     SQLiteLanguage *sql=SQLlang;
+    [sql.BEGIN.TRANSACTION SEMICOLON];
     [sqlArray enumerateObjectsUsingBlock:^(SQLiteLanguage * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         sql.APPEND(obj);
     }];
-    return [SHARESQLITEObjectC execSQLL:sql result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
+    [sql.COMMIT SEMICOLON];
+    NSLog(@"%@",sql.sql);
+    BOOL flag=NO;
+    
+//    [SHARESQLITEObjectC openWithFilePath:self.class.dbPath];
+    [self.class dbOpen];
+    
+    
+ /*
+    BEGIN TRANSACTION ;
+  INSERT INTO TEST (SQLITE_TABLE_PRIMARYKEY_ID,ID) VALUES('3a60bfca-6970-41ef-a263-9753c21a4114','1234567890')  ;
+  INSERT INTO SalesOrder (SQLITE_TABLE_PRIMARYKEY_ID,SQLITE_TABLE_FOREIGNKEY_ID,SQLITE_TABLE_RecordingOwn_KEY,assistant1) VALUES('3ccbd667-f79a-4708-b5a1-591f4c959986','3a60bfca-6970-41ef-a263-9753c21a4114','salesOrder','xxx')  ;
+  INSERT INTO SalesOrderParts (SQLITE_TABLE_PRIMARYKEY_ID,SQLITE_TABLE_FOREIGNKEY_ID,SQLITE_TABLE_RecordingOwn_KEY,partRecId) VALUES('21622a2d-7fbb-4162-aaea-8a2da18ec69b','3ccbd667-f79a-4708-b5a1-591f4c959986','salesOrderParts','01.01.01.400050')  ;
+  INSERT INTO Goods (SQLITE_TABLE_PRIMARYKEY_ID,SQLITE_TABLE_FOREIGNKEY_ID,SQLITE_TABLE_RecordingOwn_KEY,partName) VALUES('27f625a1-b85e-4027-ac07-7f627ef6b293','21622a2d-7fbb-4162-aaea-8a2da18ec69b','goods','xxxCFXB50YB8-70//4')  ;
+  INSERT INTO SalesRefund (SQLITE_TABLE_PRIMARYKEY_ID,SQLITE_TABLE_FOREIGNKEY_ID,SQLITE_TABLE_RecordingOwn_KEY,assistant1) VALUES('4b761db3-e67e-4751-aef1-904754b4c739','3a60bfca-6970-41ef-a263-9753c21a4114','salesRefund','xxx')  ;
+  INSERT INTO SalesOrderParts (SQLITE_TABLE_PRIMARYKEY_ID,SQLITE_TABLE_FOREIGNKEY_ID,SQLITE_TABLE_RecordingOwn_KEY,partRecId) VALUES('aec9dd55-0e56-4850-9bcb-8616e81a458e','4b761db3-e67e-4751-aef1-904754b4c739','salesOrderParts','01.01.01.400050')  ;
+  INSERT INTO Goods (SQLITE_TABLE_PRIMARYKEY_ID,SQLITE_TABLE_FOREIGNKEY_ID,SQLITE_TABLE_RecordingOwn_KEY,partName) VALUES('2e1a183f-0451-431a-acf1-705d085b4e97','aec9dd55-0e56-4850-9bcb-8616e81a458e','goods','xxxCFXB50YB8-70//4')  ;
+  COMMIT ;
+    */
+    
+    
+    flag=[SHARESQLITEObjectC execSQLL:sql result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
+        NSLog(@"%@---%@",errorInfor,resultArray);
+        
     }];
+    [self.class dbClose];
+    return flag;
+    
 }
--(void)tableBuildInsertSqlArray:(NSMutableArray<SQLiteLanguage *> *)sqlArray andForeignKeyValue:(NSString *)foreignKeyValue{
+
+-(void)tableBuildInsertSqlArray:(NSMutableArray<SQLiteLanguage *> *)sqlArray
+             andForeignKeyValue:(NSString *)foreignKeyValue
+           andRecordingOwnValue:(NSString *)recordingOwnValue{
     Class class=self.class;
     NSArray *fieldArray =[self propertyInforArray];
     SQLiteLanguage *sql =SQLlang;
@@ -291,13 +324,17 @@
     NSString *primaryKey=[self.class table_PrimaryKey];
     if ([self table_PrimaryKeyIsDefault]) {
         [columns addObject:primaryKey];
-        [values addObject:primaryValue];
+        [values addObject:[NSString stringWithFormat:@"'%@'",primaryValue]];
     }
     //外键值设置
     if (foreignKeyValue) {
         NSString *foreignKey=[self.class table_ForeignKey];
         [columns addObject:foreignKey];
-        [values addObject:foreignKeyValue];
+        [values addObject:[NSString stringWithFormat:@"'%@'",foreignKeyValue]];
+    }
+    if (recordingOwnValue) {
+        [columns addObject:SQLITE_TABLE_RecordingOwn_KEY];
+        [values addObject:[NSString stringWithFormat:@"'%@'",recordingOwnValue]];
     }
     
     for (NSInteger i=0; i<fieldArray.count; i++) {
@@ -332,6 +369,8 @@
             id value=[self valueForKey:propertyName];
             if (value) {
                 NSDictionary *valueDic=@{
+                                         PropertyType:propertyType,
+                                         PropertyName:propertyName,
                                          SQLITE_TABLE_FOREIGNKEY_ID:primaryValue,
                                          SQLITE_VALUE_DICTIONARY_KEY:value
                                          };
@@ -342,6 +381,8 @@
             id value=[self valueForKey:propertyName];
             if (value) {
                 NSDictionary *valueDic=@{
+                                         PropertyType:propertyType,
+                                         PropertyName:propertyName,
                                          SQLITE_TABLE_FOREIGNKEY_ID:primaryValue,
                                          SQLITE_VALUE_DICTIONARY_KEY:value
                                          };
@@ -351,9 +392,18 @@
     }
     [sql.COLUMNS([columns componentsJoinedByString:@","],nil).VALUES([values componentsJoinedByString:@","],nil) SEMICOLON];
     [sqlArray addObject:sql];
-    
     [subTableArray enumerateObjectsUsingBlock:^(NSDictionary * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        [obj[SQLITE_VALUE_DICTIONARY_KEY] tableBuildInsertSqlArray:sqlArray andForeignKeyValue:SQLITE_TABLE_FOREIGNKEY_ID];
+        NSString *propertyType=obj[PropertyType];
+        NSString *propertyName=obj[PropertyName];
+        NSString *foreignKeyValue=obj[SQLITE_TABLE_FOREIGNKEY_ID];
+        id value=obj[SQLITE_VALUE_DICTIONARY_KEY];
+        if ([NSString isArrayType:propertyType]) {
+            [value enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                [obj tableBuildInsertSqlArray:sqlArray andForeignKeyValue:foreignKeyValue andRecordingOwnValue:propertyName];
+            }];
+        }else{
+            [value tableBuildInsertSqlArray:sqlArray andForeignKeyValue:foreignKeyValue andRecordingOwnValue:propertyName];
+        }
     }];
 }
 -(BOOL)table_PrimaryKeyIsDefault{
