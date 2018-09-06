@@ -8,8 +8,12 @@
         self.salesOrderParts=[[NSMutableArray alloc] init];
         for(id object in value){
             SalesOrderParts *obj=[[SalesOrderParts alloc] init];
-            [obj setValuesForKeysWithDictionary:object];
-            [self.salesOrderParts addObject:obj];
+            if ([value isKindOfClass:[SalesOrderParts class]]) {
+                [obj setValuesForKeysWithDictionary:value];
+                [self.salesOrderParts addObject:obj];
+            }else{
+                [super setValue:value forKey:key];
+            }
         }
     }else{
         [super setValue:value forKey:key];

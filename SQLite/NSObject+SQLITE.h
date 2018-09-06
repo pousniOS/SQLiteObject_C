@@ -17,12 +17,20 @@
  需要在创建表的Model类里重写该方法来设置db文件路径,否则默认为沙盒路径下的SQLIT_DATABASEE.db
  **/
 +(NSString *)dbPath;
+/**
+ 查看数据库里的表的定义
+ **/
++(NSArray *)db_seeTables;
 /**判断表是否存在**/
 +(BOOL)tableIsExist;
 /**创建表**/
 +(BOOL)tableCreate;
 /**将数据插入表中**/
 -(BOOL)table_Insert;
+/**根据条件获取数据库里的数据**/
++(NSArray *)table_SelectWithCondition:(SQLiteLanguage *)condition;
+/**从模型对象里获取数据**/
+-(BOOL)table_SelectWithPropertyName:(NSString *)propertyName andCondition:(SQLiteLanguage *)condition;
 /**获取model类创建的表**/
 +(NSArray<NSString *>*)getTables;
 /**删除表**/
@@ -43,19 +51,7 @@
  **/
 +(NSDictionary*)table_ArrayPropertyNameAndElementTypeDictionary;
 /**
- 在Model类重写该方法设置主键
+ 在Model类重写该方法设置主键字段填充的值（主键的默认值为uuid）
  **/
-+(NSString*)table_PrimaryKey;
-/**
- 在Model类重写该方法设置外键
- **/
-+(NSString*)table_ForeignKey;
-/**
- 重写改方法设置表的外键来源的的表名称
- **/
-+(NSString*)table_ForeignKeyFromKey;
-/**
- 重写改方法设置表的外键来源的表
- **/
-+(NSString*)table_ForeignKeyFromTable;
++(NSString*)table_PrimaryKeyValueSetProperty;
 @end

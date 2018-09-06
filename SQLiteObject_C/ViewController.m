@@ -13,16 +13,92 @@
 #import "NSObject+Dictionary.h"
 
 @interface ViewController ()
-
+<
+UITableViewDelegate,
+UITableViewDataSource
+>
+@property(nonatomic,strong)UITableView *tableView;
+@property(nonatomic,retain)NSMutableArray *dataArray;
 @end
 
 @implementation ViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    [TEST tableDropAll];
-    [TEST tableCreate];
-    
+    [self.view addSubview:self.tableView];
+}
+
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return self.dataArray.count;
+}
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    UITableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:@"UITableViewCell"];
+    if (!cell) {
+        cell=[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UITableViewCell"];
+    }
+    cell.textLabel.text=self.dataArray[indexPath.row];
+    return cell;
+}
+-(CGFloat )tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 44.0f;
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    UITableViewCell *cell=[tableView cellForRowAtIndexPath:indexPath];
+    NSString *code=cell.textLabel.text;
+    if ([code isEqualToString:@"查看数据库表结构"]) {
+        [self db_seeTables];
+    }else if ([code isEqualToString:@"创建表"]) {
+        [self table_create];
+    }else if ([code isEqualToString:@"删除表"]){
+        [self table_drop];
+    }else if ([code isEqualToString:@"表插入数据"]){
+        [self table_insert];
+    }else if ([code isEqualToString:@"数据查询"]){
+        [self table_select];
+    }
+}
+#pragma mark - ====== Get ======
+-(NSMutableArray *)dataArray{
+    if (!_dataArray) {
+        _dataArray=[[NSMutableArray alloc] init];
+        [_dataArray addObject:@"查看数据库表结构"];
+        [_dataArray addObject:@"创建表"];
+        [_dataArray addObject:@"删除表"];
+        [_dataArray addObject:@"表插入数据"];
+        [_dataArray addObject:@"数据查询"];
+    }
+    return _dataArray;
+}
+-(UITableView *)tableView{
+    if (!_tableView) {
+        _tableView=[[UITableView alloc] initWithFrame:self.view.bounds];
+        _tableView.delegate=self;
+        _tableView.dataSource=self;
+    }
+    return _tableView;
+}
+#pragma mark - ====== "NSString+SQLITE.h"测试函数 ======
+-(void)table_create{
+    if ([TEST tableCreate]) {
+        NSLog(@"创建成功");
+    }else{
+        NSLog(@"表创建失败");
+    }
+}
+-(void)table_drop{
+    if ([TEST tableDropAll]) {
+        NSLog(@"删除成功");
+    }else{
+        NSLog(@"删除失败");
+    }
+}
+-(void)table_insert{
     //给test对象赋值（注意填写正确的文件路径）
     NSString *str=[NSString stringWithContentsOfFile:@"/Users/POSUN/Documents/SQLiteObject_C/SQLiteObject_C/Model/TestJson.json" encoding:NSUTF8StringEncoding error:nil];
     
@@ -34,51 +110,32 @@
                                                           error:&error];
     TEST *test=[[TEST alloc] init];
     [test setValuesForKeysWithDictionary:dic];
-    
-    
-    NSLog(@"%lu",[test table_Insert]);
-    
-    
-    
-//    TEST *test =[[TEST alloc] init];
-//    [test table_Insert];
-//    [TEST tableDropAll];
-
-
-
-    
-    
-    [SHARESQLITEObjectC openWithFilePath:[NSObject dbPath]];
-    
-    SQLiteLanguage *sql=SQLlang;
-    sql.SELECT(@"*",nil).FROM(@"TEST");
-    [SHARESQLITEObjectC execSQLL:sql result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
-        NSLog(@"%@",resultArray);
+    if ([test table_Insert]) {
+        NSLog(@"插入成功");
+    }else{
+        NSLog(@"插入失败");
+    }
+}
+-(void)db_seeTables{
+    NSLog(@"%@",[TEST db_seeTables]);
+}
+-(void)table_select{
+    NSArray<TEST *> *array=[TEST table_SelectWithCondition:nil];
+    [array enumerateObjectsUsingBlock:^(TEST * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [obj table_SelectWithPropertyName:@"salesOrder" andCondition:nil];
+        NSLog(@"%@",obj.salesOrder);
+        [obj.salesOrder table_SelectWithPropertyName:@"salesOrderParts" andCondition:nil];
+        NSLog(@"%@",obj.salesOrder.salesOrderParts);
+        
+        
+        [obj.salesOrder.salesOrderParts enumerateObjectsUsingBlock:^(SalesOrderParts * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            [obj table_SelectWithPropertyName:@"goods" andCondition:nil];
+            NSLog(@"%@",obj.goods);
+        }];
     }];
-    sql=SQLlang;
-    sql.SELECT(@"*",nil).FROM(@"SalesRefund");
-    [SHARESQLITEObjectC execSQLL:sql result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
-        NSLog(@"%@",resultArray);
-    }];
-    
-    
-    sql=SQLlang.SELECT(@"*",nil).FROM(@"sqlite_master");
-    [SHARESQLITEObjectC execSQLL:sql result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
-        NSLog(@"%@",resultArray);
-    }];
-    [SHARESQLITEObjectC close];
 }
 
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-
-
-
-#pragma mark - ====== 测试函数 ======
+#pragma mark - ====== SQLiteLanguage测试函数 ======
 #pragma mark - 1.打开数据库，通过SQLITEObjectC类的单例来创建数据库连接：
 void openDB(){
     NSString *pathStr =[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingString:@"/TEST.db"];
@@ -146,7 +203,6 @@ void ORDERBY(){
         
     }];
 }
-
 #pragma mark - 10.事务：
 void Transaction(){
     NSLog(@"start:%@",[NSDate date]);
@@ -161,4 +217,7 @@ void Transaction(){
     }];
     NSLog(@"end:%@",[NSDate date]);
 }
+
+
+
 @end

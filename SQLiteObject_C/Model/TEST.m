@@ -6,10 +6,18 @@
 -(void)setValue:(id)value forKey:(NSString *)key{
     if([key isEqualToString:@"salesOrder"]){
         self.salesOrder=[[SalesOrder alloc] init];
-        [self.salesOrder setValuesForKeysWithDictionary:value];
+        if ([value isKindOfClass:[NSDictionary class]]) {
+            [self.salesOrder setValuesForKeysWithDictionary:value];
+        }else{
+            [super setValue:value forKey:key];
+        }
     }else if([key isEqualToString:@"salesRefund"]){
         self.salesRefund=[[SalesRefund alloc] init];
-        [self.salesRefund setValuesForKeysWithDictionary:value];
+        if ([value isKindOfClass:[NSDictionary class]]) {
+            [self.salesRefund setValuesForKeysWithDictionary:value];
+        }else{
+            [super setValue:value forKey:key];
+        }
     }else{
         [super setValue:value forKey:key];
         
