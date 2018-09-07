@@ -283,6 +283,9 @@ const static char SqliteTableRecordingOwnKey='\0';
     return nil;
 }
 
+-(BOOL)table_Delete{
+    return nil;
+}
 -(BOOL)table_Insert{
     NSMutableArray<SQLiteLanguage *> *sqlArray=[[NSMutableArray alloc] init];
     [self tableBuildInsertSqlArray:sqlArray andForeignKeyValue:nil andRecordingOwnValue:nil];
@@ -406,6 +409,7 @@ const static char SqliteTableRecordingOwnKey='\0';
 }
 +(NSArray *)table_SelectWithCondition:(SQLiteLanguage *)condition{
     SQLiteLanguage *sqll=SQLlang.SELECT(@"*",nil).FROM([self tableName]);
+    
     sqll.APPEND(condition);
     [self dbOpen];
     __block NSMutableArray *resultArr=[[NSMutableArray alloc] init];

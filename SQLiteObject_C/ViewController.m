@@ -126,8 +126,6 @@ UITableViewDataSource
         NSLog(@"%@",obj.salesOrder);
         [obj.salesOrder table_SelectWithPropertyName:@"salesOrderParts" andCondition:nil];
         NSLog(@"%@",obj.salesOrder.salesOrderParts);
-        
-        
         [obj.salesOrder.salesOrderParts enumerateObjectsUsingBlock:^(SalesOrderParts * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             [obj table_SelectWithPropertyName:@"goods" andCondition:nil];
             NSLog(@"%@",obj.goods);

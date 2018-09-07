@@ -464,7 +464,6 @@ static NSString *const SQL_AUTOINCREMENT=@"AUTOINCREMENT";
         SQLlStrAppendAndSPACE(value);
         return self;
     };
-    
 }
 #pragma mark ============ 事务 ============
 -(SQLiteLanguage *)BEGIN{

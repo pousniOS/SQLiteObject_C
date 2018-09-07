@@ -21,17 +21,33 @@
  查看数据库里的表的定义
  **/
 +(NSArray *)db_seeTables;
-/**判断表是否存在**/
+/**
+ Model类调用该方判断表是否存在
+ **/
 +(BOOL)tableIsExist;
-/**创建表**/
+/**
+ Model类调用该方法创建表
+ **/
 +(BOOL)tableCreate;
-/**将数据插入表中**/
+/**
+ Model类对象调用该方法将数据插入表中
+ **/
 -(BOOL)table_Insert;
-/**根据条件获取数据库里的数据**/
+/**
+ Model类对象调用该方法删除表中数据
+ **/
+-(BOOL)table_Delete;
+/**
+ Model类调用该方法获取通过condition筛选获取数据
+ **/
 +(NSArray *)table_SelectWithCondition:(SQLiteLanguage *)condition;
-/**从模型对象里获取数据**/
+/**
+ Model类调用该方法出入需要获取数据的属性名和condition筛选获取数据
+ **/
 -(BOOL)table_SelectWithPropertyName:(NSString *)propertyName andCondition:(SQLiteLanguage *)condition;
-/**获取model类创建的表**/
+/**
+ Model类调用该方法获取创建的表
+ **/
 +(NSArray<NSString *>*)getTables;
 /**删除表**/
 +(BOOL)tableDrop;
