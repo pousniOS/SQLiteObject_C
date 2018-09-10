@@ -65,7 +65,7 @@
  如果Model类里有数组类型的属性那么需要重写该方法知道数组里装的是什么类型的数据，
  否则创建的表将没有这属性的字段
  **/
-+(NSDictionary*)table_ArrayPropertyNameAndElementTypeDictionary;
++(NSDictionary*)table_PropertyNameAndElementTypeDictionary;
 /**
  在Model类重写该方法设置主键字段填充的值（主键的默认值为uuid）
  **/

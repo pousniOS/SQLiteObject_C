@@ -299,7 +299,7 @@ const static char SqliteTableRecordingOwnKey='\0';
     BOOL flag=NO;
     [self.class dbOpen];
     flag=[SHARESQLITEObjectC execSQLL:sql result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
-        
+        NSLog(@"%@",errorInfor);
     }];
     [self.class dbClose];
     return flag;
@@ -314,7 +314,7 @@ const static char SqliteTableRecordingOwnKey='\0';
     NSMutableArray *columns=[[NSMutableArray  alloc] init];
     NSMutableArray *values=[[NSMutableArray  alloc] init];
     NSMutableArray<NSDictionary *> *subTableArray=[[NSMutableArray alloc] init];
-    
+
     //主键值设置
     NSString *primaryValue=nil;
     NSString *key=[self.class table_PrimaryKeyValueSetProperty];
@@ -420,10 +420,26 @@ const static char SqliteTableRecordingOwnKey='\0';
             object.sqliteTablePrimaryKeyID=obj[SQLITE_TABLE_PRIMARYKEY_ID];
             object.sqliteTableForeignKeyID=obj[SQLITE_TABLE_FOREIGNKEY_ID];
             object.sqliteTableRecordingOwnKey=obj[SQLITE_TABLE_RecordingOwn_KEY];
+            
+            
+            NSArray<NSDictionary *> *propertyArray =[self propertyInforArray];
+            [propertyArray enumerateObjectsUsingBlock:^(NSDictionary * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                if(![NSObject isCFNumberType:obj[PropertyType]]&&
+                   ![NSObject isCNumberType:obj[PropertyType]]&&
+                   ![NSObject isDictionaryType:obj[PropertyType]]&&
+                   ![NSObject isStringType:obj[PropertyType]]&&
+                   ![NSObject isValueType:obj[PropertyType]]){
+                    [object table_SelectWithPropertyName:obj[PropertyName] andCondition:nil];
+                }
+            }];
+            
+            
             [resultArr addObject:object];
         }];
     }];
     [self dbClose];
+    
+
     return resultArr;
 }
 -(BOOL)table_SelectWithPropertyName:(NSString *)propertyName andCondition:(SQLiteLanguage *)condition{
@@ -436,8 +452,6 @@ const static char SqliteTableRecordingOwnKey='\0';
     }
     Class class=NSClassFromString(tableType);
     SQLiteLanguage *sqll=SQLlang.SELECT(@"*",nil).FROM([class tableName]);
-    
-    
     
     NSString *tj0=[NSString stringWithFormat:@"%@='%@'",SQLITE_TABLE_FOREIGNKEY_ID,self.sqliteTablePrimaryKeyID];
     NSString *tj1=[NSString stringWithFormat:@"%@='%@'",SQLITE_TABLE_RecordingOwn_KEY,propertyName];
@@ -467,6 +481,20 @@ const static char SqliteTableRecordingOwnKey='\0';
     }else{
         [self setValue:[resultArr firstObject] forKey:propertyName];
     }
+    
+    [resultArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSObject *object=obj;
+        NSArray<NSDictionary *> *propertyArray =[object.class propertyInforArray];
+        [propertyArray enumerateObjectsUsingBlock:^(NSDictionary * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if(![NSObject isCFNumberType:obj[PropertyType]]&&
+               ![NSObject isCNumberType:obj[PropertyType]]&&
+               ![NSObject isDictionaryType:obj[PropertyType]]&&
+               ![NSObject isStringType:obj[PropertyType]]&&
+               ![NSObject isValueType:obj[PropertyType]]){
+                [object table_SelectWithPropertyName:obj[PropertyName] andCondition:nil];
+            }
+        }];
+    }];
     
     [self.class dbClose];
     return result;

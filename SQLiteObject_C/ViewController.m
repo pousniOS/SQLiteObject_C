@@ -26,6 +26,9 @@ UITableViewDataSource
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.view addSubview:self.tableView];
+    
+
+    
 }
 
 
@@ -122,15 +125,21 @@ UITableViewDataSource
 -(void)table_select{
     NSArray<TEST *> *array=[TEST table_SelectWithCondition:nil];
     [array enumerateObjectsUsingBlock:^(TEST * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        [obj table_SelectWithPropertyName:@"salesOrder" andCondition:nil];
-        NSLog(@"%@",obj.salesOrder);
-        [obj.salesOrder table_SelectWithPropertyName:@"salesOrderParts" andCondition:nil];
-        NSLog(@"%@",obj.salesOrder.salesOrderParts);
-        [obj.salesOrder.salesOrderParts enumerateObjectsUsingBlock:^(SalesOrderParts * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            [obj table_SelectWithPropertyName:@"goods" andCondition:nil];
-            NSLog(@"%@",obj.goods);
-        }];
+        NSLog(@"%@",[obj toDictionary]);
     }];
+//    [array enumerateObjectsUsingBlock:^(TEST * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//        TEST *test=obj;
+//        [obj table_SelectWithPropertyName:@"salesOrder" andCondition:nil];
+//        NSLog(@"%@",obj.salesOrder);
+//        [obj.salesOrder table_SelectWithPropertyName:@"salesOrderParts" andCondition:nil];
+//        NSLog(@"%@",obj.salesOrder.salesOrderParts);
+//        [obj.salesOrder.salesOrderParts enumerateObjectsUsingBlock:^(SalesOrderParts * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//            [obj table_SelectWithPropertyName:@"goods" andCondition:nil];
+//            NSLog(@"%@",obj.goods);
+//        }];
+//        NSLog(@"%@",[test toDictionary]);
+//        NSLog(@"%@",[test toDictionary]);
+//    }];
 }
 
 #pragma mark - ====== SQLiteLanguage测试函数 ======
@@ -215,7 +224,4 @@ void Transaction(){
     }];
     NSLog(@"end:%@",[NSDate date]);
 }
-
-
-
 @end

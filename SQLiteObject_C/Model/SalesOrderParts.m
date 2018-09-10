@@ -14,5 +14,9 @@
     }else{
         [super setValue:value forKey:key];
     }
-}@end
+}
++(NSDictionary *)table_PropertyNameAndElementTypeDictionary{
+    return @{@"salesOrderParts":@"SalesOrderParts"};
+}
+@end
 
