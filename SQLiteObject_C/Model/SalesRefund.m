@@ -14,14 +14,13 @@
             }else{
                 [super setValue:value forKey:key];
             }
-
         }
     }else{
         [super setValue:value forKey:key];
         
     }
 }
-+(NSDictionary *)table_ArrayPropertyNameAndElementTypeDictionary{
++(NSDictionary *)table_PropertyNameAndElementTypeDictionary{
     return @{@"salesOrderParts":@"SalesOrderParts"};
 }
 @end

@@ -42,6 +42,14 @@ int callback(void *para,int ncolumn,char ** columnvalue,char *columnname[]);
         return NO;
     }
 }
+
+-(BOOL)execByTRANSACTIONWithSQLL:(SQLiteLanguage *)SQLL result:(void(^)(NSString *errorInfor,NSArray<NSDictionary *> *resultArray))result{
+    SQLiteLanguage *sqll =[SQLlang.BEGIN.TRANSACTION SEMICOLON];
+    sqll.APPEND(SQLL);
+    [sqll.COMMIT SEMICOLON];
+    return [self execSQLL:sqll result:result];
+}
+
 -(BOOL)execSQLL:(SQLiteLanguage *)SQLL result:(void(^)(NSString *errorInfor,NSArray<NSDictionary *> *resultArray))result{
     char *errmsg=NULL;
     NSArray *execSQLResultArray=[[NSMutableArray alloc] init];

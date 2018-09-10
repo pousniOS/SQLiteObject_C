@@ -20,7 +20,7 @@
         
     }
 }
-+(NSDictionary *)table_ArrayPropertyNameAndElementTypeDictionary{
++(NSDictionary *)table_PropertyNameAndElementTypeDictionary{
     return @{@"salesOrderParts":@"SalesOrderParts"};
 }
 @end

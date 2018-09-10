@@ -462,6 +462,8 @@ const static char SqliteTableRecordingOwnKey='\0';
     [self.class dbOpen];
     __block NSMutableArray *resultArr=[[NSMutableArray alloc] init];
     NSLog(@"%@",sqll.sql);
+    
+    
     BOOL result =[SHARESQLITEObjectC execSQLL:sqll result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
         [resultArray enumerateObjectsUsingBlock:^(NSDictionary * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             NSObject *object =[[class alloc] init];

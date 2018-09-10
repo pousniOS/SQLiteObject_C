@@ -123,7 +123,7 @@ UITableViewDataSource
     NSLog(@"%@",[TEST db_seeTables]);
 }
 -(void)table_select{
-    NSArray<TEST *> *array=[TEST table_SelectWithCondition:nil];
+    NSArray<TEST *> *array=[TEST table_SelectWithCondition:nil IsToGetAll:YES];
     [array enumerateObjectsUsingBlock:^(TEST * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         NSLog(@"%@",[obj toDictionary]);
     }];
