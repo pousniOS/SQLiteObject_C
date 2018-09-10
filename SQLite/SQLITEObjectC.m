@@ -52,6 +52,7 @@ int callback(void *para,int ncolumn,char ** columnvalue,char *columnname[]);
         if (errmsg==NULL) {
             result(nil,execSQLResultArray);
         }else{
+            NSLog(@"%@",[NSString stringWithUTF8String:errmsg]);
             result([NSString stringWithUTF8String:errmsg],execSQLResultArray);
         }
         return NO;

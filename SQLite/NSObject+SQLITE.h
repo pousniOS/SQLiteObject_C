@@ -10,41 +10,46 @@
 #import "SQLITEObjectC.h"
 #import "NSString+SQLITE.h"
 /**
- 改类别的目的是实现一些可以通过Model文件快速创建数据库一系列相关的表的方法
+    该类别意在实现通过Model类快速创建数SQLITE以及一系列相关联的TABLE，然后通过操作Model类的一系列方法，
+ 快速便捷的对Model对象的数据在SQLITE里进行、查、增、删、改。
  **/
 @interface NSObject (SQLITE)
 /**
- 需要在创建表的Model类里重写该方法来设置db文件路径,否则默认为沙盒路径下的SQLIT_DATABASEE.db
+方法说明：在需要创建表的Model类里可以重写该方法来设置db文件路径,否则默认为沙盒路径下的SQLIT_DATABASEE.db
  **/
 +(NSString *)dbPath;
 /**
- 查看数据库里的表的定义
+ 方法说明：查看数据库里的所有表的定义。
  **/
 +(NSArray *)db_seeTables;
 /**
- Model类调用该方判断表是否存在
+ 方法说明：判断表是否存在。
  **/
 +(BOOL)tableIsExist;
 /**
- Model类调用该方法创建表
+  方法说明：创建表。
  **/
 +(BOOL)tableCreate;
 /**
- Model类对象调用该方法将数据插入表中
+ 方法说明：将数据插入到表里。
  **/
 -(BOOL)table_Insert;
 /**
- Model类对象调用该方法删除表中数据
+ 方法说明：删除表里的数据。
  **/
 -(BOOL)table_Delete;
 /**
- Model类调用该方法获取通过condition筛选获取数据
+ 方法说明：查询表里的数据；
+ 参数说明：condition 查询条件、falg是否把自定义类类型的属性值也同时查询出来；
+ 备注：建议falg传入NO需要时在调用”-(BOOL)table_SelectWithPropertyName:(NSString *)propertyName andCondition:(SQLiteLanguage *)condition IsToGetAll:(BOOL)falg“方法获取。
  **/
-+(NSArray *)table_SelectWithCondition:(SQLiteLanguage *)condition;
++(NSArray *)table_SelectWithCondition:(SQLiteLanguage *)condition IsToGetAll:(BOOL)falg;
 /**
- Model类调用该方法出入需要获取数据的属性名和condition筛选获取数据
+ 方法说明：查询表里的数据；
+ 参数说明：condition 查询条件、falg是否把自定义类类型的属性值也同时查询出来；
+    备注：建议falg传入NO需要时在继续”-(BOOL)table_SelectWithPropertyName:(NSString *)propertyName andCondition:(SQLiteLanguage *)condition IsToGetAll:(BOOL)falg“调用方法获取
  **/
--(BOOL)table_SelectWithPropertyName:(NSString *)propertyName andCondition:(SQLiteLanguage *)condition;
+-(BOOL)table_SelectWithPropertyName:(NSString *)propertyName andCondition:(SQLiteLanguage *)condition IsToGetAll:(BOOL)falg;
 /**
  Model类调用该方法获取创建的表
  **/
