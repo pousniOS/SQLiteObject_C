@@ -66,7 +66,11 @@ UITableViewDataSource
         [self table_select];
     }else if ([code isEqualToString:@"删除数据"]){
         [self table_delete];
+    }else if ([code isEqualToString:@"更新数据"]){
+        [self table_update];
     }
+    
+    
     
     
 }
@@ -80,6 +84,8 @@ UITableViewDataSource
         [_dataArray addObject:@"表插入数据"];
         [_dataArray addObject:@"数据查询"];
         [_dataArray addObject:@"删除数据"];
+        [_dataArray addObject:@"更新数据"];
+
 
     }
     return _dataArray;
@@ -104,6 +110,20 @@ UITableViewDataSource
     [TEST table_DeleteWithCondition:nil IsAssociation:YES];
 }
 
+-(void)table_update{
+    NSArray<TEST *> *array=[TEST table_SelectWithCondition:nil IsAssociation:YES];
+    [array enumerateObjectsUsingBlock:^(TEST * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        obj.ID=@"120702010011";
+        obj.salesOrder.assistant1=@"120702010011";
+
+        [obj.salesOrder.salesOrderParts enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            SalesOrderParts *model=obj;
+            model.goods.partName=@"120702010011";
+            model.partRecId=@"120702010011";
+        }];
+        [obj table_UpdateWithIsAssociation:YES];
+    }];
+}
 -(void)table_drop{
     if ([TEST tableDropAll]) {
         NSLog(@"删除成功");

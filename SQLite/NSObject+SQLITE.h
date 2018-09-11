@@ -46,19 +46,22 @@
     备注：建议falg传入NO需要时在继续”-(BOOL)table_SelectWithPropertyName:(NSString *)propertyName andCondition:(SQLiteLanguage *)condition IsToGetAll:(BOOL)falg“调用方法获取
  **/
 -(BOOL)table_SelectWithPropertyName:(NSString *)propertyName andCondition:(SQLiteLanguage *)condition IsAssociation:(BOOL)falg;
-
 /**
- 方法说明：查询表里的数据；
+ 方法说明：删除表里的数据；
  参数说明：condition 删除条件、falg是否把自定义类类型的属性值也同时删除；
  **/
 +(BOOL)table_DeleteWithCondition:(SQLiteLanguage *)condition IsAssociation:(BOOL)falg;
 /**
- 方法说明：查询表里的数据；
+ 方法说明：删除表里的数据；
  参数说明：condition 删除条件、falg是否把自定义类类型的属性值也同时删除；
  **/
 -(BOOL)table_DeleteWithCondition:(SQLiteLanguage *)condition IsAssociation:(BOOL)falg;
 
-
+/**
+ 方法说明：更新表里的数据；
+ 参数说明：falg是否把自定义类类型的属性值也同时更新；
+ **/
+-(BOOL)table_UpdateWithIsAssociation:(BOOL)falg;
 /**
  Model类调用该方法获取创建的表
  **/
