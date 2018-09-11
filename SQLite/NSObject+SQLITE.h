@@ -35,21 +35,30 @@
  **/
 -(BOOL)table_Insert;
 /**
- 方法说明：删除表里的数据。
- **/
--(BOOL)table_Delete;
-/**
  方法说明：查询表里的数据；
  参数说明：condition 查询条件、falg是否把自定义类类型的属性值也同时查询出来；
  备注：建议falg传入NO需要时在调用”-(BOOL)table_SelectWithPropertyName:(NSString *)propertyName andCondition:(SQLiteLanguage *)condition IsToGetAll:(BOOL)falg“方法获取。
  **/
-+(NSArray *)table_SelectWithCondition:(SQLiteLanguage *)condition IsToGetAll:(BOOL)falg;
++(NSArray *)table_SelectWithCondition:(SQLiteLanguage *)condition IsAssociation:(BOOL)falg;
 /**
  方法说明：查询表里的数据；
  参数说明：condition 查询条件、falg是否把自定义类类型的属性值也同时查询出来；
     备注：建议falg传入NO需要时在继续”-(BOOL)table_SelectWithPropertyName:(NSString *)propertyName andCondition:(SQLiteLanguage *)condition IsToGetAll:(BOOL)falg“调用方法获取
  **/
--(BOOL)table_SelectWithPropertyName:(NSString *)propertyName andCondition:(SQLiteLanguage *)condition IsToGetAll:(BOOL)falg;
+-(BOOL)table_SelectWithPropertyName:(NSString *)propertyName andCondition:(SQLiteLanguage *)condition IsAssociation:(BOOL)falg;
+
+/**
+ 方法说明：查询表里的数据；
+ 参数说明：condition 删除条件、falg是否把自定义类类型的属性值也同时删除；
+ **/
++(BOOL)table_DeleteWithCondition:(SQLiteLanguage *)condition IsAssociation:(BOOL)falg;
+/**
+ 方法说明：查询表里的数据；
+ 参数说明：condition 删除条件、falg是否把自定义类类型的属性值也同时删除；
+ **/
+-(BOOL)table_DeleteWithCondition:(SQLiteLanguage *)condition IsAssociation:(BOOL)falg;
+
+
 /**
  Model类调用该方法获取创建的表
  **/

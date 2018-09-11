@@ -64,7 +64,11 @@ UITableViewDataSource
         [self table_insert];
     }else if ([code isEqualToString:@"数据查询"]){
         [self table_select];
+    }else if ([code isEqualToString:@"删除数据"]){
+        [self table_delete];
     }
+    
+    
 }
 #pragma mark - ====== Get ======
 -(NSMutableArray *)dataArray{
@@ -75,6 +79,8 @@ UITableViewDataSource
         [_dataArray addObject:@"删除表"];
         [_dataArray addObject:@"表插入数据"];
         [_dataArray addObject:@"数据查询"];
+        [_dataArray addObject:@"删除数据"];
+
     }
     return _dataArray;
 }
@@ -94,6 +100,10 @@ UITableViewDataSource
         NSLog(@"表创建失败");
     }
 }
+-(void)table_delete{
+    [TEST table_DeleteWithCondition:nil IsAssociation:YES];
+}
+
 -(void)table_drop{
     if ([TEST tableDropAll]) {
         NSLog(@"删除成功");
@@ -123,7 +133,7 @@ UITableViewDataSource
     NSLog(@"%@",[TEST db_seeTables]);
 }
 -(void)table_select{
-    NSArray<TEST *> *array=[TEST table_SelectWithCondition:nil IsToGetAll:YES];
+    NSArray<TEST *> *array=[TEST table_SelectWithCondition:nil IsAssociation:YES];
     [array enumerateObjectsUsingBlock:^(TEST * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         NSLog(@"%@",[obj toDictionary]);
     }];
