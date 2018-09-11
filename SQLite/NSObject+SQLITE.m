@@ -86,7 +86,6 @@ const static char SqliteTableRecordingOwnKey='\0';
     SQLiteLanguage *sql =SQLlang;
     sql.columnName(SQLITE_TABLE_RecordingOwn_KEY);
     [sql.TEXT COMMA];
-    
 
     NSMutableSet *subTableSet=[[NSMutableSet alloc] init];
     for (NSInteger i=0; i<fieldArray.count; i++) {
