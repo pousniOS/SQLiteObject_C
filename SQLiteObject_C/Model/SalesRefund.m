@@ -20,7 +20,7 @@
         
     }
 }
-+(NSDictionary *)table_PropertyNameAndElementTypeDictionary{
++(NSDictionary *)sqlite_tablePropertyNameAndElementTypeDictionary{
     return @{@"salesOrderParts":@"SalesOrderParts"};
 }
 @end

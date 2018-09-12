@@ -100,18 +100,18 @@ UITableViewDataSource
 }
 #pragma mark - ====== "NSString+SQLITE.h"测试函数 ======
 -(void)table_create{
-    if ([TEST tableCreate]) {
+    if ([TEST sqlite_tableCreateWithIsAssociation:YES]) {
         NSLog(@"创建成功");
     }else{
         NSLog(@"表创建失败");
     }
 }
 -(void)table_delete{
-    [TEST table_DeleteWithCondition:nil IsAssociation:YES];
+    [TEST sqlite_tableDeleteWithCondition:nil IsAssociation:YES];
 }
 
 -(void)table_update{
-    NSArray<TEST *> *array=[TEST table_SelectWithCondition:nil IsAssociation:YES];
+    NSArray<TEST *> *array=[TEST sqlite_tableSelectWithCondition:nil IsAssociation:YES];
     [array enumerateObjectsUsingBlock:^(TEST * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         obj.ID=@"120702010011";
         obj.salesOrder.assistant1=@"120702010011";
@@ -121,11 +121,11 @@ UITableViewDataSource
             model.goods.partName=@"120702010011";
             model.partRecId=@"120702010011";
         }];
-        [obj table_UpdateWithIsAssociation:YES];
+        [obj sqlite_tableUpdateWithIsAssociation:YES];
     }];
 }
 -(void)table_drop{
-    if ([TEST tableDropAll]) {
+    if ([TEST sqlite_tableDropIsAssociation:YES]) {
         NSLog(@"删除成功");
     }else{
         NSLog(@"删除失败");
@@ -143,17 +143,17 @@ UITableViewDataSource
                                                           error:&error];
     TEST *test=[[TEST alloc] init];
     [test setValuesForKeysWithDictionary:dic];
-    if ([test table_Insert]) {
+    if ([test sqlite_tableInsertWithIsAssociation:YES]) {
         NSLog(@"插入成功");
     }else{
         NSLog(@"插入失败");
     }
 }
 -(void)db_seeTables{
-    NSLog(@"%@",[TEST db_seeTables]);
+    NSLog(@"%@",[TEST sqlite_dbSeeTables]);
 }
 -(void)table_select{
-    NSArray<TEST *> *array=[TEST table_SelectWithCondition:nil IsAssociation:YES];
+    NSArray<TEST *> *array=[TEST sqlite_tableSelectWithCondition:nil IsAssociation:YES];
     [array enumerateObjectsUsingBlock:^(TEST * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         NSLog(@"%@",[obj toDictionary]);
     }];

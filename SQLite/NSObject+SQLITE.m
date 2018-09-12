@@ -40,13 +40,13 @@ const static char SqliteTableRecordingOwnKey='\0';
 @end
 
 @implementation NSObject (SQLITE)
-+(NSString *)dbPath{
++(NSString *)sqlite_dbPath{
     return [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingString:[NSString stringWithFormat:@"/%@",SQLITE_DATABASEE]];
 }
-+(BOOL)tableIsExist{
-    SQLiteLanguage *sql=SQLlang.SELECT(@"count(*)",nil).FROM(@"sqlite_master").WHERE(@"type='table'").AND([NSString stringWithFormat:@"tbl_name='%@'",[self tableName]]);
++(BOOL)sqlite_tableIsExist{
+    SQLiteLanguage *sql=SQLlang.SELECT(@"count(*)",nil).FROM(@"sqlite_master").WHERE(@"type='table'").AND([NSString stringWithFormat:@"tbl_name='%@'",[self sqlite_tableName]]);
     __block BOOL result=NO;
-    [self dbOpen];
+    [self sqlite_dbOpen];
     [SHARESQLITEObjectC execSQLL:sql result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
         if (errorInfor) {
             result=NO;
@@ -55,33 +55,30 @@ const static char SqliteTableRecordingOwnKey='\0';
             result=[dic[@"count(*)"] integerValue];
         }
     }];
-    [self dbClose];
+    [self sqlite_dbClose];
     return result;
 }
 +(NSArray *)analyticalBuildTableField{
     NSArray *fieldArray =[self propertyInforArray];
-    fieldArray=[self filterProperty:[self table_UnconversionProperty]];
+    fieldArray=[self filterProperty:[self sqlite_tableUnconversionProperty]];
     fieldArray=[self checkSetKEY:fieldArray andKey:SQLITE_TABLE_PRIMARYKEY_ID];
     fieldArray=[self checkSetKEY:fieldArray andKey:SQLITE_TABLE_FOREIGNKEY_ID];
     return fieldArray;
 }
-+(BOOL)tableCreate{
++(BOOL)sqlite_tableCreateWithIsAssociation:(BOOL)flag{
     NSMutableArray<NSDictionary *> *tableSqlArray=[[NSMutableArray alloc] init];
-    [self tableBuildTableSqlWithTableSqlArray:tableSqlArray];
+    [self tableBuildTableSqlWithTableSqlArray:tableSqlArray IsAssociation:flag];
     SQLiteLanguage *sqll=SQLlang;
-    [sqll.BEGIN.TRANSACTION SEMICOLON];
     [tableSqlArray enumerateObjectsUsingBlock:^(NSDictionary * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         sqll.APPEND(obj[SQLITE_SQLL_DICTIONARY_KEY]);
     }];
-    [sqll.COMMIT SEMICOLON];
-    NSLog(@"%@",sqll.sql);
-    [self dbOpen];
-    BOOL result=[SHARESQLITEObjectC execSQLL:sqll result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
+    [self sqlite_dbOpen];
+    BOOL result=[SHARESQLITEObjectC execByTransactionWithSQLL:sqll result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
     }];
-    [self dbClose];
+    [self sqlite_dbClose];
     return result;
 }
-+(void)tableBuildTableSqlWithTableSqlArray:(NSMutableArray<NSDictionary*>*)tableSqlArray{
++(void)tableBuildTableSqlWithTableSqlArray:(NSMutableArray<NSDictionary*>*)tableSqlArray IsAssociation:(BOOL)flag{
     NSArray *fieldArray =[self analyticalBuildTableField];
     SQLiteLanguage *sql =SQLlang;
     sql.columnName(SQLITE_TABLE_RecordingOwn_KEY);
@@ -104,7 +101,7 @@ const static char SqliteTableRecordingOwnKey='\0';
             sql.columnName(propertyName);
             [sql REAL];
         }else if ([NSObject isArrayType:propertyType]){
-            NSDictionary *dic=[self table_PropertyNameAndElementTypeDictionary];
+            NSDictionary *dic=[self sqlite_tablePropertyNameAndElementTypeDictionary];
             NSString *type =dic[propertyName];
             [subTableSet addObject:type];
             continue;
@@ -122,51 +119,57 @@ const static char SqliteTableRecordingOwnKey='\0';
             [sql COMMA];
         }
     }
-    __block BOOL falg=NO;
+    __block BOOL fg=NO;
     [tableSqlArray enumerateObjectsUsingBlock:^(NSDictionary * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        if ([obj[SQLITE_TABLE_DICTIONARY_KEY] isEqualToString:[self tableName]]) {
-            falg=YES;
+        if ([obj[SQLITE_TABLE_DICTIONARY_KEY] isEqualToString:[self sqlite_tableName]]) {
+            fg=YES;
             *stop=YES;
         }
     }];
-    if (!falg) {
-        SQLiteLanguage *SQLL=[SQLlang.CREATE.TABLE([self tableName]).COLUMNS(sql,nil) SEMICOLON];
+    if (!fg) {
+        SQLiteLanguage *SQLL=[SQLlang.CREATE.TABLE([self sqlite_tableName]).COLUMNS(sql,nil) SEMICOLON];
         NSDictionary *tableSqlDic=@{
-                                    SQLITE_TABLE_DICTIONARY_KEY:[self tableName],
+                                    SQLITE_TABLE_DICTIONARY_KEY:[self sqlite_tableName],
                                     SQLITE_SQLL_DICTIONARY_KEY:SQLL
                                     };
         [tableSqlArray addObject:tableSqlDic];
     }
-    
-    [subTableSet enumerateObjectsUsingBlock:^(id  _Nonnull obj, BOOL * _Nonnull stop) {
-        Class class=NSClassFromString(obj);
-        [class tableBuildTableSqlWithTableSqlArray:tableSqlArray];
-    }];
+    if (flag) {
+        [subTableSet enumerateObjectsUsingBlock:^(id  _Nonnull obj, BOOL * _Nonnull stop) {
+            Class class=NSClassFromString(obj);
+            [class tableBuildTableSqlWithTableSqlArray:tableSqlArray IsAssociation:flag];
+        }];
+    }
 }
-+(NSArray<NSString *>*)getTables{
++(NSArray<NSString *>*)sqlite_getTablesWithIsAssociation:(BOOL)flag{
     NSMutableArray *tables=[[NSMutableArray alloc] init];
-    [tables addObject:[self tableName]];
-    NSArray *propertys =[self propertyInforArray];
-    [propertys enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        NSString *propertyType=propertys[idx][PropertyType];
-        NSString *propertyName=propertys[idx][PropertyName];
-        if ([NSObject isStringType:propertyType]) {
-        }else if ([NSObject isCNumberType:propertyType]){
-        }else if ([NSObject isCFNumberType:propertyType]){
-        }else if ([NSObject isValueType:propertyType]){
-        }else if ([NSObject isArrayType:propertyType]){//table
-            NSDictionary *dic=[self table_PropertyNameAndElementTypeDictionary];
-            NSString *type =dic[propertyName];
-            Class class=NSClassFromString(type);
-            [self excludeRepeatAddObjects:@[[class tableName]] ToArray:tables];
-            [self excludeRepeatAddObjects:[class getTables] ToArray:tables];
-        }else if ([NSObject isDictionaryType:propertyType]){
-        }else{//table
-            Class class=NSClassFromString(propertyType);
-            [self excludeRepeatAddObjects:@[[class tableName]] ToArray:tables];
-            [self excludeRepeatAddObjects:[class getTables] ToArray:tables];
-        }
-    }];
+    [tables addObject:[self sqlite_tableName]];
+    
+    if (flag) {
+        NSArray *propertys =[self propertyInforArray];
+        [propertys enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            NSString *propertyType=propertys[idx][PropertyType];
+            NSString *propertyName=propertys[idx][PropertyName];
+            if ([NSObject isStringType:propertyType]) {
+            }else if ([NSObject isCNumberType:propertyType]){
+            }else if ([NSObject isCFNumberType:propertyType]){
+            }else if ([NSObject isValueType:propertyType]){
+            }else if ([NSObject isArrayType:propertyType]){//table
+                NSDictionary *dic=[self sqlite_tablePropertyNameAndElementTypeDictionary];
+                NSString *type =dic[propertyName];
+                Class class=NSClassFromString(type);
+                [self excludeRepeatAddObjects:@[[class sqlite_tableName]] ToArray:tables];
+                [self excludeRepeatAddObjects:[class sqlite_getTablesWithIsAssociation:flag] ToArray:tables];
+            }else if ([NSObject isDictionaryType:propertyType]){
+            }else{//table
+                Class class=NSClassFromString(propertyType);
+                [self excludeRepeatAddObjects:@[[class sqlite_tableName]] ToArray:tables];
+                [self excludeRepeatAddObjects:[class sqlite_getTablesWithIsAssociation:flag] ToArray:tables];
+            }
+        }];
+    }
+    
+
     return tables;
 }
 
@@ -179,68 +182,65 @@ const static char SqliteTableRecordingOwnKey='\0';
     }];
 }
 
-+(NSArray *)db_seeTables{
-    [self dbOpen];
++(NSArray *)sqlite_dbSeeTables{
+    [self sqlite_dbOpen];
     SQLiteLanguage* sql=SQLlang.SELECT(@"*",nil).FROM(@"sqlite_master");
     __block NSArray *resultArr=nil;
     [SHARESQLITEObjectC execSQLL:sql result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
         resultArr=resultArray;
     }];
-    [self dbClose];
+    [self sqlite_dbClose];
     return resultArr;
 }
 
-+(BOOL)tableDropAll{
++(BOOL)sqlite_tableDropIsAssociation:(BOOL)flag{
     SQLiteLanguage *sqll=SQLlang;
-    [sqll.BEGIN.TRANSACTION SEMICOLON];
-    [[self getTables] enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [[self sqlite_getTablesWithIsAssociation:flag] enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         Class class=NSClassFromString(obj);
-        [sqll.DROP.TABLE([class tableName]) SEMICOLON];
+        [sqll.DROP.TABLE([class sqlite_tableName]) SEMICOLON];
     }];
-    [sqll.COMMIT SEMICOLON];
-    NSLog(@"%@",sqll.sql);
-    [self dbOpen];
-    BOOL result=[SHARESQLITEObjectC execSQLL:sqll result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
+    [self sqlite_dbOpen];
+    BOOL result=[SHARESQLITEObjectC execByTransactionWithSQLL:sqll result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
     }];
-    [self dbClose];
+    [self sqlite_dbClose];
     return result;
 }
-+(BOOL)tableDrop{
-    if ([self tableIsExist]) {
-        __block BOOL result=NO;
-        [self dbOpen];
-        SQLiteLanguage *SQLL=SQLlang.DROP.TABLE([self tableName]);
-        [SHARESQLITEObjectC execSQLL:SQLL result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
-            if (errorInfor) {
-                result=NO;
-            }else{
-                result=YES;
-            }
-        }];
-        [self dbClose];
-        return result;
-    }else{
-        return YES;
-    }
-}
-+(BOOL)dbOpen{
+//+(BOOL)tableDrop{
+//    if ([self sqlite_tableIsExist]) {
+//        __block BOOL result=NO;
+//        [self dbOpen];
+//        SQLiteLanguage *SQLL=SQLlang.DROP.TABLE([self tableName]);
+//        [SHARESQLITEObjectC execSQLL:SQLL result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
+//            if (errorInfor) {
+//                result=NO;
+//            }else{
+//                result=YES;
+//            }
+//        }];
+//        [self dbClose];
+//        return result;
+//    }else{
+//        return YES;
+//    }
+//}
++(BOOL)sqlite_dbOpen{
     if (SHARESQLITEObjectC.isOpen) {
-        if ([SHARESQLITEObjectC.dbPath isEqualToString:self.dbPath]) {
+        if ([SHARESQLITEObjectC.dbPath isEqualToString:self.sqlite_dbPath]) {
             return YES;
         }else{
             if ([SHARESQLITEObjectC close]) {
-                return [SHARESQLITEObjectC openWithFilePath:self.dbPath];
+                return [SHARESQLITEObjectC openWithFilePath:self.sqlite_dbPath];
             }else{
                 return NO;
             }
         }
     }else{
-        return [SHARESQLITEObjectC openWithFilePath:self.dbPath];
+        return [SHARESQLITEObjectC openWithFilePath:self.sqlite_dbPath];
     }
 }
 
-+(BOOL)dbClose{
-    if ([SHARESQLITEObjectC.dbPath isEqualToString:self.dbPath]) {
++(BOOL)sqlite_dbClose{
+    if ([SHARESQLITEObjectC.dbPath isEqualToString:self.sqlite_dbPath]) {
         if (SHARESQLITEObjectC.isOpen) {
             return [SHARESQLITEObjectC close];
         }else{
@@ -269,52 +269,50 @@ const static char SqliteTableRecordingOwnKey='\0';
     }
     return propertys;
 }
-+(NSString *)tableName{
++(NSString *)sqlite_tableName{
     return NSStringFromClass(self);
 }
-+(NSSet*)table_UnconversionProperty{
++(NSSet*)sqlite_tableUnconversionProperty{
     return nil;
 }
-+(NSString *)table_PrimaryKeyValueSetProperty{
++(NSString *)sqlite_tablePrimaryKeyValueSetProperty{
     return nil;
 }
-+(NSDictionary*)table_PropertyNameAndElementTypeDictionary{
++(NSDictionary*)sqlite_tablePropertyNameAndElementTypeDictionary{
     return nil;
 }
 
-+(BOOL)table_DeleteWithCondition:(SQLiteLanguage *)condition IsAssociation:(BOOL)falg{
++(BOOL)sqlite_tableDeleteWithCondition:(SQLiteLanguage *)condition IsAssociation:(BOOL)flag{
     __block NSMutableArray<SQLiteLanguage*> *sqlArray=[[NSMutableArray alloc] init];
-    if (falg) {
-        NSArray *resultArray =[self table_SelectWithCondition:condition IsAssociation:YES];
+    if (flag) {
+        NSArray *resultArray =[self sqlite_tableSelectWithCondition:condition IsAssociation:YES];
         [resultArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             NSMutableArray<SQLiteLanguage*> *subSqlArray=[[NSMutableArray alloc] init];
             [obj tableBuildDeleteSqlArray:subSqlArray IsAssociation:YES];
             [sqlArray addObjectsFromArray:subSqlArray];
         }];
     }else{
-        SQLiteLanguage *sqll=SQLlang.DELETE.FROM([self tableName]);
+        SQLiteLanguage *sqll=SQLlang.DELETE.FROM([self sqlite_tableName]);
         sqll.APPEND(condition);
         [sqll.COMMIT SEMICOLON];
         [sqlArray addObject:sqll];
     }
     
     SQLiteLanguage *sqll=SQLlang;
-    [sqll.BEGIN.TRANSACTION SEMICOLON];
     [sqlArray enumerateObjectsUsingBlock:^(SQLiteLanguage * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         sqll.APPEND(obj);
     }];
-    [sqll.COMMIT SEMICOLON];
     
-    [self.class dbOpen];
-    BOOL result=[SHARESQLITEObjectC execSQLL:sqll result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
+    [self.class sqlite_dbOpen];
+    BOOL result=[SHARESQLITEObjectC execByTransactionWithSQLL:sqll result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
     }];
-    [self.class dbClose];
+    [self.class sqlite_dbClose];
     return result;
 
 }
--(void)tableBuildDeleteSqlArray:(NSMutableArray<SQLiteLanguage *> *)sqlArray IsAssociation:(BOOL)falg{
+-(void)tableBuildDeleteSqlArray:(NSMutableArray<SQLiteLanguage *> *)sqlArray IsAssociation:(BOOL)flag{
     Class class=self.class;
-    if (falg) {
+    if (flag) {
         NSArray *propertys =[class propertyInforArray];
         [propertys enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             NSString *propertyType=propertys[idx][PropertyType];
@@ -327,62 +325,56 @@ const static char SqliteTableRecordingOwnKey='\0';
             }else if ([NSObject isArrayType:propertyType]){//table
                 NSArray *array=[self valueForKey:propertyName];
                 [array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                    [obj tableBuildDeleteSqlArray:sqlArray IsAssociation:falg];
+                    [obj tableBuildDeleteSqlArray:sqlArray IsAssociation:flag];
                 }];
             }else if ([NSObject isDictionaryType:propertyType]){
             }else{//table
-                [[self valueForKey:propertyName] tableBuildDeleteSqlArray:sqlArray IsAssociation:falg];
+                [[self valueForKey:propertyName] tableBuildDeleteSqlArray:sqlArray IsAssociation:flag];
 
             }
 
         }];
     }
-    SQLiteLanguage *sqll=SQLlang.DELETE.FROM([class tableName]).WHERE([NSString stringWithFormat:@"%@='%@'",SQLITE_TABLE_PRIMARYKEY_ID,self.sqliteTablePrimaryKeyID]);
+    SQLiteLanguage *sqll=SQLlang.DELETE.FROM([class sqlite_tableName]).WHERE([NSString stringWithFormat:@"%@='%@'",SQLITE_TABLE_PRIMARYKEY_ID,self.sqliteTablePrimaryKeyID]);
     [sqll SEMICOLON];
     [sqlArray addObject:sqll];
 }
--(BOOL)table_DeleteWithCondition:(SQLiteLanguage *)condition IsAssociation:(BOOL)falg{
+-(BOOL)sqlite_tableDeleteWithCondition:(SQLiteLanguage *)condition IsAssociation:(BOOL)flag{
     NSMutableArray *sqlArray=[[NSMutableArray alloc] init];
-    [self tableBuildDeleteSqlArray:sqlArray IsAssociation:falg];
+    [self tableBuildDeleteSqlArray:sqlArray IsAssociation:flag];
     
     SQLiteLanguage *sqll=SQLlang;
-    [sqll.BEGIN.TRANSACTION SEMICOLON];
     [sqlArray enumerateObjectsUsingBlock:^(SQLiteLanguage * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         sqll.APPEND(obj);
     }];
-    [sqll.COMMIT SEMICOLON];
-    
-    
-    [self.class dbOpen];
-    BOOL result=[SHARESQLITEObjectC execSQLL:sqll result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
+
+    [self.class sqlite_dbOpen];
+    BOOL result=[SHARESQLITEObjectC execByTransactionWithSQLL:sqll result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
     }];
-    [self.class dbClose];
+    [self.class sqlite_dbClose];
     return result;
 }
 
 
--(BOOL)table_UpdateWithIsAssociation:(BOOL)flag{
+-(BOOL)sqlite_tableUpdateWithIsAssociation:(BOOL)flag{
     NSMutableArray<SQLiteLanguage *> *sqllArray=[[NSMutableArray alloc] init];
     [self tableBuildUpdateSqlArray:sqllArray IsAssociation:flag];
     
     SQLiteLanguage *sqll=SQLlang;
-    [sqll.BEGIN.TRANSACTION SEMICOLON];
     [sqllArray enumerateObjectsUsingBlock:^(SQLiteLanguage * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         sqll.APPEND(obj);
     }];
-    [sqll.COMMIT SEMICOLON];
-    
-    [self.class dbOpen];
-    BOOL result=[SHARESQLITEObjectC execSQLL:sqll result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
+    [self.class sqlite_dbOpen];
+    BOOL result=[SHARESQLITEObjectC execByTransactionWithSQLL:sqll result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
     }];
-    [self.class dbClose];
+    [self.class sqlite_dbClose];
     return result;
 }
 -(void)tableBuildUpdateSqlArray:(NSMutableArray<SQLiteLanguage *> *)sqlArray IsAssociation:(BOOL)flag{
     Class class=self.class;
     NSArray *propertys =[class propertyInforArray];
     SQLiteLanguage *sqll=SQLlang;
-    sqll.UPDATE([class tableName]);
+    sqll.UPDATE([class sqlite_tableName]);
     
     NSMutableArray *setValueArray=[[NSMutableArray alloc] init];
     [propertys enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -417,38 +409,36 @@ const static char SqliteTableRecordingOwnKey='\0';
     [sqlArray addObject:sqll];
 }
 
--(BOOL)table_Insert{
+-(BOOL)sqlite_tableInsertWithIsAssociation:(BOOL)flag{
     NSMutableArray<SQLiteLanguage *> *sqlArray=[[NSMutableArray alloc] init];
-    [self tableBuildInsertSqlArray:sqlArray andForeignKeyValue:nil andRecordingOwnValue:nil];
+    [self tableBuildInsertSqlArray:sqlArray andForeignKeyValue:nil andRecordingOwnValue:nil IsAssociation:flag];
     SQLiteLanguage *sql=SQLlang;
-    [sql.BEGIN.TRANSACTION SEMICOLON];
     [sqlArray enumerateObjectsUsingBlock:^(SQLiteLanguage * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         sql.APPEND(obj);
     }];
-    [sql.COMMIT SEMICOLON];
-    NSLog(@"%@",sql.sql);
-    BOOL flag=NO;
-    [self.class dbOpen];
-    flag=[SHARESQLITEObjectC execSQLL:sql result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
+    BOOL fg=NO;
+    [self.class sqlite_dbOpen];
+    fg=[SHARESQLITEObjectC execByTransactionWithSQLL:sql result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
         NSLog(@"%@",errorInfor);
     }];
-    [self.class dbClose];
-    return flag;
+    [self.class sqlite_dbClose];
+    return fg;
 }
 -(void)tableBuildInsertSqlArray:(NSMutableArray<SQLiteLanguage *> *)sqlArray
              andForeignKeyValue:(NSString *)foreignKeyValue
-           andRecordingOwnValue:(NSString *)recordingOwnValue{
+           andRecordingOwnValue:(NSString *)recordingOwnValue
+                  IsAssociation:(BOOL)flag{
     Class class=self.class;
     NSArray *fieldArray =[self propertyInforArray];
     SQLiteLanguage *sql =SQLlang;
-    sql.INSERT.INTO([class tableName]);
+    sql.INSERT.INTO([class sqlite_tableName]);
     NSMutableArray *columns=[[NSMutableArray  alloc] init];
     NSMutableArray *values=[[NSMutableArray  alloc] init];
     NSMutableArray<NSDictionary *> *subTableArray=[[NSMutableArray alloc] init];
 
     //主键值设置
     NSString *primaryValue=nil;
-    NSString *key=[self.class table_PrimaryKeyValueSetProperty];
+    NSString *key=[self.class sqlite_tablePrimaryKeyValueSetProperty];
     if(key){
         primaryValue=[self valueForKey:key];
     }else{
@@ -524,27 +514,30 @@ const static char SqliteTableRecordingOwnKey='\0';
     }
     [sql.COLUMNS([columns componentsJoinedByString:@","],nil).VALUES([values componentsJoinedByString:@","],nil) SEMICOLON];
     [sqlArray addObject:sql];
-    [subTableArray enumerateObjectsUsingBlock:^(NSDictionary * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        NSString *propertyType=obj[PropertyType];
-        NSString *propertyName=obj[PropertyName];
-        NSString *foreignKeyValue=obj[SQLITE_TABLE_FOREIGNKEY_ID];
-        id value=obj[SQLITE_VALUE_DICTIONARY_KEY];
-        if ([NSString isArrayType:propertyType]) {
-            [value enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                [obj tableBuildInsertSqlArray:sqlArray andForeignKeyValue:foreignKeyValue andRecordingOwnValue:propertyName];
-            }];
-        }else{
-            [value tableBuildInsertSqlArray:sqlArray andForeignKeyValue:foreignKeyValue andRecordingOwnValue:propertyName];
-        }
-    }];
-}
-+(NSArray *)table_SelectWithCondition:(SQLiteLanguage *)condition IsAssociation:(BOOL)falg{
-    SQLiteLanguage *sqll=SQLlang.SELECT(@"*",nil).FROM([self tableName]);
     
+    if (flag) {
+        [subTableArray enumerateObjectsUsingBlock:^(NSDictionary * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            NSString *propertyType=obj[PropertyType];
+            NSString *propertyName=obj[PropertyName];
+            NSString *foreignKeyValue=obj[SQLITE_TABLE_FOREIGNKEY_ID];
+            id value=obj[SQLITE_VALUE_DICTIONARY_KEY];
+            if ([NSString isArrayType:propertyType]) {
+                [value enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                    [obj tableBuildInsertSqlArray:sqlArray andForeignKeyValue:foreignKeyValue andRecordingOwnValue:propertyName IsAssociation:flag];
+                }];
+            }else{
+                [value tableBuildInsertSqlArray:sqlArray andForeignKeyValue:foreignKeyValue andRecordingOwnValue:propertyName IsAssociation:flag];
+            }
+        }];
+    }
+
+}
++(NSArray *)sqlite_tableSelectWithCondition:(SQLiteLanguage *)condition IsAssociation:(BOOL)flag{
+    SQLiteLanguage *sqll=SQLlang.SELECT(@"*",nil).FROM([self sqlite_tableName]);
     sqll.APPEND(condition);
-    [self dbOpen];
+    [self sqlite_dbOpen];
     __block NSMutableArray *resultArr=[[NSMutableArray alloc] init];
-    [SHARESQLITEObjectC execSQLL:sqll result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
+    [SHARESQLITEObjectC execByTransactionWithSQLL:sqll result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
         [resultArray enumerateObjectsUsingBlock:^(NSDictionary * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             NSObject *object =[[self alloc] init];
             [object setValuesForKeysWithDictionary:obj];
@@ -553,7 +546,7 @@ const static char SqliteTableRecordingOwnKey='\0';
             object.sqliteTableRecordingOwnKey=obj[SQLITE_TABLE_RecordingOwn_KEY];
             [resultArr addObject:object];
             
-            if (falg) {
+            if (flag) {
                 NSArray<NSDictionary *> *propertyArray =[self propertyInforArray];
                 [propertyArray enumerateObjectsUsingBlock:^(NSDictionary * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                     if(![NSObject isCFNumberType:obj[PropertyType]]&&
@@ -561,25 +554,25 @@ const static char SqliteTableRecordingOwnKey='\0';
                        ![NSObject isDictionaryType:obj[PropertyType]]&&
                        ![NSObject isStringType:obj[PropertyType]]&&
                        ![NSObject isValueType:obj[PropertyType]]){
-                        [object table_SelectWithPropertyName:obj[PropertyName] andCondition:nil IsAssociation:falg];
+                        [object sqlite_tableSelectWithPropertyName:obj[PropertyName] andCondition:nil IsAssociation:flag];
                     }
                 }];
             }
         }];
     }];
-    [self dbClose];
+    [self sqlite_dbClose];
     return resultArr;
 }
--(BOOL)table_SelectWithPropertyName:(NSString *)propertyName andCondition:(SQLiteLanguage *)condition IsAssociation:(BOOL)falg{
+-(BOOL)sqlite_tableSelectWithPropertyName:(NSString *)propertyName andCondition:(SQLiteLanguage *)condition IsAssociation:(BOOL)flag{
     NSString *propertyType=[self getPropertyTypeWithPropertyName:propertyName];
     NSString *tableType=nil;
     if ([NSObject isArrayType:propertyType]) {
-        tableType=self.class.table_PropertyNameAndElementTypeDictionary[propertyName];
+        tableType=self.class.sqlite_tablePropertyNameAndElementTypeDictionary[propertyName];
     }else{
         tableType=propertyType;
     }
     Class class=NSClassFromString(tableType);
-    SQLiteLanguage *sqll=SQLlang.SELECT(@"*",nil).FROM([class tableName]);
+    SQLiteLanguage *sqll=SQLlang.SELECT(@"*",nil).FROM([class sqlite_tableName]);
     
     NSString *tj0=[NSString stringWithFormat:@"%@='%@'",SQLITE_TABLE_FOREIGNKEY_ID,self.sqliteTablePrimaryKeyID];
     NSString *tj1=[NSString stringWithFormat:@"%@='%@'",SQLITE_TABLE_RecordingOwn_KEY,propertyName];
@@ -590,12 +583,9 @@ const static char SqliteTableRecordingOwnKey='\0';
     }else{
         sqll.WHERE(tj0).AND(tj1);
     }
-    [self.class dbOpen];
+    [self.class sqlite_dbOpen];
     __block NSMutableArray *resultArr=[[NSMutableArray alloc] init];
-    NSLog(@"%@",sqll.sql);
-    
-    
-    BOOL result =[SHARESQLITEObjectC execSQLL:sqll result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
+    BOOL result =[SHARESQLITEObjectC execByTransactionWithSQLL:sqll result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
         [resultArray enumerateObjectsUsingBlock:^(NSDictionary * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             NSObject *object =[[class alloc] init];
             [object setValuesForKeysWithDictionary:obj];
@@ -611,7 +601,7 @@ const static char SqliteTableRecordingOwnKey='\0';
     }else{
         [self setValue:[resultArr firstObject] forKey:propertyName];
     }
-    if (falg) {
+    if (flag) {
         [resultArr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             NSObject *object=obj;
             NSArray<NSDictionary *> *propertyArray =[object.class propertyInforArray];
@@ -621,13 +611,13 @@ const static char SqliteTableRecordingOwnKey='\0';
                    ![NSObject isDictionaryType:obj[PropertyType]]&&
                    ![NSObject isStringType:obj[PropertyType]]&&
                    ![NSObject isValueType:obj[PropertyType]]){
-                    [object table_SelectWithPropertyName:obj[PropertyName] andCondition:nil IsAssociation:falg];
+                    [object sqlite_tableSelectWithPropertyName:obj[PropertyName] andCondition:nil IsAssociation:flag];
                 }
             }];
         }];
     }
     
-    [self.class dbClose];
+    [self.class sqlite_dbClose];
     return result;
 }
 -(NSString *)getPropertyTypeWithPropertyName:(NSString *)propertyName{
@@ -641,7 +631,6 @@ const static char SqliteTableRecordingOwnKey='\0';
     }];
     return propertyType;
 }
-
 #pragma mark - ============ Get ============
 -(NSString *)sqliteTableForeignKeyID{
     return objc_getAssociatedObject(self, &SqliteTableForeignKeyID);
