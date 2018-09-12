@@ -26,6 +26,7 @@
 		5CC3BD7B2106F9B100F5687E /* NSObject+SQLITE.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC3BD752106F9B000F5687E /* NSObject+SQLITE.m */; };
 		5CC3BD7C2106F9B100F5687E /* SQLITEObjectC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC3BD762106F9B000F5687E /* SQLITEObjectC.m */; };
 		5CC3BD7D2106F9B100F5687E /* SQLiteLanguage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC3BD772106F9B000F5687E /* SQLiteLanguage.m */; };
+		5CE5E11621481C8800A23801 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 5CE5E11521481C8800A23801 /* README.md */; };
 		970B794C2F2BFCB28A0FDC67 /* Pods_SQLiteObject_C.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F0717E040EF735C49CE271A /* Pods_SQLiteObject_C.framework */; };
 /* End PBXBuildFile section */
 
@@ -84,6 +85,7 @@
 		5CC3BD782106F9B000F5687E /* SQLITEObjectC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQLITEObjectC.h; sourceTree = "<group>"; };
 		5CC3BD792106F9B000F5687E /* NSObject+SQLITE.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SQLITE.h"; sourceTree = "<group>"; };
 		5CC3BD7A2106F9B000F5687E /* SQLiteLanguage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQLiteLanguage.h; sourceTree = "<group>"; };
+		5CE5E11521481C8800A23801 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		5F0717E040EF735C49CE271A /* Pods_SQLiteObject_C.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SQLiteObject_C.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABB9F5203B2398888691FF1E /* Pods-SQLiteObject_C.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SQLiteObject_C.release.xcconfig"; path = "Pods/Target Support Files/Pods-SQLiteObject_C/Pods-SQLiteObject_C.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -117,6 +119,7 @@
 		5CC3BD362106F91300F5687E = {
 			isa = PBXGroup;
 			children = (
+				5CE5E11521481C8800A23801 /* README.md */,
 				5C9328982126788B001145A7 /* SQLiteObject_C.podspec */,
 				5CC3BD742106F9B000F5687E /* SQLite */,
 				5CC3BD412106F91300F5687E /* SQLiteObject_C */,
@@ -329,6 +332,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5CE5E11621481C8800A23801 /* README.md in Resources */,
 				5CC3BD4F2106F91500F5687E /* LaunchScreen.storyboard in Resources */,
 				5C710BA0213F6F5300FD6981 /* TestJson.json in Resources */,
 				5C9328992126788B001145A7 /* SQLiteObject_C.podspec in Resources */,
