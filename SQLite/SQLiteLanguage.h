@@ -65,6 +65,7 @@ static NSString *const SQL_DISTINCT=@"DISTINCT";
 /**从**/
 - (SQLiteLanguage * (^)(NSString *tableName))FROM;
 - (SQLiteLanguage * (^)(NSString *condition,NSString *fristName,...))SELECT;//结束记得加nil。
+
 - (SQLiteLanguage * (^)(NSString *name))WHERE;
 /**偏移**/
 - (SQLiteLanguage * (^)(NSString *rowNumber))OFFSET;

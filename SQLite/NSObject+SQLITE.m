@@ -342,7 +342,6 @@ const static char SqliteTableRecordingOwnKey='\0';
 -(BOOL)sqlite_tableDeleteWithCondition:(SQLiteLanguage *)condition IsAssociation:(BOOL)flag{
     NSMutableArray *sqlArray=[[NSMutableArray alloc] init];
     [self tableBuildDeleteSqlArray:sqlArray IsAssociation:flag];
-    
     SQLiteLanguage *sqll=SQLlang;
     [sqlArray enumerateObjectsUsingBlock:^(SQLiteLanguage * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         sqll.APPEND(obj);
@@ -354,7 +353,6 @@ const static char SqliteTableRecordingOwnKey='\0';
     [self.class sqlite_dbClose];
     return result;
 }
-
 
 -(BOOL)sqlite_tableUpdateWithIsAssociation:(BOOL)flag{
     NSMutableArray<SQLiteLanguage *> *sqllArray=[[NSMutableArray alloc] init];
