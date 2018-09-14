@@ -6,7 +6,7 @@
 //  Copyright © 2018年 POSUN-MAC. All rights reserved.
 //
 /**
- 该类的目的是快速准确的书写要执行的SQL语句，包含了SQL常用的关键字,
+    该类的目的是快速准确的书写要执行的SQL语句，包含了SQL常用的关键字,
  通过提供的关键字来书写你要执行的SQL语句。后续将不断完善。
  **/
 #import <Foundation/Foundation.h>
@@ -17,7 +17,6 @@ static NSString *const SQL_DISTINCT=@"DISTINCT";
 @interface SQLiteLanguage : NSObject
 /**SQL语句**/
 @property(nonatomic,copy,readonly)NSString *sql;
-
 /**清除构造的sql语句**/
 -(SQLiteLanguage*)RESET;
 +(instancetype)share;
@@ -51,7 +50,6 @@ static NSString *const SQL_DISTINCT=@"DISTINCT";
 -(SQLiteLanguage *)TEXT;//值是一个文本字符串，使用数据库编码（UTF-8、UTF-16BE 或 UTF-16LE）存储。
 /**布尔**/
 -(SQLiteLanguage *)BLOB;//值是一个 blob 数据，完全根据它的输入存储。
-
 #pragma mark ============ 删除表 ============
 /**删除**/
 -(SQLiteLanguage *)DROP;
@@ -65,7 +63,6 @@ static NSString *const SQL_DISTINCT=@"DISTINCT";
 /**从**/
 - (SQLiteLanguage * (^)(NSString *tableName))FROM;
 - (SQLiteLanguage * (^)(NSString *condition,NSString *fristName,...))SELECT;//结束记得加nil。
-
 - (SQLiteLanguage * (^)(NSString *name))WHERE;
 /**偏移**/
 - (SQLiteLanguage * (^)(NSString *rowNumber))OFFSET;
@@ -78,11 +75,8 @@ static NSString *const SQL_DISTINCT=@"DISTINCT";
 - (SQLiteLanguage * (^)(NSString *value))OR;
 /**存在**/
 - (SQLiteLanguage * (^)(SQLiteLanguage *sqll))EXISTS;
-/**
- 追加SQLiteLanguage对象
- **/
+/**追加SQLiteLanguage对象**/
 -(SQLiteLanguage *(^)(SQLiteLanguage *sqll))APPEND;
-
 /**什么和什么之间**/
 - (SQLiteLanguage * (^)(NSString *value))BETWEEN;
 /**像什么**/
@@ -92,18 +86,13 @@ static NSString *const SQL_DISTINCT=@"DISTINCT";
 - (SQLiteLanguage * (^)(NSString *value))GLOB;
 /**在什么里**/
 - (SQLiteLanguage * (^)(NSString *value,...))IN;//结束记得加nil。
-
 #pragma mark ============ UPDATE更新表数据 ============
 /**更新**/
 -(SQLiteLanguage * (^)(NSString *tableName))UPDATE;
-/**
- 设置
- **/
+/**设置**/
 -(SQLiteLanguage * (^)(NSString *keyAndValue,...))SET;//结束记得加nil。
 #pragma mark ============ DELETE删除表数据 ============
-/**
- 删除
- **/
+/**删除**/
 -(SQLiteLanguage *)DELETE;
 #pragma mark ============ ORDER BY排序 ============
 /**通过**/
@@ -117,10 +106,8 @@ static NSString *const SQL_DISTINCT=@"DISTINCT";
 /**分组**/
 -(SQLiteLanguage *)GROUP;
 #pragma mark ============ HAVING ============
-/**
- HAVING 子句允许指定条件来过滤将出现在最终结果中的分组结果。
- WHERE 子句在所选列上设置条件，而 HAVING 子句则在由 GROUP BY 子句创建的分组上设置条件。
- **/
+/**HAVING 子句允许指定条件来过滤将出现在最终结果中的分组结果。
+ WHERE 子句在所选列上设置条件，而 HAVING 子句则在由 GROUP BY 子句创建的分组上设置条件。**/
 - (SQLiteLanguage * (^)(NSString *value))HAVING;
 #pragma mark ============ ALTER修改表 ============
 /**添加**/
@@ -142,9 +129,7 @@ static NSString *const SQL_DISTINCT=@"DISTINCT";
 /**VACUUM 命令通过复制主数据库中的内容到一个临时数据库文件，然后清空主数据库，并从副本中重新载入原始的数据库文件。这消除了空闲页，把表中的数据排列为连续的，另外会清理数据库文件结构。**/
 - (SQLiteLanguage * (^)(NSString *value))VACUUM;
 #pragma mark ============ 其他 ============
-/**
- 分号结束符,有时一条SQL结束需要加分号表示结尾因此你需要调用SEMICOLON。
- **/
+/**分号结束符,有时一条SQL结束需要加分号表示结尾因此你需要调用SEMICOLON。**/
 -(SQLiteLanguage *)SEMICOLON;
 -(SQLiteLanguage *)COMMA;
 

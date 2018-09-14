@@ -5,7 +5,6 @@
 //  Created by POSUN-MAC on 2018/7/23.
 //  Copyright © 2018年 POSUN-MAC. All rights reserved.
 //
-
 #import "NSObject+SQLITE.h"
 #import "NSObject+Dictionary.h"
 #import <objc/runtime.h>
