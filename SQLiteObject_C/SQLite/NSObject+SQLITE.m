@@ -82,7 +82,6 @@ const static char SqliteTableRecordingOwnKey='\0';
     SQLiteLanguage *sql =SQLlang;
     sql.columnName(SQLITE_TABLE_RecordingOwn_KEY);
     [sql.TEXT COMMA];
-
     NSMutableSet *subTableSet=[[NSMutableSet alloc] init];
     for (NSInteger i=0; i<fieldArray.count; i++) {
         NSString *propertyType=fieldArray[i][PropertyType];
@@ -143,7 +142,6 @@ const static char SqliteTableRecordingOwnKey='\0';
 +(NSArray<NSString *>*)sqlite_getTablesWithIsAssociation:(BOOL)flag{
     NSMutableArray *tables=[[NSMutableArray alloc] init];
     [tables addObject:[self sqlite_tableName]];
-    
     if (flag) {
         NSArray *propertys =[self propertyInforArray];
         [propertys enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -167,8 +165,6 @@ const static char SqliteTableRecordingOwnKey='\0';
             }
         }];
     }
-    
-
     return tables;
 }
 
@@ -204,24 +200,6 @@ const static char SqliteTableRecordingOwnKey='\0';
     [self sqlite_dbClose];
     return result;
 }
-//+(BOOL)tableDrop{
-//    if ([self sqlite_tableIsExist]) {
-//        __block BOOL result=NO;
-//        [self dbOpen];
-//        SQLiteLanguage *SQLL=SQLlang.DROP.TABLE([self tableName]);
-//        [SHARESQLITEObjectC execSQLL:SQLL result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
-//            if (errorInfor) {
-//                result=NO;
-//            }else{
-//                result=YES;
-//            }
-//        }];
-//        [self dbClose];
-//        return result;
-//    }else{
-//        return YES;
-//    }
-//}
 +(BOOL)sqlite_dbOpen{
     if (SHARESQLITEObjectC.isOpen) {
         if ([SHARESQLITEObjectC.dbPath isEqualToString:self.sqlite_dbPath]) {

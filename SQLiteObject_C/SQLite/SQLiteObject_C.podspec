@@ -129,5 +129,5 @@ s.platform     = :ios, "9.0"
   # s.requires_arc = true
 
   # s.xcconfig = { "HEADER_SEARCH_PATHS" => "$(SDKROOT)/usr/include/libxml2" }
-    s.dependency 'ModelToDictionary', '~> 0.1.2'
+    s.dependency 'ModelToDictionary', '~> 1.0.3'
 end

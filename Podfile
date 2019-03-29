@@ -1,5 +1,4 @@
 platform:ios,'9.0'
 target 'SQLiteObject_C' do
-use_frameworks!
-pod 'ModelToDictionary', '~> 0.1.2'
+pod 'ModelToDictionary', '~> 1.0.5'
 end

@@ -24,7 +24,6 @@
 -(BOOL)openWithFilePath:(NSString *)filePath;
 /**执行SQL语句并返回结果**/
 -(BOOL)execSQLL:(SQLiteLanguage *)SQLL result:(void(^)(NSString *errorInfor,NSArray<NSDictionary *> *resultArray))result;
-
 /**以事物的方式执行SQL语句并返回结果**/
 -(BOOL)execByTransactionWithSQLL:(SQLiteLanguage *)SQLL result:(void(^)(NSString *errorInfor,NSArray<NSDictionary *> *resultArray))result;
 
