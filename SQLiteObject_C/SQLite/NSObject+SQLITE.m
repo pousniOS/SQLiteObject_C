@@ -25,7 +25,11 @@ const static char SqliteTableRecordingOwnKey='\0';
 
 @interface NSObject()
 /**
- 数据所属的属性字段
+ 记录所属的对象属性的字段是谁，因为可能存在这样的数据列如：
+ object:{
+ data:[b0,b1,b2];
+ list:[l0,l1,l3];
+ }假设b0对象和l0对象类型相同这是就需要一个字段来记录b0，...;l0,....属于object的哪一个属性字段；
  **/
 @property(nonatomic,copy)NSString *sqliteTableRecordingOwnKey;
 /**
@@ -64,13 +68,32 @@ const static char SqliteTableRecordingOwnKey='\0';
     fieldArray=[self checkSetKEY:fieldArray andKey:SQLITE_TABLE_FOREIGNKEY_ID];
     return fieldArray;
 }
+
+
 +(BOOL)sqlite_tableCreateWithIsAssociation:(BOOL)flag{
+
+    /**
+     1.通过类名获取tableSqlArray，tableSqlArray结构如下
+     @[@{
+         表名key:表明,
+         sql语句对象key:表sql语句对象
+         }
+     .....
+     ]
+     **/
     NSMutableArray<NSDictionary *> *tableSqlArray=[[NSMutableArray alloc] init];
     [self tableBuildTableSqlWithTableSqlArray:tableSqlArray IsAssociation:flag];
+    /**
+     2.通过tableSqlArray拼接成一条sqll对象的创建表的语句
+     **/
     SQLiteLanguage *sqll=SQLlang;
     [tableSqlArray enumerateObjectsUsingBlock:^(NSDictionary * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         sqll.APPEND(obj[SQLITE_SQLL_DICTIONARY_KEY]);
     }];
+    
+    /**
+     3.通过sqll对象创建数据库表
+     **/
     [self sqlite_dbOpen];
     BOOL result=[SHARESQLITEObjectC execByTransactionWithSQLL:sqll result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
     }];
@@ -78,6 +101,15 @@ const static char SqliteTableRecordingOwnKey='\0';
     return result;
 }
 +(void)tableBuildTableSqlWithTableSqlArray:(NSMutableArray<NSDictionary*>*)tableSqlArray IsAssociation:(BOOL)flag{
+//    /**
+//     判断该类继承的父类不是系统基本类型就创建改父类的Sql表语句
+//     **/
+//    if (![[self superclass] isBasicType]) {
+//        [[self superclass] tableBuildTableSqlWithTableSqlArray:tableSqlArray IsAssociation:flag];
+//    }
+    /**
+     1.创建表sql语句
+     **/
     NSArray *fieldArray =[self analyticalBuildTableField];
     SQLiteLanguage *sql =SQLlang;
     sql.columnName(SQLITE_TABLE_RecordingOwn_KEY);
@@ -117,6 +149,9 @@ const static char SqliteTableRecordingOwnKey='\0';
             [sql COMMA];
         }
     }
+    /**
+     2.排除重复的表，判断是否有重名的表有就不加入到tableSqlArray
+     **/
     __block BOOL fg=NO;
     [tableSqlArray enumerateObjectsUsingBlock:^(NSDictionary * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         if ([obj[SQLITE_TABLE_DICTIONARY_KEY] isEqualToString:[self sqlite_tableName]]) {
@@ -132,6 +167,9 @@ const static char SqliteTableRecordingOwnKey='\0';
                                     };
         [tableSqlArray addObject:tableSqlDic];
     }
+    /**
+     3.flag是YES,就同时生成和这个类关联的成员属性类型的数据库表
+     **/
     if (flag) {
         [subTableSet enumerateObjectsUsingBlock:^(id  _Nonnull obj, BOOL * _Nonnull stop) {
             Class class=NSClassFromString(obj);
@@ -196,6 +234,7 @@ const static char SqliteTableRecordingOwnKey='\0';
     }];
     [self sqlite_dbOpen];
     BOOL result=[SHARESQLITEObjectC execByTransactionWithSQLL:sqll result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
+        
     }];
     [self sqlite_dbClose];
     return result;
@@ -606,6 +645,25 @@ const static char SqliteTableRecordingOwnKey='\0';
     }];
     return propertyType;
 }
+
+//+(BOOL)isBasicType{
+//    
+//
+//
+//    if ([NSStringFromClass(self) isEqualToString:NSStringFromClass([NSArray class])]||
+//        [NSStringFromClass(self) isEqualToString:NSStringFromClass([NSMutableArray class])]||
+//        [NSStringFromClass(self) isEqualToString:NSStringFromClass([NSDictionary class])]||
+//        [NSStringFromClass(self) isEqualToString:NSStringFromClass([NSMutableDictionary class])]||
+//        [NSStringFromClass(self) isEqualToString:NSStringFromClass([NSMutableString class])]||
+//        [NSStringFromClass(self) isEqualToString:NSStringFromClass([NSValue class])]||
+//        [NSStringFromClass(self) isEqualToString:NSStringFromClass([NSNumber class])]) {
+//        return YES;
+//    }else{
+//        return NO;
+//    }
+//}
+
+
 #pragma mark - ============ Get ============
 -(NSString *)sqliteTableForeignKeyID{
     return objc_getAssociatedObject(self, &SqliteTableForeignKeyID);

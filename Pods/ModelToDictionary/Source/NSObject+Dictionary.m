@@ -35,7 +35,6 @@ static NSString *const type_NSString=@"NSString";
 static NSString *const type_NSMutalbleString=@"NSMutalbleString";
 static NSString *const type_NSValue=@"NSValue";
 static NSString *const type_NSNumber=@"NSNumber";
-
 static NSString *const protocol_NSCopying=@"NSCopying";
 
 static NSDictionary *typeDic=nil;

@@ -42,21 +42,22 @@
     model.grade=[[GradeModel alloc] init];
     model.grade.language=88;
     model.grade.mathematics=99;
+//    NSLog(@"%@",[NSObject sqlite_dbSeeTables]);
+    
     if ([StudentModel sqlite_tableCreateWithIsAssociation:YES]) {
         NSLog(@"表创建成功");
     }
-//    if ([StudentModel sqlite_tableDropIsAssociation:YES]) {
+//    if ([StudentModel sqlite_tableDropIsAssociation:NO]) {
 //        NSLog(@"删除成功");
 //    }
 //    if ([model sqlite_tableInsertWithIsAssociation:YES]) {
 //        NSLog(@"写入成功");
 //    }
-    SQLiteLanguage *sql=[[SQLiteLanguage alloc] init];
-    sql.SELECT(@"*",nil).FROM(@"StudentModel");
-    NSArray *array =[StudentModel sqlite_tableSelectWithCondition:nil IsAssociation:YES];
-    NSLog(@"%@",array);
+//    SQLiteLanguage *sql=[[SQLiteLanguage alloc] init];
+//    sql.SELECT(@"*",nil).FROM(@"StudentModel");
+//    NSArray *array =[StudentModel sqlite_tableSelectWithCondition:nil IsAssociation:YES];
+//    NSLog(@"%@",array);
 }
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
