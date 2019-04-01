@@ -14,7 +14,7 @@
 @property(nonatomic,assign)NSInteger age;//年龄
 @property(nonatomic,assign)BOOL sex;//性别
 @property(nonatomic,copy)NSString *sexStr;//性别
-@property(nonatomic,retain)NSMutableArray<PersonModel*> *family;
+//@property(nonatomic,retain)NSMutableArray<PersonModel*> *family;
 
 @end
 

@@ -647,9 +647,6 @@ const static char SqliteTableRecordingOwnKey='\0';
 }
 
 //+(BOOL)isBasicType{
-//    
-//
-//
 //    if ([NSStringFromClass(self) isEqualToString:NSStringFromClass([NSArray class])]||
 //        [NSStringFromClass(self) isEqualToString:NSStringFromClass([NSMutableArray class])]||
 //        [NSStringFromClass(self) isEqualToString:NSStringFromClass([NSDictionary class])]||

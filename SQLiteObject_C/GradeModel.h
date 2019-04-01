@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface GradeModel : NSObject
-@property(nonatomic,assign)int language;//语文
-@property(nonatomic,assign)int mathematics;//数学
+@property(nonatomic,copy)NSString *remark;
+@property(nonatomic,copy)NSString *name;
+@property(nonatomic,assign)NSString *fraction;
 @end

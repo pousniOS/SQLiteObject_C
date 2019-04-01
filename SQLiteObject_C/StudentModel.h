@@ -13,8 +13,5 @@
 @property(nonatomic,copy)NSString *stdID;//学号
 @property(nonatomic,copy)NSString *cls;//班级
 @property(nonatomic,retain)GradeModel *grade;
-
-
-
-
+@property(nonatomic,retain)NSMutableArray<GradeModel *> *data;
 @end
