@@ -10,22 +10,16 @@
 
 @implementation StudentModel
 -(void)setValue:(id)value forKey:(NSString *)key{
-    if ([key isEqualToString:@"grade"]&&(![NSDictionary class]||![NSArray class])) {
-        _grade=[[GradeModel alloc] init];
-        [_grade setValuesForKeysWithDictionary:value];
-        
-    }
-    else if ([key isEqualToString:@"data"]) {
-        _data=[[NSMutableArray alloc] init];
+    if ([key isEqualToString:@"data"]) {
+        _transcript=[[NSMutableArray alloc] init];
         [value enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             if ([value isKindOfClass:[NSDictionary class]]) {
                 GradeModel *model=[[GradeModel alloc] init];
                 [model setValuesForKeysWithDictionary:value];
-                [self->_data addObject:model];
+                [self->_transcript addObject:model];
             }else{
-                [self->_data addObject:obj];
+                [self->_transcript addObject:obj];
             }
-      
         }];
         
     }
@@ -41,6 +35,9 @@
     return @"test";
 }
 +(NSDictionary*)sqlite_tablePropertyNameAndElementTypeDictionary{
-    return @{@"data":@"GradeModel"};
+    return @{@"transcript":@"GradeModel"};
+}
++(NSString*)sqlite_tablePrimaryKeyValueSetProperty{
+    return @"stdID";
 }
 @end

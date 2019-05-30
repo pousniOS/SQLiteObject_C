@@ -15,4 +15,7 @@
 -(void)setValue:(id)value forUndefinedKey:(NSString *)key{
     
 }
++(NSString*)sqlite_tablePrimaryKeyValueSetProperty{
+    return @"ID";
+}
 @end

@@ -8,10 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import "GradeModel.h"
-#import "PersonModel.h"
-@interface StudentModel : PersonModel
+@interface StudentModel : NSObject
 @property(nonatomic,copy)NSString *stdID;//学号
 @property(nonatomic,copy)NSString *cls;//班级
-@property(nonatomic,retain)GradeModel *grade;
-@property(nonatomic,retain)NSMutableArray<GradeModel *> *data;
+@property(nonatomic,copy)NSString *name;
+@property(nonatomic,assign)BOOL sex;
+@property(nonatomic,retain)NSMutableArray<GradeModel *> *transcript;
 @end

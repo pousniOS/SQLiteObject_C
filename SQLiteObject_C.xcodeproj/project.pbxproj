@@ -13,7 +13,6 @@
 		5C9C84F7224E1AD600B19A68 /* NSString+SQLITE.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C9C84EE224E1AD600B19A68 /* NSString+SQLITE.m */; };
 		5C9C84FC224E1B1500B19A68 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 5C9C84FA224E1B1500B19A68 /* README.md */; };
 		5C9C8504224E1B6A00B19A68 /* GradeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C9C84FF224E1B6900B19A68 /* GradeModel.m */; };
-		5C9C8505224E1B6A00B19A68 /* PersonModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C9C8501224E1B6900B19A68 /* PersonModel.m */; };
 		5C9C8506224E1B6A00B19A68 /* StudentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C9C8503224E1B6900B19A68 /* StudentModel.m */; };
 		5CF631EC224E1A2F007100B2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CF631EB224E1A2F007100B2 /* AppDelegate.m */; };
 		5CF631EF224E1A2F007100B2 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CF631EE224E1A2F007100B2 /* ViewController.m */; };
@@ -56,8 +55,6 @@
 		5C9C84FA224E1B1500B19A68 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		5C9C84FE224E1B6800B19A68 /* GradeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradeModel.h; sourceTree = "<group>"; };
 		5C9C84FF224E1B6900B19A68 /* GradeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradeModel.m; sourceTree = "<group>"; };
-		5C9C8500224E1B6900B19A68 /* PersonModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonModel.h; sourceTree = "<group>"; };
-		5C9C8501224E1B6900B19A68 /* PersonModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonModel.m; sourceTree = "<group>"; };
 		5C9C8502224E1B6900B19A68 /* StudentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudentModel.h; sourceTree = "<group>"; };
 		5C9C8503224E1B6900B19A68 /* StudentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StudentModel.m; sourceTree = "<group>"; };
 		5CF631E7224E1A2F007100B2 /* SQLiteObject_C.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SQLiteObject_C.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -158,8 +155,6 @@
 			children = (
 				5C9C84FE224E1B6800B19A68 /* GradeModel.h */,
 				5C9C84FF224E1B6900B19A68 /* GradeModel.m */,
-				5C9C8500224E1B6900B19A68 /* PersonModel.h */,
-				5C9C8501224E1B6900B19A68 /* PersonModel.m */,
 				5C9C8502224E1B6900B19A68 /* StudentModel.h */,
 				5C9C8503224E1B6900B19A68 /* StudentModel.m */,
 				5C9C84E9224E1AD600B19A68 /* SQLite */,
@@ -393,7 +388,6 @@
 				5C9C8504224E1B6A00B19A68 /* GradeModel.m in Sources */,
 				5CF631FA224E1A32007100B2 /* main.m in Sources */,
 				5CF631EC224E1A2F007100B2 /* AppDelegate.m in Sources */,
-				5C9C8505224E1B6A00B19A68 /* PersonModel.m in Sources */,
 				5C9C8506224E1B6A00B19A68 /* StudentModel.m in Sources */,
 				5C9C84F5224E1AD600B19A68 /* SQLITEObjectC.m in Sources */,
 				5C9C84F7224E1AD600B19A68 /* NSString+SQLITE.m in Sources */,

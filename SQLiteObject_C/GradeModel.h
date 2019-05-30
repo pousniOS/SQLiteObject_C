@@ -9,7 +9,9 @@
 #import <Foundation/Foundation.h>
 
 @interface GradeModel : NSObject
+@property(nonatomic,copy)NSString *ID;
+
 @property(nonatomic,copy)NSString *remark;
 @property(nonatomic,copy)NSString *name;
-@property(nonatomic,assign)NSString *fraction;
+@property(nonatomic,assign)NSInteger fraction;
 @end

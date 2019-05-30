@@ -418,7 +418,10 @@ const static char SqliteTableRecordingOwnKey='\0';
             }
         }
     }];
-    sqll.SET([setValueArray componentsJoinedByString:@", "],nil).WHERE([NSString stringWithFormat:@"%@ ='%@'",SQLITE_TABLE_PRIMARYKEY_ID,self.sqliteTablePrimaryKeyID]);
+    
+  NSString *sqliteTablePrimaryKeyID=[self valueForKey:[self.class sqlite_tablePrimaryKeyValueSetProperty]];
+    
+    sqll.SET([setValueArray componentsJoinedByString:@", "],nil).WHERE([NSString stringWithFormat:@"%@ ='%@'",SQLITE_TABLE_PRIMARYKEY_ID,sqliteTablePrimaryKeyID]);
     [sqll SEMICOLON];
     [sqlArray addObject:sqll];
 }
@@ -549,6 +552,8 @@ const static char SqliteTableRecordingOwnKey='\0';
 +(NSArray *)sqlite_tableSelectWithCondition:(SQLiteLanguage *)condition IsAssociation:(BOOL)flag{
     SQLiteLanguage *sqll=SQLlang.SELECT(@"*",nil).FROM([self sqlite_tableName]);
     sqll.APPEND(condition);
+    
+    
     [self sqlite_dbOpen];
     __block NSMutableArray *resultArr=[[NSMutableArray alloc] init];
     [SHARESQLITEObjectC execByTransactionWithSQLL:sqll result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
@@ -645,22 +650,6 @@ const static char SqliteTableRecordingOwnKey='\0';
     }];
     return propertyType;
 }
-
-//+(BOOL)isBasicType{
-//    if ([NSStringFromClass(self) isEqualToString:NSStringFromClass([NSArray class])]||
-//        [NSStringFromClass(self) isEqualToString:NSStringFromClass([NSMutableArray class])]||
-//        [NSStringFromClass(self) isEqualToString:NSStringFromClass([NSDictionary class])]||
-//        [NSStringFromClass(self) isEqualToString:NSStringFromClass([NSMutableDictionary class])]||
-//        [NSStringFromClass(self) isEqualToString:NSStringFromClass([NSMutableString class])]||
-//        [NSStringFromClass(self) isEqualToString:NSStringFromClass([NSValue class])]||
-//        [NSStringFromClass(self) isEqualToString:NSStringFromClass([NSNumber class])]) {
-//        return YES;
-//    }else{
-//        return NO;
-//    }
-//}
-
-
 #pragma mark - ============ Get ============
 -(NSString *)sqliteTableForeignKeyID{
     return objc_getAssociatedObject(self, &SqliteTableForeignKeyID);
