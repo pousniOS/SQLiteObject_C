@@ -1,12 +1,16 @@
 PODS:
-  - ModelToDictionary (1.0.5)
+  - ModelToDictionary (1.1.2)
 
 DEPENDENCIES:
-  - ModelToDictionary (~> 1.0.5)
+  - ModelToDictionary (~> 1.1.2)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - ModelToDictionary
 
 SPEC CHECKSUMS:
-  ModelToDictionary: a6cd3179cbc1f10b7316062deae34706f40c8bd0
+  ModelToDictionary: d3905afa9b6773206c194950995830f30f0a2dd5
 
-PODFILE CHECKSUM: c00d9bbfbf769a0fb0429c196dd04114f68f68a4
+PODFILE CHECKSUM: dcfc06dd36cdf2e12ed576fdfac72e507ba3eaf7
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.7.0

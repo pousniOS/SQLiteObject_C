@@ -19,9 +19,18 @@ int callback(void *para,int ncolumn,char ** columnvalue,char *columnname[]);
     static SQLITEObjectC *sQLITEObjectC=nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        sQLITEObjectC=[[SQLITEObjectC alloc] init];
+        sQLITEObjectC=[[super allocWithZone:NULL] init];
     });
     return sQLITEObjectC;
+}
++(instancetype)allocWithZone:(struct _NSZone *)zone{
+    return [SQLITEObjectC share];
+}
+-(id)copyWithZone:(NSZone *)zone{
+    return [SQLITEObjectC share];
+}
+-(id)mutableCopyWithZone:(NSZone *)zone{
+    return [SQLITEObjectC share];
 }
 
 -(BOOL)openWithFilePath:(NSString *)filePath{

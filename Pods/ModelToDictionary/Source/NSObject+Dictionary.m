@@ -28,13 +28,31 @@ static NSString  *const type_char_Class=@"Class";
 
 static NSString *const type_NSArray=@"NSArray";
 static NSString *const type_NSMutableArray=@"NSMutableArray";
-static NSString *const type_NSObject=@"NSObject";
+static NSString *const type_NSArray0=@"__NSArray0";
+static NSString *const type_NSArrayM=@"__NSArrayM";
+
 static NSString *const type_NSDictionary=@"NSDictionary";
 static NSString *const type_NSMutalbleDictionary=@"NSMutalbleDictionary";
+static NSString *const type_NSDictionary0=@"__NSDictionary0";
+static NSString *const type_NSDictionaryM=@"__NSDictionaryM";
+
+
 static NSString *const type_NSString=@"NSString";
 static NSString *const type_NSMutalbleString=@"NSMutalbleString";
+static NSString *const type_NSCFConstantString=@"__NSCFConstantString";
+static NSString *const type_NSCFString=@"__NSCFString";
+
+
+
+
+
+
+static NSString *const type_NSObject=@"NSObject";
+
+
 static NSString *const type_NSValue=@"NSValue";
 static NSString *const type_NSNumber=@"NSNumber";
+
 static NSString *const protocol_NSCopying=@"NSCopying";
 
 static NSDictionary *typeDic=nil;
@@ -91,9 +109,11 @@ static NSDictionary *typeDic=nil;
                 [self setDic:mutableDictionary andValue:value andKey:propertyName];
             }
             else if ([NSObject isArrayType:propertyType]){
+                NSMutableArray *array=[[NSMutableArray alloc] init];
                 [value enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                    [self setDic:mutableDictionary andValue:[obj toDictionary] andKey:propertyName];
+                    [array addObject:[obj toDictionary]];
                 }];
+                [self setDic:mutableDictionary andValue:array andKey:propertyName];
             }else if ([NSObject isDictionaryType:propertyType]){
                 [self setDic:mutableDictionary andValue:[value toDictionary] andKey:propertyName];
             }
@@ -187,7 +207,9 @@ static NSDictionary *typeDic=nil;
 
 +(BOOL)isArrayType:(NSString *)type{
     if ([type isEqualToString:type_NSArray]||
-        [type isEqualToString:type_NSMutableArray]){
+        [type isEqualToString:type_NSMutableArray]||
+        [type isEqualToString:type_NSArray0]||
+        [type isEqualToString:type_NSArrayM]){
         return YES;
     }else{
         return NO;
@@ -196,7 +218,9 @@ static NSDictionary *typeDic=nil;
 
 +(BOOL)isDictionaryType:(NSString *)type{
     if ([type isEqualToString:type_NSDictionary]||
-        [type isEqualToString:type_NSMutalbleDictionary]){
+        [type isEqualToString:type_NSMutalbleDictionary]||
+        [type isEqualToString:type_NSDictionary0]||
+        [type isEqualToString:type_NSDictionaryM]){
         return YES;
     }else{
         return NO;
@@ -204,7 +228,9 @@ static NSDictionary *typeDic=nil;
 }
 +(BOOL)isStringType:(NSString *)type{
     if ([type isEqualToString:type_NSString]||
-        [type isEqualToString:type_NSMutalbleString]){
+        [type isEqualToString:type_NSMutalbleString]||
+        [type isEqualToString:type_NSCFConstantString]||
+        [type isEqualToString:type_NSCFString]){
         return YES;
     }else{
         return NO;

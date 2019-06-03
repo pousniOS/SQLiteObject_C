@@ -14,7 +14,7 @@
 
 #define SHARESQLITEObjectC [SQLITEObjectC share]
 
-@interface SQLITEObjectC : NSObject
+@interface SQLITEObjectC : NSObject<NSCopying,NSMutableCopying>
 @property(nonatomic,copy,readonly)NSString *dbPath;
 
 @property(nonatomic,assign,readonly)BOOL isOpen;

@@ -104,7 +104,6 @@
         }else if ([opertion isEqualToString:@"查看数据库结构"]){
             [self obj_seeDataBaseStruct];
         }
-        
     }
 }
 
@@ -296,15 +295,14 @@
 
 -(void)obj_select{
     NSArray *array=[StudentModel sqlite_tableSelectWithCondition:SQLlang.WHERE(@"stdID='000000'") IsAssociation:YES];
-    NSLog(@"%@",array);
+    [array toDictionary];
+//    NSLog(@"%@",array);
 }
 -(void)obj_delete{
     if ([StudentModel sqlite_tableDeleteWithCondition:SQLlang.WHERE(@"stdID='000000'") IsAssociation:YES]) {
         NSLog(@"删除成功");
     }
 }
-
-
 -(void)obj_seeDataBaseStruct{
     NSArray *array=[StudentModel sqlite_dbSeeTables];
     NSLog(@"数据库结构：%@",array);
