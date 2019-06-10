@@ -26,34 +26,7 @@ static NSString  *const type_char_SEL=@"SEL";
 static NSString  *const type_char_id=@"id";
 static NSString  *const type_char_Class=@"Class";
 
-static NSString *const type_NSArray=@"NSArray";
-static NSString *const type_NSMutableArray=@"NSMutableArray";
-static NSString *const type_NSArray0=@"__NSArray0";
-static NSString *const type_NSArrayM=@"__NSArrayM";
-
-static NSString *const type_NSDictionary=@"NSDictionary";
-static NSString *const type_NSMutalbleDictionary=@"NSMutalbleDictionary";
-static NSString *const type_NSDictionary0=@"__NSDictionary0";
-static NSString *const type_NSDictionaryM=@"__NSDictionaryM";
-
-
-static NSString *const type_NSString=@"NSString";
-static NSString *const type_NSMutalbleString=@"NSMutalbleString";
-static NSString *const type_NSCFConstantString=@"__NSCFConstantString";
-static NSString *const type_NSCFString=@"__NSCFString";
-
-
-
-
-
-
 static NSString *const type_NSObject=@"NSObject";
-
-
-static NSString *const type_NSValue=@"NSValue";
-static NSString *const type_NSNumber=@"NSNumber";
-
-static NSString *const protocol_NSCopying=@"NSCopying";
 
 static NSDictionary *typeDic=nil;
 @implementation NSObject (Dictionary)
@@ -79,23 +52,25 @@ static NSDictionary *typeDic=nil;
 }
 #pragma makr - Model转Dictionary
 -(id)toDictionary{
-    if ([NSStringFromClass(self.class) isEqualToString:type_NSObject]) {
-        return nil;
-    }
-    else if([NSObject isDictionaryType:NSStringFromClass(self.class)]){
-        return (NSDictionary*)self;
-    }else if ([NSObject isArrayType:NSStringFromClass(self.class)]){
+    if([self isKindOfClass:[NSDictionary class]]){
+        NSMutableDictionary *mutableDictionary=[[NSMutableDictionary alloc] init];
+        NSDictionary *dic=(NSDictionary *)self;
+        [[dic allKeys] enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            id value=dic[obj];
+            [self setDic:mutableDictionary andValue:[value toDictionary] andKey:obj];
+        }];
+        return mutableDictionary;
+    }else if ([self isKindOfClass:[NSArray class]]){
         __block NSMutableArray *mutableArray=[[NSMutableArray alloc] init];
         [(NSArray *)self enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            id object=[obj toDictionary];
-            if (object) {
-                [mutableArray addObject:object];
-            }else{
-            }
+            [mutableArray addObject:[obj toDictionary]];
         }];
         return mutableArray;
-    }
-    else{
+    }else if ([self isKindOfClass:[NSString class]]||
+             [self isKindOfClass:[NSValue class]]||
+             [type_NSObject isEqualToString:NSStringFromClass(self.class)]){
+        return self;
+    }else{
         NSArray *propertyInforArray=[self filterUnconversionProperty];
         NSMutableDictionary *mutableDictionary=[[NSMutableDictionary alloc] init];
         [propertyInforArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -103,21 +78,9 @@ static NSDictionary *typeDic=nil;
             NSString *propertyType=obj[PropertyType];
             id value=[self valueForKey:propertyName];
             if ([NSObject  isCNumberType:propertyType]||
-                [NSObject  isCFNumberType:propertyType]||
-                [NSObject isStringType:propertyType]||
-                [NSObject isValueType:propertyType]) {
+                [NSObject  isCFNumberType:propertyType]) {
                 [self setDic:mutableDictionary andValue:value andKey:propertyName];
-            }
-            else if ([NSObject isArrayType:propertyType]){
-                NSMutableArray *array=[[NSMutableArray alloc] init];
-                [value enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                    [array addObject:[obj toDictionary]];
-                }];
-                [self setDic:mutableDictionary andValue:array andKey:propertyName];
-            }else if ([NSObject isDictionaryType:propertyType]){
-                [self setDic:mutableDictionary andValue:[value toDictionary] andKey:propertyName];
-            }
-            else{
+            }else{
                 [self setDic:mutableDictionary andValue:[value toDictionary] andKey:propertyName];
             }
         }];
@@ -169,6 +132,7 @@ static NSDictionary *typeDic=nil;
     return [NSString stringWithUTF8String:property_getName(property)];
 }
 -(NSString *)propertyType:(objc_property_t)property{
+    
     const char * property_attr = property_getAttributes(property);
     NSString *attr_Str=[NSString stringWithUTF8String:property_attr];
     NSString *typeStr =[[attr_Str componentsSeparatedByString:@","] firstObject];
@@ -204,46 +168,34 @@ static NSDictionary *typeDic=nil;
     }
 }
 
-
-+(BOOL)isArrayType:(NSString *)type{
-    if ([type isEqualToString:type_NSArray]||
-        [type isEqualToString:type_NSMutableArray]||
-        [type isEqualToString:type_NSArray0]||
-        [type isEqualToString:type_NSArrayM]){
-        return YES;
-    }else{
-        return NO;
-    }
-}
-
-+(BOOL)isDictionaryType:(NSString *)type{
-    if ([type isEqualToString:type_NSDictionary]||
-        [type isEqualToString:type_NSMutalbleDictionary]||
-        [type isEqualToString:type_NSDictionary0]||
-        [type isEqualToString:type_NSDictionaryM]){
-        return YES;
-    }else{
-        return NO;
-    }
-}
-+(BOOL)isStringType:(NSString *)type{
-    if ([type isEqualToString:type_NSString]||
-        [type isEqualToString:type_NSMutalbleString]||
-        [type isEqualToString:type_NSCFConstantString]||
-        [type isEqualToString:type_NSCFString]){
-        return YES;
-    }else{
-        return NO;
-    }
-}
-+(BOOL)isValueType:(NSString *)type{
-    if ([type isEqualToString:type_NSValue]||
-        [type isEqualToString:type_NSNumber]){
-        return YES;
-    }else{
-        return NO;
-    }
-}
+//+(BOOL)isArrayType:(NSString *)type{
+//    if ([NSClassFromString(type) isKindOfClass:[NSArray class]]) {
+//        return YES;
+//    }else{
+//        return NO;
+//    }
+//}
+//+(BOOL)isDictionaryType:(NSString *)type{
+//    if ([NSClassFromString(type) isKindOfClass:[NSDictionary class]]) {
+//        return YES;
+//    }else{
+//        return NO;
+//    }
+//}
+//+(BOOL)isStringType:(NSString *)type{
+//    if ([NSClassFromString(type) isKindOfClass:[NSString class]]) {
+//        return YES;
+//    }else{
+//        return NO;
+//    }
+//}
+//+(BOOL)isValueType:(NSString *)type{
+//    if ([NSClassFromString(type) isKindOfClass:[NSValue class]]) {
+//        return YES;
+//    }else{
+//        return NO;
+//    }
+//}
 -(NSSet*)YYMTD_UnconversionProperty{
     return nil;
 }

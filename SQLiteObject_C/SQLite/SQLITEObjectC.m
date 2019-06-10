@@ -37,7 +37,6 @@ int callback(void *para,int ncolumn,char ** columnvalue,char *columnname[]);
     if (_isOpen) {
         return YES;
     }
-
     if (sqlite3_open([filePath UTF8String], &_db)==SQLITE_OK) {
         _isOpen=YES;
         _dbPath=filePath;

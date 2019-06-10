@@ -28,6 +28,17 @@
     [super viewDidLoad];
     self.navigationItem.title=@"SQLiteObjectC使用实例";
     [self.view addSubview:self.tableView];
+    
+    NSValue *value=[[NSValue alloc] init];
+    
+    if ([[[NSClassFromString(@"NSValue") alloc] init] isKindOfClass:[NSValue class]]) {
+        NSLog(@"NSValueNSValueNSValueNSValueNSValue");
+    }
+    
+    if ([[[NSClassFromString(@"NSString") alloc] init] isKindOfClass:[NSString class]]) {
+        NSLog(@"NSValueNSValueNSValueNSValueNSValue");
+    }
+    
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -312,11 +323,6 @@
         NSLog(@"删除成功");
     }
 }
-
-
-
-
-
 -(UITableView *)tableView{
     if (!_tableView) {
         _tableView=[[UITableView alloc] initWithFrame:self.view.bounds];

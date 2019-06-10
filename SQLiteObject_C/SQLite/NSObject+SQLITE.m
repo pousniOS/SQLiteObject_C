@@ -8,6 +8,10 @@
 #import "NSObject+SQLITE.h"
 #import "NSObject+Dictionary.h"
 #import <objc/runtime.h>
+#import "NSArray+TypeCheck.h"
+#import "NSString+TypeCheck.h"
+#import "NSValue+TypeCheck.h"
+#import "NSDictionary+TypeCheck.h"
 
 const static char SqliteTableForeignKeyID='\0';
 const static char SqliteTablePrimaryKeyID='\0';
@@ -671,4 +675,41 @@ const static char SqliteTableRecordingOwnKey='\0';
 -(void)setSqliteTablePrimaryKeyID:(NSString *)sqliteTablePrimaryKeyID{
     objc_setAssociatedObject(self, &SqliteTablePrimaryKeyID, sqliteTablePrimaryKeyID, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
+
+
++(BOOL)isArrayType:(NSString *)type{
+    if ([NSClassFromString(type) respondsToSelector:@selector(typeCheck_isKindNSArray)]) {
+        return YES;
+    }else{
+        return NO;
+    }
+}
++(BOOL)isDictionaryType:(NSString *)type{
+    if ([NSClassFromString(type) respondsToSelector:@selector(typeCheck_isKindNSDictionary)]) {
+        return YES;
+    }else{
+        return NO;
+    }
+}
++(BOOL)isStringType:(NSString *)type{
+    if ([NSClassFromString(type) respondsToSelector:@selector(typeCheck_isKindNSString)]) {
+        return YES;
+    }else{
+        return NO;
+    }
+}
++(BOOL)isValueType:(NSString *)type{
+    if ([NSClassFromString(type) respondsToSelector:@selector(typeCheck_isKindNSValue)]) {
+        return YES;
+    }else{
+        return NO;
+    }
+}
+-(NSSet*)YYMTD_UnconversionProperty{
+    return nil;
+}
+-(NSSet*)YYMTD_ResetKeyDictionary{
+    return nil;
+}
+
 @end

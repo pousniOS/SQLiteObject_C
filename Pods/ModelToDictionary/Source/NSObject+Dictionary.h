@@ -13,7 +13,7 @@ static NSString  *const PropertyType=@"PropertyType";
 
 @interface NSObject (Dictionary)
 /**对象转Dic**/
--(NSDictionary *)toDictionary;
+-(id)toDictionary;
 /**获取对象的属性名以及属性类型**/
 -(NSArray *)propertyInforArray;
 /**
@@ -28,8 +28,11 @@ static NSString  *const PropertyType=@"PropertyType";
 -(NSArray *)filterProperty:(NSSet *)set;
 +(BOOL)isCFNumberType:(NSString *)type;
 +(BOOL)isCNumberType:(NSString *)type;
-+(BOOL)isArrayType:(NSString *)type;
-+(BOOL)isDictionaryType:(NSString *)type;
-+(BOOL)isStringType:(NSString *)type;
-+(BOOL)isValueType:(NSString *)type;
+
+
+
+//+(BOOL)isArrayType:(NSString *)type;
+//+(BOOL)isDictionaryType:(NSString *)type;
+//+(BOOL)isStringType:(NSString *)type;
+//+(BOOL)isValueType:(NSString *)type;
 @end
