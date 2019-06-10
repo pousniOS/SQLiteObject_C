@@ -132,7 +132,6 @@ static NSDictionary *typeDic=nil;
     return [NSString stringWithUTF8String:property_getName(property)];
 }
 -(NSString *)propertyType:(objc_property_t)property{
-    
     const char * property_attr = property_getAttributes(property);
     NSString *attr_Str=[NSString stringWithUTF8String:property_attr];
     NSString *typeStr =[[attr_Str componentsSeparatedByString:@","] firstObject];
@@ -168,34 +167,6 @@ static NSDictionary *typeDic=nil;
     }
 }
 
-//+(BOOL)isArrayType:(NSString *)type{
-//    if ([NSClassFromString(type) isKindOfClass:[NSArray class]]) {
-//        return YES;
-//    }else{
-//        return NO;
-//    }
-//}
-//+(BOOL)isDictionaryType:(NSString *)type{
-//    if ([NSClassFromString(type) isKindOfClass:[NSDictionary class]]) {
-//        return YES;
-//    }else{
-//        return NO;
-//    }
-//}
-//+(BOOL)isStringType:(NSString *)type{
-//    if ([NSClassFromString(type) isKindOfClass:[NSString class]]) {
-//        return YES;
-//    }else{
-//        return NO;
-//    }
-//}
-//+(BOOL)isValueType:(NSString *)type{
-//    if ([NSClassFromString(type) isKindOfClass:[NSValue class]]) {
-//        return YES;
-//    }else{
-//        return NO;
-//    }
-//}
 -(NSSet*)YYMTD_UnconversionProperty{
     return nil;
 }

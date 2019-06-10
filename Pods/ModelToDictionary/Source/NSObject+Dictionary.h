@@ -19,7 +19,7 @@ static NSString  *const PropertyType=@"PropertyType";
 /**
  通过在调用toDictionary方法对象的类里重写该方法，返回一个包含属性名称的NSSet对象，来屏蔽掉不需要转换成NSDictionary对象的属性。
  **/
--(NSSet*)YYMTD_UnconversionProperty;
+-(NSSet *)YYMTD_UnconversionProperty;
 /**
  通过在调用toDictionary方法对象的类里重写该方法，返回一个包含属性名称和重置成的Key的键值对的NSDictionary象，来重置生成NSDictionary对象的Key。
  **/
@@ -28,11 +28,4 @@ static NSString  *const PropertyType=@"PropertyType";
 -(NSArray *)filterProperty:(NSSet *)set;
 +(BOOL)isCFNumberType:(NSString *)type;
 +(BOOL)isCNumberType:(NSString *)type;
-
-
-
-//+(BOOL)isArrayType:(NSString *)type;
-//+(BOOL)isDictionaryType:(NSString *)type;
-//+(BOOL)isStringType:(NSString *)type;
-//+(BOOL)isValueType:(NSString *)type;
 @end
