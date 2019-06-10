@@ -29,7 +29,7 @@
     self.navigationItem.title=@"SQLiteObjectC使用实例";
     [self.view addSubview:self.tableView];
     
-    NSValue *value=[[NSValue alloc] init];
+//    NSValue *value=[[NSValue alloc] init];
 
     
 }
