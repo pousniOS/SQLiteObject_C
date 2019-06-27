@@ -19,7 +19,6 @@ static NSString *const SQL_DISTINCT=@"DISTINCT";
 @property(nonatomic,copy,readonly)NSString *sql;
 /**清除构造的sql语句**/
 -(SQLiteLanguage*)RESET;
-+(instancetype)share;
 #pragma mark ============ 创建表 ============
 /**创建**/
 -(SQLiteLanguage *)CREATE;
@@ -132,5 +131,4 @@ static NSString *const SQL_DISTINCT=@"DISTINCT";
 /**分号结束符,有时一条SQL结束需要加分号表示结尾因此你需要调用SEMICOLON。**/
 -(SQLiteLanguage *)SEMICOLON;
 -(SQLiteLanguage *)COMMA;
-
 @end

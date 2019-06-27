@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04FCB83E22C4CD9B0032115F /* SQLiteLanguageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 04FCB83D22C4CD9B0032115F /* SQLiteLanguageTests.m */; };
 		04FD35E122AE514900AECA9A /* NSArray+TypeCheck.m in Sources */ = {isa = PBXBuildFile; fileRef = 04FD35E022AE514900AECA9A /* NSArray+TypeCheck.m */; };
 		04FD35E422AE516300AECA9A /* NSString+TypeCheck.m in Sources */ = {isa = PBXBuildFile; fileRef = 04FD35E322AE516300AECA9A /* NSString+TypeCheck.m */; };
 		04FD35E722AE517D00AECA9A /* NSValue+TypeCheck.m in Sources */ = {isa = PBXBuildFile; fileRef = 04FD35E622AE517D00AECA9A /* NSValue+TypeCheck.m */; };
@@ -47,6 +48,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		04FCB83D22C4CD9B0032115F /* SQLiteLanguageTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SQLiteLanguageTests.m; sourceTree = "<group>"; };
 		04FD35DF22AE514900AECA9A /* NSArray+TypeCheck.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSArray+TypeCheck.h"; sourceTree = "<group>"; };
 		04FD35E022AE514900AECA9A /* NSArray+TypeCheck.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSArray+TypeCheck.m"; sourceTree = "<group>"; };
 		04FD35E222AE516300AECA9A /* NSString+TypeCheck.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+TypeCheck.h"; sourceTree = "<group>"; };
@@ -196,6 +198,7 @@
 			children = (
 				5CF63203224E1A32007100B2 /* SQLiteObject_CTests.m */,
 				5CF63205224E1A32007100B2 /* Info.plist */,
+				04FCB83D22C4CD9B0032115F /* SQLiteLanguageTests.m */,
 			);
 			path = SQLiteObject_CTests;
 			sourceTree = "<group>";
@@ -391,6 +394,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5CF63204224E1A32007100B2 /* SQLiteObject_CTests.m in Sources */,
+				04FCB83E22C4CD9B0032115F /* SQLiteLanguageTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -29,6 +29,13 @@
     self.navigationItem.title=@"SQLiteObjectC使用实例";
     [self.view addSubview:self.tableView];
     
+//    NSLog(@"%@",NSClassFromString(@"NSString"));
+//    NSLog(@"%@",[NSValue class]);
+//    NSLog(@"%@",[[NSClassFromString(@"NSString") alloc] init]);
+//    if ( [[[NSClassFromString(@"StudentModel") alloc] init] isKindOfClass:[StudentModel class]]) {
+//        NSLog(@"StudentModel");
+//    }
+//    @"NSStirng" @"NSValue" @"NSArray"
 //    NSValue *value=[[NSValue alloc] init];
 
     

@@ -12,7 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NSDictionary (TypeCheck)
 +(void)typeCheck_isKindNSDictionary;
-
 @end
 
 NS_ASSUME_NONNULL_END

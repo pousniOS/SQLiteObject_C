@@ -21,9 +21,7 @@
                 [self->_transcript addObject:obj];
             }
         }];
-        
     }
-    
     else{
         [super setValue:value forKey:key];
     }

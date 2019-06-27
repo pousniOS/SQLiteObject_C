@@ -70,14 +70,6 @@ static NSString *const SQL_AUTOINCREMENT=@"AUTOINCREMENT";
 @property(nonatomic,copy)NSMutableString *sqllStr;
 @end
 @implementation SQLiteLanguage
-+(instancetype)share{
-    static SQLiteLanguage *sQLiteLanguage=nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sQLiteLanguage=[[SQLiteLanguage alloc] init];
-    });
-    return sQLiteLanguage;
-}
 -(instancetype)init{
     if (self=[super init]) {
         _sqllStr=[[NSMutableString alloc] init];
@@ -129,6 +121,7 @@ static NSString *const SQL_AUTOINCREMENT=@"AUTOINCREMENT";
     return ^SQLiteLanguage *(NSString *tableName){
         SQLlStrAppendAndSPACE(SQL_REFERENCES);
         SQLlStrAppendAndSPACE(tableName);
+        
         return self;
     };
 }
