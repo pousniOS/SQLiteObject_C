@@ -72,8 +72,6 @@ const static char SqliteTableRecordingOwnKey='\0';
     fieldArray=[self checkSetKEY:fieldArray andKey:SQLITE_TABLE_FOREIGNKEY_ID];
     return fieldArray;
 }
-
-
 +(BOOL)sqlite_tableCreateWithIsAssociation:(BOOL)flag{
 
     /**
@@ -244,31 +242,10 @@ const static char SqliteTableRecordingOwnKey='\0';
     return result;
 }
 +(BOOL)sqlite_dbOpen{
-    if (SHARESQLITEObjectC.isOpen) {
-        if ([SHARESQLITEObjectC.dbPath isEqualToString:self.sqlite_dbPath]) {
-            return YES;
-        }else{
-            if ([SHARESQLITEObjectC close]) {
-                return [SHARESQLITEObjectC openWithFilePath:self.sqlite_dbPath];
-            }else{
-                return NO;
-            }
-        }
-    }else{
-        return [SHARESQLITEObjectC openWithFilePath:self.sqlite_dbPath];
-    }
+    return [SHARESQLITEObjectC connectionWithFilePath:self.sqlite_dbPath];
 }
-
 +(BOOL)sqlite_dbClose{
-    if ([SHARESQLITEObjectC.dbPath isEqualToString:self.sqlite_dbPath]) {
-        if (SHARESQLITEObjectC.isOpen) {
-            return [SHARESQLITEObjectC close];
-        }else{
-            return YES;
-        }
-    }else{
-        return YES;
-    }
+    return [SHARESQLITEObjectC close];
 }
 
 +(NSArray *)checkSetKEY:(NSArray *)propertys andKey:(NSString *)key{
@@ -317,7 +294,6 @@ const static char SqliteTableRecordingOwnKey='\0';
         [sqll.COMMIT SEMICOLON];
         [sqlArray addObject:sqll];
     }
-    
     SQLiteLanguage *sqll=SQLlang;
     [sqlArray enumerateObjectsUsingBlock:^(SQLiteLanguage * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         sqll.APPEND(obj);

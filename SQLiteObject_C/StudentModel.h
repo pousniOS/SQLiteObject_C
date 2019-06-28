@@ -11,7 +11,7 @@
 @interface StudentModel : NSObject
 @property(nonatomic,copy)NSString *stdID;//学号
 @property(nonatomic,copy)NSString *cls;//班级
-@property(nonatomic,copy)NSString *name;
-@property(nonatomic,assign)BOOL sex;
-@property(nonatomic,retain)NSMutableArray<GradeModel *> *transcript;
+@property(nonatomic,copy)NSString *name;//名字
+@property(nonatomic,assign)BOOL sex;//性别
+@property(nonatomic,retain)NSMutableArray<GradeModel *> *transcript;//成绩单
 @end

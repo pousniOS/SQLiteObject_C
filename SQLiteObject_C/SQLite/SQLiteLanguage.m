@@ -221,7 +221,7 @@ static NSString *const SQL_AUTOINCREMENT=@"AUTOINCREMENT";
     return self;
 }
 #pragma mark ============ SELECT查询 ============
-- (SQLiteLanguage * (^)(NSString *condition,NSString *fristName,...))SELECT{
+- (SQLiteLanguage * (^)(NSString * condition,NSString *fristName,...))SELECT{
     return ^SQLiteLanguage *(NSString *condition,NSString *fristName,...){
         NSMutableArray *array = [NSMutableArray array];
         if (fristName){

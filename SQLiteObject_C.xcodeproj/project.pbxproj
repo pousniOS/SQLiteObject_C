@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0409C8D122C5EF85003F6C80 /* SQLITEObjectCTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0409C8D022C5EF85003F6C80 /* SQLITEObjectCTests.m */; };
+		0409C8D322C61C27003F6C80 /* NSObject_SQLITETests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0409C8D222C61C27003F6C80 /* NSObject_SQLITETests.m */; };
 		04FCB83E22C4CD9B0032115F /* SQLiteLanguageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 04FCB83D22C4CD9B0032115F /* SQLiteLanguageTests.m */; };
 		04FD35E122AE514900AECA9A /* NSArray+TypeCheck.m in Sources */ = {isa = PBXBuildFile; fileRef = 04FD35E022AE514900AECA9A /* NSArray+TypeCheck.m */; };
 		04FD35E422AE516300AECA9A /* NSString+TypeCheck.m in Sources */ = {isa = PBXBuildFile; fileRef = 04FD35E322AE516300AECA9A /* NSString+TypeCheck.m */; };
@@ -25,7 +27,6 @@
 		5CF631F4224E1A32007100B2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5CF631F3224E1A32007100B2 /* Assets.xcassets */; };
 		5CF631F7224E1A32007100B2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5CF631F5224E1A32007100B2 /* LaunchScreen.storyboard */; };
 		5CF631FA224E1A32007100B2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CF631F9224E1A32007100B2 /* main.m */; };
-		5CF63204224E1A32007100B2 /* SQLiteObject_CTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CF63203224E1A32007100B2 /* SQLiteObject_CTests.m */; };
 		5CF6320F224E1A32007100B2 /* SQLiteObject_CUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CF6320E224E1A32007100B2 /* SQLiteObject_CUITests.m */; };
 		640A93F4A1506908EE6CF148 /* libPods-SQLiteObject_C.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83575652186430693310C8A7 /* libPods-SQLiteObject_C.a */; };
 /* End PBXBuildFile section */
@@ -48,6 +49,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0409C8D022C5EF85003F6C80 /* SQLITEObjectCTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SQLITEObjectCTests.m; sourceTree = "<group>"; };
+		0409C8D222C61C27003F6C80 /* NSObject_SQLITETests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSObject_SQLITETests.m; sourceTree = "<group>"; };
 		04FCB83D22C4CD9B0032115F /* SQLiteLanguageTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SQLiteLanguageTests.m; sourceTree = "<group>"; };
 		04FD35DF22AE514900AECA9A /* NSArray+TypeCheck.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSArray+TypeCheck.h"; sourceTree = "<group>"; };
 		04FD35E022AE514900AECA9A /* NSArray+TypeCheck.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSArray+TypeCheck.m"; sourceTree = "<group>"; };
@@ -82,7 +85,6 @@
 		5CF631F8224E1A32007100B2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5CF631F9224E1A32007100B2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		5CF631FF224E1A32007100B2 /* SQLiteObject_CTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SQLiteObject_CTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		5CF63203224E1A32007100B2 /* SQLiteObject_CTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SQLiteObject_CTests.m; sourceTree = "<group>"; };
 		5CF63205224E1A32007100B2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5CF6320A224E1A32007100B2 /* SQLiteObject_CUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SQLiteObject_CUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CF6320E224E1A32007100B2 /* SQLiteObject_CUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SQLiteObject_CUITests.m; sourceTree = "<group>"; };
@@ -196,9 +198,10 @@
 		5CF63202224E1A32007100B2 /* SQLiteObject_CTests */ = {
 			isa = PBXGroup;
 			children = (
-				5CF63203224E1A32007100B2 /* SQLiteObject_CTests.m */,
 				5CF63205224E1A32007100B2 /* Info.plist */,
 				04FCB83D22C4CD9B0032115F /* SQLiteLanguageTests.m */,
+				0409C8D022C5EF85003F6C80 /* SQLITEObjectCTests.m */,
+				0409C8D222C61C27003F6C80 /* NSObject_SQLITETests.m */,
 			);
 			path = SQLiteObject_CTests;
 			sourceTree = "<group>";
@@ -393,8 +396,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5CF63204224E1A32007100B2 /* SQLiteObject_CTests.m in Sources */,
+				0409C8D122C5EF85003F6C80 /* SQLITEObjectCTests.m in Sources */,
 				04FCB83E22C4CD9B0032115F /* SQLiteLanguageTests.m in Sources */,
+				0409C8D322C61C27003F6C80 /* NSObject_SQLITETests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

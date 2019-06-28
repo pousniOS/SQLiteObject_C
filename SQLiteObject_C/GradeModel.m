@@ -13,7 +13,6 @@
     [super setValue:value forKey:key];
 }
 -(void)setValue:(id)value forUndefinedKey:(NSString *)key{
-    
 }
 +(NSString*)sqlite_tablePrimaryKeyValueSetProperty{
     return @"ID";

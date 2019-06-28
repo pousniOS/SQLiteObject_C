@@ -161,7 +161,7 @@
              nil
              );
     SQLITEObjectC *db=[SQLITEObjectC share];
-    [db openWithFilePath:[NSString sqlite_dbPath]];
+    [db connectionWithFilePath:[NSString sqlite_dbPath]];
 
     BOOL result=[db execSQLL:sqll result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
     }];
@@ -176,7 +176,7 @@
     VALUES(@"'000000'",@"'六年级'",@"'杨越'",@"0",nil);
     
     SQLITEObjectC *db=[SQLITEObjectC share];
-    [db openWithFilePath:[NSString sqlite_dbPath]];
+    [db connectionWithFilePath:[NSString sqlite_dbPath]];
     
     BOOL result=[db execSQLL:sqll result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
     }];
@@ -193,7 +193,7 @@
     SET(@"stdID ='000000'",@"cls ='五年级'",@"name ='杨越'",@"sex =1",nil).WHERE(@"stdID ='000000'");
     
     SQLITEObjectC *db=[SQLITEObjectC share];
-    [db openWithFilePath:[NSString sqlite_dbPath]];
+    [db connectionWithFilePath:[NSString sqlite_dbPath]];
 
     BOOL result=[db execSQLL:sqll result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
     }];
@@ -206,7 +206,7 @@
 -(void)select{
     SQLiteLanguage *sqll=SQLlang.SELECT(@"*",nil).FROM(@"StudentModel_TEST").WHERE(@"stdID ='000000'");
     SQLITEObjectC *db=[SQLITEObjectC share];
-    [db openWithFilePath:[NSString sqlite_dbPath]];
+    [db connectionWithFilePath:[NSString sqlite_dbPath]];
     
     [db execSQLL:sqll result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
         NSLog(@"%@",resultArray);
@@ -216,7 +216,7 @@
 -(void)delete{
     SQLiteLanguage *sqll=SQLlang.DELETE.FROM(@"StudentModel_TEST").WHERE(@"stdID ='000000'");
     SQLITEObjectC *db=[SQLITEObjectC share];
-    [db openWithFilePath:[NSString sqlite_dbPath]];
+    [db connectionWithFilePath:[NSString sqlite_dbPath]];
     BOOL result=[db execSQLL:sqll result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
     }];
     if (result) {
@@ -229,7 +229,7 @@
 -(void)seeDataBaseStruct{
     SQLiteLanguage* sqll=SQLlang.SELECT(@"*",nil).FROM(@"sqlite_master");
     SQLITEObjectC *db=[SQLITEObjectC share];
-    [db openWithFilePath:[NSString sqlite_dbPath]];
+    [db connectionWithFilePath:[NSString sqlite_dbPath]];
     [db execSQLL:sqll result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
         NSLog(@"%@",resultArray);
     }];
@@ -238,7 +238,7 @@
 -(void)deleteTable{
     SQLiteLanguage *sqll=SQLlang.DROP.TABLE(@"StudentModel_TEST");
     SQLITEObjectC *db=[SQLITEObjectC share];
-    [db openWithFilePath:[NSString sqlite_dbPath]];
+    [db connectionWithFilePath:[NSString sqlite_dbPath]];
     BOOL result=[db execSQLL:sqll result:^(NSString *errorInfor, NSArray<NSDictionary *> *resultArray) {
     }];
     if (result) {

@@ -133,6 +133,131 @@
     sql = SQLlang.SELECT(@"name",@"sex",@"age",nil).sql;
     XCTAssert([sql isEqualToString:@"SELECT name sex,age  "],@"sql 应该返回‘SELECT name sex,age  ’");
 }
+-(void)test_WHERE{
+    NSString *sql = SQLlang.WHERE(@"name='yangYue'").sql;
+    XCTAssert([sql isEqualToString:@"WHERE name='yangYue' "],@"sql 应该返回‘WHERE name='yangYue' ’");
+}
+-(void)test_OFFSET{
+    NSString *sql = SQLlang.OFFSET(@"20").sql;
+    XCTAssert([sql isEqualToString:@"OFFSET 20 "],@"sql 应该返回‘OFFSET 20 ’");
+}
+
+-(void)test_LIMIT{
+    NSString *sql = SQLlang.LIMIT(@"1").sql;
+    XCTAssert([sql isEqualToString:@"LIMIT 1 "],@"sql 应该返回‘LIMIT 1 ’");
+}
+-(void)test_AND{
+    NSString *sql = SQLlang.AND(@"age=22").sql;
+    XCTAssert([sql isEqualToString:@"AND age=22 "],@"sql 应该返回‘AND age=22 ’");
+}
+-(void)test_OR{
+    NSString *sql = SQLlang.OR(@"sex=0").sql;
+    XCTAssert([sql isEqualToString:@"OR sex=0 "],@"sql 应该返回‘OR sex=0 ’");
+}
+-(void)test_EXISTS{
+    NSString *sql = SQLlang.EXISTS(SQLlang.SELECT(@"*",nil).FROM(@"Student").WHERE(@"name='yangYue'")).sql;
+    XCTAssert([sql isEqualToString:@"EXISTS(SELECT * FROM Student WHERE name='yangYue' ) "],@"sql 应该返回‘EXISTS(SELECT * FROM Student WHERE name='yangYue' ) ’");
+}
+-(void)test_APPEND{
+    NSString *sql = SQLlang.APPEND(SQLlang.SELECT(@"*",nil).FROM(@"Student").WHERE(@"name='yangYue'")).sql;
+    XCTAssert([sql isEqualToString:@"SELECT * FROM Student WHERE name='yangYue'  "],@"sql 应该返回‘SELECT * FROM Student WHERE name='yangYue'  ’");
+}
+
+-(void)test_BETWEEN{
+    NSString *sql = SQLlang.BETWEEN(@"1").AND(@"20").sql;
+    XCTAssert([sql isEqualToString:@"BETWEEN 1 AND 20 "],@"sql 应该返回‘BETWEEN 1 AND 20 ’");
+}
+-(void)test_LIKE{
+    NSString *sql = SQLlang.LIKE(@"yang").sql;
+    XCTAssert([sql isEqualToString:@"LIKE yang "],@"sql 应该返回‘LIKE yang ’");
+}
+-(void)test_IS{
+    NSString *sql =  SQLlang.IS(@"22").sql;
+    XCTAssert([sql isEqualToString:@"IS 22 "],@"sql 应该返回'IS 22 ’");
+
+}
+-(void)test_GLOB{
+    NSString *sql = SQLlang.GLOB(@"yang*").sql;
+    XCTAssert([sql isEqualToString:@"GLOB yang* "],@"sql 应该返回'GLOB yang* ’");
+}
+-(void)test_IN{
+    NSString *sql = SQLlang.IN(@"1",@"2",@"3",nil).sql;
+    XCTAssert([sql isEqualToString:@"IN(1,2,3)  "],@"sql 应该返回'IN(1,2,3)  ’");
+}
+
+-(void)test_UPDATE{
+    NSString *sql = SQLlang.UPDATE(@"Student").sql;
+    XCTAssert([sql isEqualToString:@"UPDATE Student "],@"sql 应该返回'UPDATE Student ’");
+}
+-(void)test_SET{
+    NSString *sql = SQLlang.SET(@"name='yangYue'",nil).sql;
+    XCTAssert([sql isEqualToString:@"SET name='yangYue' "],@"sql 应该返回'SET name='yangYue' ’");
+}
+-(void)test_DELETE{
+    NSString *sql = SQLlang.DELETE.sql;
+    XCTAssert([sql isEqualToString:@"DELETE "],@"sql 应该返回'DELETE ’");
+}
+-(void)test_BY{
+    NSString *sql = SQLlang.BY(@"name").sql;
+    XCTAssert([sql isEqualToString:@"BY name "],@"sql 应该返回'BY name ’");
+}
+-(void)test_ORDER{
+    NSString *sql = SQLlang.ORDER.sql;
+    XCTAssert([sql isEqualToString:@"ORDER "],@"sql 应该返回'ORDER ’");
+}
+-(void)test_DESC{
+    NSString *sql = SQLlang.DESC.sql;
+    XCTAssert([sql isEqualToString:@"DESC "],@"sql 应该返回'DESC ’");
+}
+-(void)test_ASC{
+    NSString *sql = SQLlang.ASC.sql;
+    XCTAssert([sql isEqualToString:@"ASC "],@"sql 应该返回'ASC ’");
+}
+-(void)test_GROUP{
+    NSString *sql = SQLlang.GROUP.sql;
+    XCTAssert([sql isEqualToString:@"GROUP "],@"sql 应该返回'GROUP ’");
+}
+-(void)test_HAVING{
+    NSString *sql = SQLlang.HAVING(@"age>2").sql;
+    XCTAssert([sql isEqualToString:@"HAVING age>2 "],@"sql 应该返回'HAVING age>2 ’");
+}
+-(void)test_ADD{
+    NSString *sql = SQLlang.ADD(@"age").sql;
+    XCTAssert([sql isEqualToString:@"ADD age "],@"sql 应该返回'ADD age ’");
+}
+-(void)test_COLUMN{
+    NSString *sql = SQLlang.COLUMN(@"name").sql;
+    XCTAssert([sql isEqualToString:@"COLUMN name "],@"sql 应该返回'COLUMN name ’");
+}
+-(void)test_BEGIN{
+    NSString *sql = SQLlang.BEGIN.sql;
+    XCTAssert([sql isEqualToString:@"BEGIN "],@"sql 应该返回'BEGIN ’");
+}
+-(void)test_TRANSACTION{
+    NSString *sql = SQLlang.TRANSACTION.sql;
+    XCTAssert([sql isEqualToString:@"TRANSACTION "],@"sql 应该返回'TRANSACTION ’");
+}
+-(void)test_COMMIT{
+    NSString *sql = SQLlang.COMMIT.sql;
+    XCTAssert([sql isEqualToString:@"COMMIT "],@"sql 应该返回'COMMIT ’");
+}
+-(void)test_ROLLBACK{
+    NSString *sql = SQLlang.ROLLBACK.sql;
+    XCTAssert([sql isEqualToString:@"ROLLBACK "],@"sql 应该返回'ROLLBACK ’");
+}
+-(void)test_VACUUM{
+    NSString *sql = SQLlang.VACUUM(@"School").sql;
+    XCTAssert([sql isEqualToString:@"VACUUM School "],@"sql 应该返回'VACUUM School ’");
+
+}
+-(void)test_SEMICOLON{
+    NSString *sql = SQLlang.SEMICOLON.sql;
+    XCTAssert([sql isEqualToString:@"; "],@"sql 应该返回'; ’");
+}
+-(void)test_COMMA{
+    NSString *sql = SQLlang.COMMA.sql;
+    XCTAssert([sql isEqualToString:@", "],@"sql 应该返回', ’");
+}
 
 
 - (void)testPerformanceExample {

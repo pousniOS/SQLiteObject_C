@@ -1,18 +1,18 @@
 //
-//  SQLiteObject_CTests.m
+//  NSObject_SQLITETests.m
 //  SQLiteObject_CTests
 //
-//  Created by POSUN-MAC on 2019/3/29.
+//  Created by mac on 2019/6/28.
 //  Copyright © 2019 POSUN-MAC. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>
 
-@interface SQLiteObject_CTests : XCTestCase
+@interface NSObject_SQLITETests : XCTestCase
 
 @end
 
-@implementation SQLiteObject_CTests
+@implementation NSObject_SQLITETests
 
 - (void)setUp {
     // Put setup code here. This method is called before the invocation of each test method in the class.

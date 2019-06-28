@@ -10,7 +10,6 @@
 
 @interface GradeModel : NSObject
 @property(nonatomic,copy)NSString *ID;
-
 @property(nonatomic,copy)NSString *remark;
 @property(nonatomic,copy)NSString *name;
 @property(nonatomic,assign)NSInteger fraction;
