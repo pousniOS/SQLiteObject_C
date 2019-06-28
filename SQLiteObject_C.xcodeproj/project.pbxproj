@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0409C8D122C5EF85003F6C80 /* SQLITEObjectCTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0409C8D022C5EF85003F6C80 /* SQLITEObjectCTests.m */; };
 		0409C8D322C61C27003F6C80 /* NSObject_SQLITETests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0409C8D222C61C27003F6C80 /* NSObject_SQLITETests.m */; };
+		0409C8D522C63393003F6C80 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 0409C8D422C63393003F6C80 /* README.md */; };
 		04FCB83E22C4CD9B0032115F /* SQLiteLanguageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 04FCB83D22C4CD9B0032115F /* SQLiteLanguageTests.m */; };
 		04FD35E122AE514900AECA9A /* NSArray+TypeCheck.m in Sources */ = {isa = PBXBuildFile; fileRef = 04FD35E022AE514900AECA9A /* NSArray+TypeCheck.m */; };
 		04FD35E422AE516300AECA9A /* NSString+TypeCheck.m in Sources */ = {isa = PBXBuildFile; fileRef = 04FD35E322AE516300AECA9A /* NSString+TypeCheck.m */; };
@@ -51,6 +52,7 @@
 /* Begin PBXFileReference section */
 		0409C8D022C5EF85003F6C80 /* SQLITEObjectCTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SQLITEObjectCTests.m; sourceTree = "<group>"; };
 		0409C8D222C61C27003F6C80 /* NSObject_SQLITETests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSObject_SQLITETests.m; sourceTree = "<group>"; };
+		0409C8D422C63393003F6C80 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		04FCB83D22C4CD9B0032115F /* SQLiteLanguageTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SQLiteLanguageTests.m; sourceTree = "<group>"; };
 		04FD35DF22AE514900AECA9A /* NSArray+TypeCheck.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSArray+TypeCheck.h"; sourceTree = "<group>"; };
 		04FD35E022AE514900AECA9A /* NSArray+TypeCheck.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSArray+TypeCheck.m"; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 		5CF631E9224E1A2F007100B2 /* SQLiteObject_C */ = {
 			isa = PBXGroup;
 			children = (
+				0409C8D422C63393003F6C80 /* README.md */,
 				5C9C84FE224E1B6800B19A68 /* GradeModel.h */,
 				5C9C84FF224E1B6900B19A68 /* GradeModel.m */,
 				5C9C8502224E1B6900B19A68 /* StudentModel.h */,
@@ -329,6 +332,7 @@
 			files = (
 				5CF631F7224E1A32007100B2 /* LaunchScreen.storyboard in Resources */,
 				5CF631F4224E1A32007100B2 /* Assets.xcassets in Resources */,
+				0409C8D522C63393003F6C80 /* README.md in Resources */,
 				5C9C84FC224E1B1500B19A68 /* README.md in Resources */,
 				5CF631F2224E1A2F007100B2 /* Main.storyboard in Resources */,
 			);
